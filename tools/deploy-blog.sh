@@ -11,9 +11,9 @@ BLOG_SSH_HOST=${BLOG_SSH_HOST:-blog}
 SSH=(ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=yes -o UpdateHostKeys=no)
 cd "$PROJECT_DIR"
 
-if "${SSH[@]}" "$BLOG_SSH_HOST" 'systemctl is-active --quiet daimi-sync.timer'; then
+if "${SSH[@]}" "$BLOG_SSH_HOST" 'systemctl is-active --quiet daimi-sync.timer daimi-sync.service'; then
     printf 'Automatic publishing is enabled. Commit your changes and push main instead.\n' >&2
-    printf 'For an emergency manual release, stop daimi-sync.timer first.\n' >&2
+    printf 'For an emergency manual release, stop daimi-sync.timer and daimi-sync.service first.\n' >&2
     exit 1
 fi
 BLOG_DEPLOY_BASE=$("${SSH[@]}" "$BLOG_SSH_HOST" 'if test -d /etc/daimi/state/releases; then printf /etc/daimi/state; else printf /etc/daimi; fi')
@@ -37,6 +37,9 @@ RELEASE_DIR=$("${SSH[@]}" "$BLOG_SSH_HOST" "test -d '$BLOG_DEPLOY_BASE/releases'
 chmod_cmd="find '$RELEASE_DIR' -type d -exec chmod 0755 {} +; find '$RELEASE_DIR' -type f -exec chmod 0644 {} +"
 printf 'Uploading to %s:%s\n' "$BLOG_SSH_HOST" "$RELEASE_DIR"
 tar -C public -czf - . | "${SSH[@]}" "$BLOG_SSH_HOST" "set -e; tar -xzf - --no-same-owner --no-same-permissions -C '$RELEASE_DIR'; $chmod_cmd"
+if [[ $BLOG_DEPLOY_BASE == /etc/daimi/state ]]; then
+    "${SSH[@]}" "$BLOG_SSH_HOST" "chown -R daimi-sync:daimi-sync '$RELEASE_DIR'"
+fi
 
 # Verify every uploaded file before replacing the current pointer.
 MANIFEST=$(mktemp)

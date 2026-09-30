@@ -94,7 +94,7 @@ ssh blog 'systemctl status daimi-sync.timer --no-pager'
 ssh blog 'journalctl -u daimi-sync.service -n 20 --no-pager'
 ```
 
-原来的 `tools/deploy-blog.sh` 保留为手工应急工具。自动同步启用时，它会拒绝直接发布，避免绕过 Git 覆盖网站。确有需要时先在服务器停止 `daimi-sync.timer`，再运行手工脚本；重新启动定时器后网站恢复为 GitHub `publish` 分支的版本。
+原来的 `tools/deploy-blog.sh` 保留为手工应急工具。自动同步启用时，它会拒绝直接发布，避免绕过 Git 覆盖网站。确有需要时先在服务器停止 `daimi-sync.timer` 和 `daimi-sync.service`，再运行手工脚本；重新启动定时器后网站恢复为 GitHub `publish` 分支的版本。
 
 Nginx 配置源文件为 `deploy/nginx/imi-imiab.com.conf`。配置文件的修改需同步到远程 `/etc/daimi/nginx/imi-imiab.com.conf`，并在 `nginx -t` 通过后 reload；普通文章更新不需要 reload。
 
