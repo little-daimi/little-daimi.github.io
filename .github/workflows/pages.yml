@@ -81,7 +81,7 @@ jobs:
           else
             git checkout --orphan publish
           fi
-          git rm -r --ignore-unmatch -- .
+          git rm -rf --ignore-unmatch -- .
           cp -a ../site/. .
           git add --all
           if git diff --cached --quiet; then
