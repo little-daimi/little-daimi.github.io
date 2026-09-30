@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />            
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <title>imiab - 博客园</title>
+    
+        
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=6O_Ku8w_jYd3yw2BX9ElmxGv25AYbAQ-F6ZeOeZfxYc" />
+    
+    
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/undefined/custom.css?v=M8To7qEiClk5j8&#x2B;gr6sf&#x2B;xNi&#x2B;ok=" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/css/mobile-common.min.css?v=a5tjm35tHR3Bq88JZf8V-jiXDhgs5wg823qWgRI6uRY" />
+    
+    <link id="favicon" rel="icon" type="image/x-icon" sizes="32x32" href="https://assets.cnblogs.com/favicon_v3_3.ico" />
+    <link id="favicon_svg" rel="icon" type="image/svg+xml" href="https://assets.cnblogs.com/favicon_v3_3.svg" />
+    <link rel="apple-touch-icon" href="https://assets.cnblogs.com/apple-touch-icon.png?v=2" />
+    <link rel="canonical" href="https://www.cnblogs.com/undefined" />
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/undefined/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/undefined/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/undefined/wlwmanifest.xml" />
+    
+
+    <script>
+        var currentBlogId = 841504;
+        var currentBlogApp = 'undefined';
+        var isLogined = false;
+        var isBlogOwner = false;
+        window.isCorp = false;
+        window.skinName = 'Custom';
+        var visitorUserId = '';
+        window.hasCustomScript = true;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;        
+    </script>
+    <script src="https://assets.cnblogs.com/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn-www.cnblogs.com/js/blog-common.min.js?v=q6A5rdB3tiIeY5Vi562gBAr3OVg5t0HcQVXePY_F0qU"></script>
+        <script>updateCustomBlogReferrer();</script>
+    
+</head>
+<body class="skin-custom has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="//assets.cnblogs.com/logo.svg" alt="博客园logo" />
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>                
+                <li><a href="https://www.cnblogs.com/cmt/p/19316348">赞助商</a></li>
+                <li><a href="https://chat2db-ai.com/" target="_blank">Chat2DB</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off" />
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                            <img class="hidden focus-visible" src="//assets.cnblogs.com/icons/enter.svg" alt="搜索" />
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById('zzk_search_input').value)">
+                                <div class="keyword-wrapper">
+                                    <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, 'undefined', document.getElementById('zzk_search_input').value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/newpost.svg" alt="写随笔" />
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://www.cnblogs.com/my" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/message.svg" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="//assets.cnblogs.com/icons/lite-mode-on.svg" alt="简洁模式" />
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="//assets.cnblogs.com/icons/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://www.cnblogs.com/my">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="https://vip.cnblogs.com/my">会员中心</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div id="loading"><div class="loader-inner"></div></div>
+    </div>
+
+    <div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/undefined/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/undefined">undefined</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div>
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/undefined/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/imiab">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/undefined/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div>
+	</div>
+</div>
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+
+
+
+<div id="homepage_top_pager" class="topicListFooter">
+    
+
+<div class="pager">
+    
+    
+    
+    1
+        <a href="https://www.cnblogs.com/undefined?page=2">2</a>
+    
+    
+    <a href="https://www.cnblogs.com/undefined?page=2">下一页</a>
+</div>
+</div>
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_19733408">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2026/03/18">2026年3月18日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19733408">
+    <span>
+        protobuf-c 自动逆向脚本开发小记...
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_19733408">
+摘要：        
+Loader 编写脚本的时候发现ida根本没有热重载脚本的功能，每次修改完脚本想看看效果，都要把ida大退然后重启 于是自己写了一个方便的loader，按下Ctrl+Shift+H就可以请求一个路径，按下Ctrl+H快速热重载脚本。 import ida_idaapi import ida_kern    <a href="https://www.cnblogs.com/undefined/p/19733408" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2026-03-18 12:16
+imiab
+<span data-post-id="19733408" class="post-view-count">阅读(98)</span>
+<span data-post-id="19733408" class="post-comment-count">评论(0)</span>
+<span data-post-id="19733408" class="post-digg-count">推荐(1)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_19729318">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2026/03/17">2026年3月17日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19729318">
+    <span>
+        [pwn] protobuf学习与逆向
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_19729318">
+摘要：        
+介绍 一个轻量的跨平台数据结构协议。 说人话就是json-pro，或者说zip-pro。zip不也是不论在手机、电脑、macos都能解压吗，， 当然运转起来和zip不同，毕竟这个是为了程序间收发信息而发明的，而zip只是为了打包数据，只是一个不太恰当的类比。 快速安装 sudo apt instal    <a href="https://www.cnblogs.com/undefined/p/19729318" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2026-03-17 14:03
+imiab
+<span data-post-id="19729318" class="post-view-count">阅读(138)</span>
+<span data-post-id="19729318" class="post-comment-count">评论(0)</span>
+<span data-post-id="19729318" class="post-digg-count">推荐(0)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_19428317">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2025/12/31">2025年12月31日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19428486">
+    <span>
+        二0二午
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_19428486">
+摘要：        
+2025 又是一事无成的一年... 一月。。。？？？ 我全忘了，一月我做了什么。大概是在为期末周焦头烂额。 开学的时候还天天看高数想卷绩点，最后考完居然是倒数吗，哈哈...（被9.5学分英语肘飞了） 现在回想起来这个时候的我应该还只是一个小菜鸡，一直说要学house of cat、高版本堆之类的，但    <a href="https://www.cnblogs.com/undefined/p/19428486" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2025-12-31 21:44
+imiab
+<span data-post-id="19428486" class="post-view-count">阅读(187)</span>
+<span data-post-id="19428486" class="post-comment-count">评论(0)</span>
+<span data-post-id="19428486" class="post-digg-count">推荐(0)</span>
+
+</div>
+        <div class="clear"></div>
+            <div class="postSeparator"></div>
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19428317">
+    <span>
+        2025年终总结
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_19428317">
+摘要：        
+2025 又是一事无成的一年... 一月。。。？？？ 我全忘了，一月我做了什么。大概是在为期末周焦头烂额。 开学的时候还天天看高数想卷绩点，最后考完居然是倒数吗，哈哈...（被9.5学分英语肘飞了） 现在回想起来这个时候的我应该还只是一个小菜鸡，一直说要学house of cat、高版本堆之类的，但    <a href="https://www.cnblogs.com/undefined/p/19428317" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2025-12-31 19:55
+imiab
+<span data-post-id="19428317" class="post-view-count">阅读(138)</span>
+<span data-post-id="19428317" class="post-comment-count">评论(1)</span>
+<span data-post-id="19428317" class="post-digg-count">推荐(0)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_19254887">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2025/11/22">2025年11月22日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19254887">
+    <span>
+        RCTF pwn方向题解（缺bbox）
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_19254887">
+摘要：        
+mstr python pwn 漏洞和python内部的机制有关系，python对象并不直接存储对象，而是存储对象的引用。而mutableString类的data是string，max_size_str也是string。这就会导致data和max_size_str指向同一个字符对象。 至此还不会产生    <a href="https://www.cnblogs.com/undefined/p/19254887" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2025-11-22 00:21
+imiab
+<span data-post-id="19254887" class="post-view-count">阅读(238)</span>
+<span data-post-id="19254887" class="post-comment-count">评论(0)</span>
+<span data-post-id="19254887" class="post-digg-count">推荐(0)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_19135998">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2025/10/11">2025年10月11日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19135998">
+    <span>
+        securityCTF 2025 pwn方向题解
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_19135998">
+摘要：        
+V-table 手挖io链子 正常的链子 exit_handler() -&gt; io_flush_all() -&gt; io_overflow() -&gt; io_do_write() 我们修改vtable，使得调用overflow变成调用file_finish，正常的finish链子 exit_handle    <a href="https://www.cnblogs.com/undefined/p/19135998" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2025-10-11 21:16
+imiab
+<span data-post-id="19135998" class="post-view-count">阅读(300)</span>
+<span data-post-id="19135998" class="post-comment-count">评论(1)</span>
+<span data-post-id="19135998" class="post-digg-count">推荐(0)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_19044898">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2025/08/18">2025年8月18日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19044898">
+    <span>
+        Lilctf PWN方向全全全全题解！
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_19044898">
+摘要：        
+I like C++ 114514后门选项，里面会设置一个函数指针，其中偏移3的地方为后门函数 里面有一个scanf(&quot;%s&quot;)，裸的栈溢出，还有格式化字符串 条件是拿到堆地址，只要我们输入的地址和它的堆地址一样就能触发 exchange里有个浅拷贝，会free对象并导致leak 最终exp fro    <a href="https://www.cnblogs.com/undefined/p/19044898" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2025-08-18 16:18
+imiab
+<span data-post-id="19044898" class="post-view-count">阅读(884)</span>
+<span data-post-id="19044898" class="post-comment-count">评论(0)</span>
+<span data-post-id="19044898" class="post-digg-count">推荐(2)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_18875060">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2025/05/13">2025年5月13日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/18875060">
+    <span>
+        BUUCTF WEB入门题小记
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_18875060">
+摘要：        
+[极客大挑战 2019]EasySQL 使用 1&#39; or &#39;1&#39; = &#39;1&#39; #绕过sql 注意sql中的等于是=，不等于是&lt;&gt;或!= [极客大挑战 2019]Havefun 在源代码中的注释中找到提示 用$cat=dog获得flag [HCTF 2018]WarmUp 在源代码中的注释找到提示 进    <a href="https://www.cnblogs.com/undefined/p/18875060" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2025-05-13 23:05
+imiab
+<span data-post-id="18875060" class="post-view-count">阅读(299)</span>
+<span data-post-id="18875060" class="post-comment-count">评论(0)</span>
+<span data-post-id="18875060" class="post-digg-count">推荐(0)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_18867406">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2025/05/09">2025年5月9日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/18867406">
+    <span>
+        mini-L2025 PWN方向全题解
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_18867406">
+摘要：        
+POSTBOX PostScript下存在格式化字符串漏洞，具体分析如下 //unsigned __int64 __fastcall PostScript(_DWORD *a1, int *len) while ( *a1 ) //注意到这里解了个指针 //一般变量都是直接存储值，这个不一样也相当于    <a href="https://www.cnblogs.com/undefined/p/18867406" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2025-05-09 01:11
+imiab
+<span data-post-id="18867406" class="post-view-count">阅读(354)</span>
+<span data-post-id="18867406" class="post-comment-count">评论(0)</span>
+<span data-post-id="18867406" class="post-digg-count">推荐(0)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+		
+<div class="day" role="article" aria-describedby="postlist_description_18857873">
+    <div class="dayTitle">
+        <a href="https://www.cnblogs.com/undefined/p/archive/2025/05/02">2025年5月2日
+</a>
+    </div>
+
+        <div class="postTitle" role="heading" aria-level="2">
+            <a class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/18857873">
+    <span>
+        ACTF 部分题的非预期解法（全都是非预期）
+    </span>
+    
+
+</a>
+
+        </div>
+        <div class="postCon">
+
+<div class="c_b_p_desc" id="postlist_description_18857873">
+摘要：        
+afl-sandbox 不知道预期解是什么，但是侧信道了 程序执行我们的shellcode，如果崩溃会根据不同的signal把信息告诉给我们 （复盘的时候想起来，如果exit不同的值是不是也会告诉我们？ （但是这么搞这题就没什么意思了，要是沙箱才有意思呢 用ud2、段错误和正常退出构造出三种不同的状    <a href="https://www.cnblogs.com/undefined/p/18857873" class="c_b_p_desc_readmore">阅读全文</a>
+</div>
+
+</div>
+        <div class="clear"></div>
+        <div class="postDesc">posted @ 2025-05-02 22:35
+imiab
+<span data-post-id="18857873" class="post-view-count">阅读(273)</span>
+<span data-post-id="18857873" class="post-comment-count">评论(2)</span>
+<span data-post-id="18857873" class="post-digg-count">推荐(0)</span>
+
+</div>
+        <div class="clear"></div>
+</div>
+
+
+
+<div class="topicListFooter">
+    <div id="nav_next_page">
+        
+
+    </div>    
+</div>
+
+
+<div id="homepage_bottom_pager" class="topicListFooter">
+    
+
+<div class="pager">
+    
+    
+    
+    1
+        <a href="https://www.cnblogs.com/undefined?page=2">2</a>
+    
+    
+    <a href="https://www.cnblogs.com/undefined?page=2">下一页</a>
+</div>
+</div>
+
+
+
+<script>
+    updatePostStats(
+        $(".post-view-count").map(function () { return this.dataset.postId }).get(),
+        function(id, count) { $(".post-view-count[data-post-id=" + id + "]").text("阅读(" + count + ")") },
+        function(id, count) { $(".post-comment-count[data-post-id=" + id + "]").text("评论(" + count + ")") },
+        function(id, count) { $(".post-digg-count[data-post-id=" + id + "]").text("推荐(" + count + ")") });
+</script>
+	</div>
+	</div>
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+					<script>loadBlogSideColumn()</script>
+			</div>			
+		</div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div id="footer">
+		<a href="https://www.cnblogs.com/" id="footer_site_link" class="footer-brand">博客园</a>
+<span class="footer-copyright"> &nbsp;&copy;&nbsp; 2004-2026</span>
+<br /><span class="footer-icp">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602011771"><img src="//assets.cnblogs.com/images/ghs.png" />浙公网安备 33010602011771号</a>
+    <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备2021040463号-3</a>
+</span>
+
+
+
+	</div>
+</div>
+
+
+
+    <div id="page_end_html">
+        <script src="https://cdn.cnblogs.com/awescnb/index.js"></script>
+<script>
+  const opts = {
+    bodyBackground: {
+        enable: true,
+        value:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312133253_meiying.jpg',
+        opacity: 0.85,
+        repeat: true,
+    },
+    theme: {
+      name: 'geek',
+      avatar:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312125116_QQ%E5%9B%BE%E7%89%8720240807015716.jpg',
+    },
+    darkMode: {
+        enable: true,
+        darkDefault: false,
+    },
+  signature: {
+      enable: false,
+      contents: [
+      "",
+      ],
+    },
+  }
+  $.awesCnb(opts)
+</script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8Ow5-In01nBEvFwaadRGjqGW4Rh8nsfIPCFpAXzdX_ZLqXOsJnsQdYkZYBZNDtFBkf4TcqhCGkfeINZVSb5MwEdib6BCd0Ci_wLT4RTPArNYWR2UfvRwnok8cl_5UmG_Oc7d5_DA2ZtHS7zGl_AhOrU" />
+    <script defer src="https://hm.baidu.com/hm.js?866c9be12d4a814454792b1fd0fed295"></script>
+<script defer src="https://lf1-cdn-tos.bytegoofy.com/goofy/ttzz/push.js?32d945448dd797af605da9156763de3dc11c9886368d0f917d6388e4fcf5542030632485602430134f60bc55ca391050b680e2741bf7233a8f1da9902314a3fa" id="ttzz"></script>
+</body>
+</html>

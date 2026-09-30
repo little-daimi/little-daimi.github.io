@@ -1,13 +1,91 @@
 ---
-title: 关于
+title: 关于我
 comments: false
+# 时间线条目：年份或月份、比赛名称、奖项或排名。
+awards:
+  # 用户补充：最新 SCAN 2026 成绩，月份未提供。
+  - date: "2026"
+    name: "SCAN 2026"
+    result: "#1"
+# 2026 年条目核对自本地简历；来源仅注明年份。
+  - date: "2026"
+    name: "长城杯全国线下决赛"
+    result: "二等奖 · Pwn #2"
+  - date: "2026"
+    name: "TRX CTF 2026"
+    result: "#7 / 576"
+  - date: "2026"
+    name: "CodeGate CTF 2026"
+    result: "#13 / 391"
+  - date: "2025-12"
+    name: "HITCTF 2025"
+    result: "优胜奖 · #8"
+  - date: "2025-12"
+    name: "HKCERT CTF网安夺旗赛2025"
+    result: "#13"
+  - date: "2025-12"
+    name: "0CTF 2025"
+    result: "#8"
+  - date: "2025-11"
+    name: "infobahn CTF 2025"
+    result: "获奖 · #1"
+  - date: "2025-11"
+    name: "RCTF 2025"
+    result: "获奖 · #1"
+  - date: "2025-10"
+    name: "XCTF 2025 Final"
+    result: "三等奖 · #7 / #12（联队） · #15 / #28（总排）"
+  - date: "2025-09"
+    name: "WMCTF 2025"
+    result: "获奖 · #1"
+  - date: "2025-09"
+    name: "SunshineCTF 2025"
+    result: "获奖 · #2"
+  - date: "2025-09"
+    name: "CrewCTF 2025"
+    result: "#7"
+  - date: "2025-08"
+    name: "LilCTF 2025"
+    result: "一等奖 · #1"
+  - date: "2025-08"
+    name: "SekaiCTF 2025"
+    result: "#3"
+  - date: "2025-07"
+    name: "第三届京麒 CTF 决赛"
+    result: "优胜奖 · #10"
+  - date: "2025-07"
+    name: "R3CTF 2025"
+    result: "#4"
+  - date: "2025-07"
+    name: "L3HCTF 2025"
+    result: "#4"
+  - date: "2025-06"
+    name: "MaltaCTF 2025 Quals"
+    result: "晋级 · #4"
+  - date: "2025-05"
+    name: "“轩辕杯”云盾砺剑CTF挑战赛"
+    result: "特等奖 · #1"
+  - date: "2025-05"
+    name: "LitCTF 2025"
+    result: "一等奖 · #7"
+  - date: "2025-05"
+    name: "第三届京麒 CTF 挑战赛·初赛"
+    result: "晋级 · #8（并列）"
+  - date: "2025-04"
+    name: "SQCTF 2025"
+    result: "一等奖 · #1（大一） · #4（总排）"
+  - date: "2025-04"
+    name: "ACTF 2025"
+    result: "#2"
+  - date: "2024-10"
+    name: "NewStarCTF 2024"
+    result: "特等奖 · #1（校内） · #5（总排）"
 ---
 
-这里是 **imiab / little-daimi** 的个人博客。
+## imiab / little-daimi
 
-记录 CTF、Pwn、逆向分析与开发笔记。
+CTF · Pwn · Reverse · Agent
 
-- [GitHub](https://github.com/little-daimi)
-- [博客园 · undefined](https://www.cnblogs.com/undefined)
+[GitHub ↗](https://github.com/little-daimi)
 
-早期文章可以在博客园阅读。
+[博客园 ↗](https://www.cnblogs.com/undefined)

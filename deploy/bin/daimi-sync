@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+# Fetch validated static output; never build or execute repository code here.
+set -Eeuo pipefail
+
+CONFIG_FILE=${DAIMI_SYNC_CONFIG:-/etc/daimi/site.conf}
+[[ -f $CONFIG_FILE && -r $CONFIG_FILE ]] || {
+    printf 'Cannot read config: %s\n' "$CONFIG_FILE" >&2
+    exit 1
+}
+# This file is maintained by root, outside the service user's writable tree.
+# shellcheck source=/dev/null
+source "$CONFIG_FILE"
+: "${REPOSITORY_URL:?Missing REPOSITORY_URL}"
+: "${PUBLISH_BRANCH:?Missing PUBLISH_BRANCH}"
+: "${STATE_DIR:?Missing STATE_DIR}"
+: "${KEEP_RELEASES:?Missing KEEP_RELEASES}"
+[[ $STATE_DIR == /* && $STATE_DIR != / && ! -L $STATE_DIR ]] || {
+    printf 'STATE_DIR must be an absolute, non-symlink directory\n' >&2
+    exit 1
+}
+[[ $KEEP_RELEASES =~ ^[1-9][0-9]*$ ]] || {
+    printf 'KEEP_RELEASES must be a positive integer\n' >&2
+    exit 1
+}
+git check-ref-format "refs/heads/$PUBLISH_BRANCH" >/dev/null
+
+REPO_DIR="$STATE_DIR/repo"
+RELEASES_DIR="$STATE_DIR/releases"
+CURRENT_LINK="$STATE_DIR/current"
+mkdir -p -- "$STATE_DIR"
+[[ ! -L $REPO_DIR && ! -L $RELEASES_DIR && ! -L $STATE_DIR/sync.lock ]] || {
+    printf 'Repository, release directory, and lock must not be symlinks\n' >&2
+    exit 1
+}
+exec 9>"$STATE_DIR/sync.lock"
+flock -n 9 || exit 0
+mkdir -p -- "$RELEASES_DIR"
+
+# Ignore user/system Git configuration, hooks, replace objects, and prompts.
+export GIT_TERMINAL_PROMPT=0 GIT_CONFIG_NOSYSTEM=1
+export GIT_CONFIG_GLOBAL=/dev/null GIT_NO_REPLACE_OBJECTS=1
+GIT=(git -c core.hooksPath=/dev/null -c protocol.ext.allow=never)
+if [[ ! -f $REPO_DIR/HEAD ]]; then
+    "${GIT[@]}" init --bare --quiet "$REPO_DIR"
+fi
+"${GIT[@]}" --git-dir="$REPO_DIR" fetch --quiet --no-tags --depth=1 \
+    "$REPOSITORY_URL" "+refs/heads/$PUBLISH_BRANCH:refs/remotes/origin/$PUBLISH_BRANCH"
+COMMIT=$("${GIT[@]}" --git-dir="$REPO_DIR" rev-parse --verify \
+    "refs/remotes/origin/$PUBLISH_BRANCH^{commit}")
+[[ $COMMIT =~ ^[0-9a-f]{40}([0-9a-f]{24})?$ ]]
+
+# Bootstrap may point to the previous manual release outside state/releases.
+# Only inspect our own release marker when current is inside the managed tree.
+CURRENT_DIR=$(readlink -f -- "$CURRENT_LINK" 2>/dev/null || true)
+if [[ $CURRENT_DIR == "$RELEASES_DIR"/release-* && -s $CURRENT_DIR/.publish-commit ]]; then
+    read -r CURRENT_COMMIT < "$CURRENT_DIR/.publish-commit"
+    if [[ $CURRENT_COMMIT == "$COMMIT" ]]; then
+        printf 'Unchanged publish commit %s\n' "$COMMIT"
+        exit 0
+    fi
+fi
+
+# Static releases contain regular files only. Check before extracting anything.
+"${GIT[@]}" --git-dir="$REPO_DIR" ls-tree -r -z "$COMMIT" | python3 -c '
+import sys
+for entry in sys.stdin.buffer.read().split(b"\0"):
+    if not entry:
+        continue
+    meta, path = entry.split(b"\t", 1)
+    mode, kind, _ = meta.split(b" ")
+    if mode not in (b"100644", b"100755") or kind != b"blob":
+        raise SystemExit("Static output contains a symlink or submodule")
+    if path.startswith(b"/") or any(part in (b"", b".", b"..", b".git") for part in path.split(b"/")):
+        raise SystemExit("Static output contains an unsafe path")
+'
+
+STAGING_DIR=$(mktemp -d "$RELEASES_DIR/.incoming-XXXXXXXXXX")
+NEXT_LINK="$STATE_DIR/.current-${STAGING_DIR##*/}"
+cleanup() {
+    [[ -z ${STAGING_DIR:-} || ! -d $STAGING_DIR ]] || rm -rf -- "$STAGING_DIR"
+    [[ ! -L $NEXT_LINK ]] || unlink -- "$NEXT_LINK"
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+"${GIT[@]}" --git-dir="$REPO_DIR" archive "$COMMIT" | \
+    tar -xf - --no-same-owner --no-same-permissions -C "$STAGING_DIR"
+
+python3 - "$STAGING_DIR" <<'PY'
+import json
+import re
+import sys
+from pathlib import Path
+
+release = Path(sys.argv[1])
+required = (
+    "index.html", "about/index.html", "friends/index.html", "search.json",
+    "css/noise.css", "css/fragments.css", "css/appearance.css", "js/theme.js",
+)
+for name in required:
+    path = release / name
+    if not path.is_file() or path.stat().st_size == 0:
+        raise SystemExit(f"Incomplete static release: {name}")
+try:
+    info = json.loads((release / ".build-info.json").read_text(encoding="utf-8"))
+except (OSError, ValueError) as error:
+    raise SystemExit(f"Missing or invalid successful-build marker: {error}")
+if not isinstance(info, dict) or info.get("schema") != 1 or info.get("status") != "passed":
+    raise SystemExit("Release was not marked as successfully built and checked")
+if not re.fullmatch(r"[0-9a-f]{40}(?:[0-9a-f]{24})?", str(info.get("source_commit", ""))):
+    raise SystemExit("Invalid source revision in successful-build marker")
+PY
+
+printf '%s\n' "$COMMIT" > "$STAGING_DIR/.publish-commit"
+find "$STAGING_DIR" -type d -exec chmod 0755 {} +
+find "$STAGING_DIR" -type f -exec chmod 0644 {} +
+RELEASE_NAME="release-$(date -u +%Y%m%dT%H%M%SZ)-${COMMIT:0:12}-${STAGING_DIR##*.incoming-}"
+RELEASE_DIR="$RELEASES_DIR/$RELEASE_NAME"
+mv -- "$STAGING_DIR" "$RELEASE_DIR"
+STAGING_DIR=
+ln -s -- "releases/$RELEASE_NAME" "$NEXT_LINK"
+mv -Tf -- "$NEXT_LINK" "$CURRENT_LINK"
+printf 'Published commit %s at %s\n' "$COMMIT" "$RELEASE_DIR"
+
+# Keep the live release and the newest other releases, three by default.
+python3 - "$RELEASES_DIR" "$RELEASE_DIR" "$KEEP_RELEASES" <<'PY'
+import shutil
+import sys
+from pathlib import Path
+
+directory, live = map(Path, sys.argv[1:3])
+keep = int(sys.argv[3])
+others = sorted(
+    (path for path in directory.glob("release-*") if path.is_dir() and not path.is_symlink() and path != live),
+    key=lambda path: path.stat().st_mtime_ns,
+    reverse=True,
+)
+for old in others[max(0, keep - 1):]:
+    shutil.rmtree(old)
+PY

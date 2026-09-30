@@ -1,0 +1,27 @@
+[Unit]
+Description=Publish validated static output for imi-imiab.com
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=daimi-sync
+Group=daimi-sync
+ExecStart=/etc/daimi/bin/daimi-sync
+UMask=0022
+TimeoutStartSec=90
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/etc/daimi/state
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+CapabilityBoundingSet=
+

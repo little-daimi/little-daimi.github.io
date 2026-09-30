@@ -1,0 +1,21 @@
+<% if (page.awards && page.awards.length) {
+  const awards = [...page.awards].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const years = [...new Set(awards.map(award => String(award.date).slice(0, 4)))];
+%>
+<section class="awards-timeline" aria-labelledby="awards-title">
+  <header class="awards-heading"><span class="eyebrow">AWARDS &amp; MILESTONES</span><h2 id="awards-title">个人奖项</h2></header>
+  <% years.forEach(function(year) { %>
+  <section class="awards-year" aria-labelledby="awards-year-<%= year %>">
+    <h3 id="awards-year-<%= year %>" class="awards-year-label"><%= year %><span aria-hidden="true"> /</span></h3>
+    <ol class="awards-track">
+      <% awards.filter(award => String(award.date).startsWith(year)).forEach(function(award) { %>
+      <li class="award-event">
+        <time datetime="<%= award.date %>"><span><%= String(award.date).length > 4 ? String(award.date).slice(5, 7) : award.date %></span><% if (String(award.date).length > 4) { %><small>月</small><% } %></time>
+        <div class="award-detail"><h4><%= award.name %></h4><p><%= award.result %></p></div>
+      </li>
+      <% }) %>
+    </ol>
+  </section>
+  <% }) %>
+</section>
+<% } %>

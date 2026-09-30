@@ -1,0 +1,987 @@
+{
+  "generated_at": "2026-09-29T14:13:08.344114+00:00",
+  "source": "https://www.cnblogs.com/undefined",
+  "discovered_count": 14,
+  "coverage": {
+    "sitemap": [
+      "18765503",
+      "18815248",
+      "18827559",
+      "18827574",
+      "18857873",
+      "18867406",
+      "18875060",
+      "19044898",
+      "19135998",
+      "19254887",
+      "19428317",
+      "19428486",
+      "19729318",
+      "19733408"
+    ],
+    "feed": [
+      "18765503",
+      "18815248",
+      "18827574",
+      "18857873",
+      "18867406",
+      "18875060",
+      "19044898",
+      "19135998",
+      "19254887",
+      "19428317",
+      "19428486",
+      "19729318",
+      "19733408"
+    ],
+    "homepage": [
+      "18765503",
+      "18815248",
+      "18827574",
+      "18857873",
+      "18867406",
+      "18875060",
+      "19044898",
+      "19135998",
+      "19254887",
+      "19428317",
+      "19428486",
+      "19729318",
+      "19733408"
+    ],
+    "homepage_pages": [
+      1,
+      2
+    ],
+    "monthly_archives": [
+      "18765503",
+      "18815248",
+      "18827574",
+      "18857873",
+      "18867406",
+      "18875060",
+      "19044898",
+      "19135998",
+      "19254887",
+      "19428317",
+      "19428486",
+      "19729318",
+      "19733408"
+    ],
+    "monthly_archive_count": 8,
+    "monthly_declared_posts": 13,
+    "site_statistics_text": "随笔 - 14 文章 - 1 评论 - 5 阅读 - 3924",
+    "previous_next_links": [
+      "18765503",
+      "18815248",
+      "18827574",
+      "18857873",
+      "18867406",
+      "18875060",
+      "19044898",
+      "19135998",
+      "19254887",
+      "19428317",
+      "19428486",
+      "19729318",
+      "19733408"
+    ]
+  },
+  "posts": [
+    {
+      "id": "19733408",
+      "title": "protobuf-c 自动逆向脚本开发小记...",
+      "original_url": "https://www.cnblogs.com/undefined/p/19733408",
+      "published": "2026-03-18 12:16",
+      "updated": "2026-03-18 12:17",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-19733408.md",
+      "categories": [
+        "Reverse"
+      ],
+      "tags": [
+        "Reverse",
+        "Protobuf"
+      ],
+      "taxonomy_source": "title: protobuf / 逆向",
+      "code_blocks": 1,
+      "code_sha256": [
+        "1f0c7285d84fe0830bdb3c09d890f31cafc9af4e1a9be1ed4f42b15f00cce2a2"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 0,
+      "body_text_sha256": "eaa17fa9ef0907df7c04d7e9572169177026a22c5cd3ed5778421df2094c2868",
+      "source_html_sha256": "03877344e35754a450a6bd46a63e3b24c11f9cb0ab698bab3f3f6d967e5ef9ae",
+      "markdown_sha256": "92039b23a8e91f1e10ac448f1a66807fcaa4dba7d6c2ef32fd5a87cac0a531a9"
+    },
+    {
+      "id": "19729318",
+      "title": "[pwn] protobuf学习与逆向",
+      "original_url": "https://www.cnblogs.com/undefined/p/19729318",
+      "published": "2026-03-17 14:03",
+      "updated": "2026-03-17 14:26",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-19729318.md",
+      "categories": [
+        "Reverse"
+      ],
+      "tags": [
+        "Reverse",
+        "Protobuf",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: protobuf / 逆向",
+      "code_blocks": 14,
+      "code_sha256": [
+        "acffd9a6e3341c9799853791a0c8c0b7fc289cadb3366a82492b8dca531b3f13",
+        "9ac22d871487093a00f1a690b52fc3b4953731ef6d9b810b1082b9e758564c0a",
+        "9ac22d871487093a00f1a690b52fc3b4953731ef6d9b810b1082b9e758564c0a",
+        "7e66c2d7e7d824e9aaafe8dc98f1ec2d6eba8c432d712326da3b2939ba382a85",
+        "95420f9c94c5ff3fab3164be5937747871628c24f1f3f30512e5d5953e733407",
+        "12f11d9cb40166ba05466684c75dc6f208e88dbc524b4354d145a8dbf041f84d",
+        "61a8cac485549856454104f936168e087ab4d099aa626833671d7b5d83c9e78c",
+        "c92a81e81b375f35bced93e0867d9cf826f600dca41665daf242d13a380485fd",
+        "7060455d1852ecc08e64620ab4e3081ceb3400209f4121ec6d9be60be7682380",
+        "9d1b16aec0e291fa16d68a64554089284066c7ed2f41d8bc8ac3c90a57e4df47",
+        "f1fd19578f37df32c175eada51d576c3d07444a3b5de43f11a29aed2ba54b86e",
+        "80a5e47c88e98b00bf5b14d71bad75e1cca6a93c70281bba8b07965ad099d55c",
+        "9fa64d9ffc8b6aabbc6741e87cfd9db41a53503a4585f626d13975a8d2d52810",
+        "9c43fd0248b60a71b9b3524d3fd94edb93e4e61b180a87ecf4d3d543ad02d6f4"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 3,
+      "body_text_sha256": "8ab6dbef39a41f380daa64d4b4d9799b68a8edb494291bb3d2fb1ceda9bc2fd6",
+      "source_html_sha256": "57d8699901035313ec1048cfc13653a324b4cdb27a3f9f2ee72496cc89908df1",
+      "markdown_sha256": "962d6f59974d3738bf04c420c7a4024cdca188a8f58469a814522f204d0b2a92"
+    },
+    {
+      "id": "19428486",
+      "title": "二0二午",
+      "original_url": "https://www.cnblogs.com/undefined/p/19428486",
+      "published": "2025-12-31 21:44",
+      "updated": "2025-12-31 21:47",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-19428486.md",
+      "categories": [
+        "Life"
+      ],
+      "tags": [
+        "年度记录"
+      ],
+      "taxonomy_source": "title and body: 2025 年终记录",
+      "code_blocks": 0,
+      "code_sha256": [],
+      "code_preservation_verified": true,
+      "image_references": 3,
+      "body_text_sha256": "7a9716eb0b87f8ed2da406e47ca2c0d605a765de95ea419d98ada92f28bad126",
+      "source_html_sha256": "a73edaa2c403d723bd2de3e2b96e8a512479cd420c4530d3986229ad96b67031",
+      "markdown_sha256": "3da62101e102d649d7c49e2b3264c2e0c62b2efd76ec4250107356d848aaf7d3"
+    },
+    {
+      "id": "19428317",
+      "title": "2025年终总结",
+      "original_url": "https://www.cnblogs.com/undefined/p/19428317",
+      "published": "2025-12-31 19:55",
+      "updated": "2025-12-31 20:59",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-19428317.md",
+      "categories": [
+        "Life"
+      ],
+      "tags": [
+        "年度记录"
+      ],
+      "taxonomy_source": "title and body: 2025 年终记录",
+      "code_blocks": 0,
+      "code_sha256": [],
+      "code_preservation_verified": true,
+      "image_references": 3,
+      "body_text_sha256": "7a9716eb0b87f8ed2da406e47ca2c0d605a765de95ea419d98ada92f28bad126",
+      "source_html_sha256": "a58967c5b7aad5dbf85276d7da1ec76e2b3ff83a143a448fd23f42d11e7aa252",
+      "markdown_sha256": "23ebc774e5abab580de1f42c1d7c3d2fa7cfcf1c460eb361957f75c153e7b37d"
+    },
+    {
+      "id": "19254887",
+      "title": "RCTF pwn方向题解（缺bbox）",
+      "original_url": "https://www.cnblogs.com/undefined/p/19254887",
+      "published": "2025-11-22 00:21",
+      "updated": "2025-11-22 00:22",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-19254887.md",
+      "categories": [
+        "Pwn"
+      ],
+      "tags": [
+        "CTF",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: pwn",
+      "code_blocks": 8,
+      "code_sha256": [
+        "b694858a397ca256d8250355e00f90135406737a42d73ebb702b0eeb7b462d89",
+        "c009e02dc2e03008129c913e952a91b5cee753e643ba149ef8622c0e8ab85349",
+        "623e11c17d6064ab094f475ecb45c55e80633f2fe7efae6b30b8800e79661d33",
+        "184d9a657e984171ee713cbe72a65d62a27c5ee54a8356d5204e1c57c80bfaf0",
+        "623e11c17d6064ab094f475ecb45c55e80633f2fe7efae6b30b8800e79661d33",
+        "03b6cc1c12c19a82040ae0edb28729ea593b2a5f8e224f5fe57c76783784c96e",
+        "e8507dd92b07a2e9540bfdfc009ed51cf9c27c98d61fdcf3d3836a88e9523f9c",
+        "babb1e118782fa64d49b81ba6b7f953cae87683e8739490a1e81156e2f156ab6"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 0,
+      "body_text_sha256": "050d3af07d932354d849974308879ef6f5690e979cfc772549fda071f038d08e",
+      "source_html_sha256": "78a69a6e8b4e19f1e534e3763139a9466a6f0000dbdf299ae7a8aaa59ec2a99a",
+      "markdown_sha256": "c8aa1774dbb321e21f4beb7cd246039d0ca27e23bcefcaaddfb163197ec9f430"
+    },
+    {
+      "id": "19135998",
+      "title": "securityCTF 2025 pwn方向题解",
+      "original_url": "https://www.cnblogs.com/undefined/p/19135998",
+      "published": "2025-10-11 21:16",
+      "updated": "2025-10-11 21:17",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-19135998.md",
+      "categories": [
+        "Pwn"
+      ],
+      "tags": [
+        "CTF",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: pwn",
+      "code_blocks": 7,
+      "code_sha256": [
+        "158106b5ffea4e861ccc18e66a90ef8935ab7aaaca6ee12ffb10ce2976436715",
+        "28aafc92635e2df3225114275af40a65447ea33c9f624ec4e2e27a53f82d5efe",
+        "8ee98be7b8d7422876e87329bf32d3c32d86f5e15dfd3fff82d0d30e07f9b62b",
+        "7c002f7a777d87308160af1913971b83a120b7d948aee67db16c50bbc40d9a63",
+        "4337b79ac0c3779d03f9e30f490797a51de091536fca7371ff2bd9cf60e0c61f",
+        "333d13bb26cdf31f098ddf191f50ba4ffc2d4566678d0cba83268f718d941ddf",
+        "5b0a3ecedc8219298a8eb7d7bf28f52664978447d52a6d11ba8faa6205ebe906"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 4,
+      "body_text_sha256": "4a2429fd1e06cbd18892d0926c2911bcc076a98cdfca934a18c81ac8d1e601ca",
+      "source_html_sha256": "4230d3a54ef8c489f6e10a91bd98e358bfacdbe88b2c92cbdf58afcb9ce7aef9",
+      "markdown_sha256": "091f301f8a038f2ef8f30760dc22d6b469c31fc471f72b6f508b2601500a65d8"
+    },
+    {
+      "id": "19044898",
+      "title": "Lilctf PWN方向全全全全题解！",
+      "original_url": "https://www.cnblogs.com/undefined/p/19044898",
+      "published": "2025-08-18 16:18",
+      "updated": "2025-08-18 16:19",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-19044898.md",
+      "categories": [
+        "Pwn"
+      ],
+      "tags": [
+        "CTF",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: pwn",
+      "code_blocks": 8,
+      "code_sha256": [
+        "412cb05c66190bb0f6b80afceed3e90b8a34f51680c9195270230c8db017a8d2",
+        "1bd1a5f6b44157ad07f5348efd7ee43ef6a5912fe80668c7b4d47d3352f19ce8",
+        "3869af837d90e581f793aca4825b6c7890be00d8496706bb809ef6db284c45ee",
+        "53b76b38d9b0bc66047c53c489acf0066b431eec727d991a85a32ab5119f241f",
+        "6ecb433332f95366f7671874b63f98ea566d5d961d78a9e56e63330a93709b18",
+        "ce85b6bbde3689d5bb7a44b5a0d96b5713fd01e63415ce73210f3288e233c834",
+        "026df0efb910eae294980ce9a1d8901a3db11e45c16c34519ef27c419002bb7c",
+        "f9429cde5f5a978b5cecc9de8e301149a705f411c7e831592118a94fd4476502"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 6,
+      "body_text_sha256": "354e1047a31d336ce007f8b25c5790e4484e488456da09769c5732ff756a9550",
+      "source_html_sha256": "4d3677f2b2e9bf864037efc43800ce75bbb36b8f5bc90d77b24ae64aa6f808b3",
+      "markdown_sha256": "0354710037d7bb8a24c7a0eed8878f63bdd55bfc3094fe1076a767130d3d865c"
+    },
+    {
+      "id": "18875060",
+      "title": "BUUCTF WEB入门题小记",
+      "original_url": "https://www.cnblogs.com/undefined/p/18875060",
+      "published": "2025-05-13 23:05",
+      "updated": "2025-05-13 23:06",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-18875060.md",
+      "categories": [
+        "Web"
+      ],
+      "tags": [
+        "CTF",
+        "Web"
+      ],
+      "taxonomy_source": "title: WEB",
+      "code_blocks": 7,
+      "code_sha256": [
+        "abb3f0c665f4918ea3cd6539d61bad1754b66724521621cb10c33060336ccdad",
+        "ab00e53106cbff5d9a05752efc0afa3977b4ac2e225a073333dd3f3414977112",
+        "246449beecceb36c2cd3ad64cd5bd15c21ef0febfb84d8cdf7414f295824bcb8",
+        "e87f0b7bb99fc913cab41294c0506bf0123e04212282c584eb0b361f30f08ba8",
+        "999edcb0e10a0e9be71609985026825bfaeab2967230c322a27e361db8b2cbe6",
+        "e86df8a4b89ed9f7cfef5cafce8f4a65fa2c407b527b1e8bfaa8444c93b544db",
+        "2665697e943b2dedbc18082e99e53643776d7b6830367f89a3b4cd0a0f0a7839"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 0,
+      "body_text_sha256": "d26955967f3f281140d72f495f58afc0d0cff0b677db0762d025936a4b7ac2d4",
+      "source_html_sha256": "2e144eb28eec55df3433d7222a0d1fe3adb515d1afe71f24906a8df3655e3eb7",
+      "markdown_sha256": "c44c9517a13bdaa3e4a4165cb4965d482eea359c580b8ab1dfd0d559bf530875"
+    },
+    {
+      "id": "18867406",
+      "title": "mini-L2025 PWN方向全题解",
+      "original_url": "https://www.cnblogs.com/undefined/p/18867406",
+      "published": "2025-05-09 01:11",
+      "updated": "2025-05-09 11:13",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-18867406.md",
+      "categories": [
+        "Pwn"
+      ],
+      "tags": [
+        "CTF",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: pwn",
+      "code_blocks": 12,
+      "code_sha256": [
+        "aa92094a494d8ac5fceb9d51cd8ec19cb14ae50781b9c7a99f3815ebb27ab000",
+        "77207d6ec90c57a7cad01dba4cf38c7f2a3a4f35dffc12e56e4d5fe7028f5493",
+        "34b1d2f1e197788bde1a6288b80677e0247290fc6ca57fc5b4912c34b4e50e4b",
+        "fdf5c98c748bf71ad73198d27939b5d974149847573909417a6849a42b3e81a9",
+        "c51751fa6388fd6e513d3cdef5492c6ed4b466346f21837478a95c0de1f03bcf",
+        "9621d4d3ca294439fe910d55e524ddce708a4a3bf0486dbcf38529060ba040a9",
+        "6c24eae38581ceea2aa5f42d856bb2d52f4b0be37981ffcbdfef576741cdcddf",
+        "c0c1f1cb9093c4d06611e368c1c744a9dc6284371560136236d4918d55521c7d",
+        "4c12383baa6cee27e77dff419f45884c6822eb02266bc4870c64ebe4abb9024f",
+        "2e8b1912046e6f61ebccb2f299e0b2600cbb2827f14ab6e5623c0623546d7f01",
+        "2892742d87c69671d38fe1924304103c4cbfb80c925a9e64afaed233cac9d854",
+        "b5ade54705355a35bf377581795231c3b12bc089def5dd37e24fae082454ae59"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 0,
+      "body_text_sha256": "c28e4dc19eadb6ddedf63ac512a4fb5da91c3a1f7c6ff6718f1a21261cb0e42e",
+      "source_html_sha256": "962a5e286baf3c84a07db3f379907b889c1c2fe53c1de74b14c49d1853c9b686",
+      "markdown_sha256": "96f5bc7a66678a848ec87201a24070d6ee70f7eb80e054cd6d578efee1ffb911"
+    },
+    {
+      "id": "18857873",
+      "title": "ACTF 部分题的非预期解法（全都是非预期）",
+      "original_url": "https://www.cnblogs.com/undefined/p/18857873",
+      "published": "2025-05-02 22:35",
+      "updated": "2025-05-02 22:36",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-18857873.md",
+      "categories": [
+        "Pwn"
+      ],
+      "tags": [
+        "CTF",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: ACTF; body: shellcode / AFL sandbox",
+      "code_blocks": 1,
+      "code_sha256": [
+        "5615458a202f826d9f80e363fc0eae4d0a2a159ffdcbfc060f0cffddefdfb4de"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 0,
+      "body_text_sha256": "c5f8584dba9aebf05d5f0995f812f905ed0d0838ddfafbe59cdd40f634f7d4ce",
+      "source_html_sha256": "5127a4dc21c25f5e4cb1c38996590d2ad028f12fd982d6393b72551819fd6ba9",
+      "markdown_sha256": "5cb3b217144435bebfacc663387ea42c75bd70aab4031d3a5ac4b08e6f756e60"
+    },
+    {
+      "id": "18827574",
+      "title": "SQCTF pwn方向部分wp",
+      "original_url": "https://www.cnblogs.com/undefined/p/18827574",
+      "published": "2025-04-15 21:29",
+      "updated": "2025-04-15 21:30",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-18827574.md",
+      "categories": [
+        "Pwn"
+      ],
+      "tags": [
+        "CTF",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: pwn",
+      "code_blocks": 9,
+      "code_sha256": [
+        "f714cb5f1191bf1468adc88dfe76374b23c67c41cc5739b2cdc666283ea6a632",
+        "7722a386e8a7e90489951f8fc4eeb5e60564d0dfd2399c15f8bbe59bded7c64a",
+        "b4d9a4afc637ee0a46e1dd0d1c636d4e09712fe5d5e152167c89e406e6feab6a",
+        "3f3b7011291fb04239067e90e9d96325b992bb24e8a18c24fd3b4e47ca0307ee",
+        "50445a052ce311d3093ef2116d5d1092c824b1a69b6e367f28ef465f9b4c4d3e",
+        "3c73366173f2d71dbc087269995cbf6f55e76041b6db31ce703dfe264df6ac8b",
+        "424cf4252befc2db6671a0ceb68f2c04c522b7066fd43137f1d14f86b05aba85",
+        "45ea6592e958d3dc8c18d5498011af1b5ad78f660562423c51ea23acf0e62c0f",
+        "793960b10d5563a3efc4dcc40e9346de0cc931f51c87e1bd948338669ec9b8f6"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 1,
+      "body_text_sha256": "2d41630277426c019a0cc6e5916d856c9ebaea3e7ae767fe652ff538610f7f3e",
+      "source_html_sha256": "1c4c0991dde7e52d68f90c154bb359eae6f8be8a8ce7fd2f909ad40e0c6ee83c",
+      "markdown_sha256": "0ae149aed396ff18afb9171ea4ac9e7a3a8800ea6908a260cd0560c0884d81d0"
+    },
+    {
+      "id": "18827559",
+      "title": "SQCTF-2025 pwn部分wp",
+      "original_url": "https://www.cnblogs.com/undefined/articles/18827559",
+      "published": "2025-04-15 21:24",
+      "updated": "2025-04-15 21:25",
+      "source_kind": "article",
+      "file": "source/_posts/cnblogs-18827559.md",
+      "categories": [
+        "Pwn"
+      ],
+      "tags": [
+        "CTF",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: pwn",
+      "code_blocks": 9,
+      "code_sha256": [
+        "f714cb5f1191bf1468adc88dfe76374b23c67c41cc5739b2cdc666283ea6a632",
+        "7722a386e8a7e90489951f8fc4eeb5e60564d0dfd2399c15f8bbe59bded7c64a",
+        "b4d9a4afc637ee0a46e1dd0d1c636d4e09712fe5d5e152167c89e406e6feab6a",
+        "3f3b7011291fb04239067e90e9d96325b992bb24e8a18c24fd3b4e47ca0307ee",
+        "50445a052ce311d3093ef2116d5d1092c824b1a69b6e367f28ef465f9b4c4d3e",
+        "3c73366173f2d71dbc087269995cbf6f55e76041b6db31ce703dfe264df6ac8b",
+        "424cf4252befc2db6671a0ceb68f2c04c522b7066fd43137f1d14f86b05aba85",
+        "45ea6592e958d3dc8c18d5498011af1b5ad78f660562423c51ea23acf0e62c0f",
+        "793960b10d5563a3efc4dcc40e9346de0cc931f51c87e1bd948338669ec9b8f6"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 1,
+      "body_text_sha256": "2d41630277426c019a0cc6e5916d856c9ebaea3e7ae767fe652ff538610f7f3e",
+      "source_html_sha256": "be7e3503c5a707369fa5ec6eb9b90907452db30b27650bd8b6c390d81a449cc9",
+      "markdown_sha256": "4f2f606e8cdf8d3eea5199e1099caa2cdaaf18fe1fd7f9937a00855476540a67"
+    },
+    {
+      "id": "18815248",
+      "title": "XYCTF 2025 pwn方向部分题解",
+      "original_url": "https://www.cnblogs.com/undefined/p/18815248",
+      "published": "2025-04-08 19:43",
+      "updated": "2025-04-08 19:46",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-18815248.md",
+      "categories": [
+        "Pwn"
+      ],
+      "tags": [
+        "CTF",
+        "Pwn"
+      ],
+      "taxonomy_source": "title: pwn",
+      "code_blocks": 9,
+      "code_sha256": [
+        "5c3a111b471e6a7e0b00340139795a1febc9a82060a1f8f3b89a3d451804d7ce",
+        "1f9e9cf77f41066dcba936548f1c7adfa43ed85ccc7379a520875a5e706bbd40",
+        "9607b992f3c4090a51dcddeb8fec5fe9f3fcd7a7c3595829d47a7ce60f3734c6",
+        "5a3803999d25a41bd504ebb81cd9df4e0902091776f7c250b9659cf2482b0cf9",
+        "660707453a9ae436f0cd35c09cf9d07fd8fb4ac0884a0850d907e24ca11ca752",
+        "ba2ea804d5c4f43c34c4b9a00ddc5f40bc1fae392144fc5a81929e9f20dec631",
+        "e69e72a934b27a4a01467d6730cf03e75165d37e5c0581a7c81c2160647925ec",
+        "122fbb05fcb5367a65d51a9f40fe0a90898ca190c86934cd8ee018577f16104b",
+        "3e4ef6620c4c2693b84bbe1280dd0440e997f67ad12e2ea915609f8764e371ab"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 7,
+      "body_text_sha256": "702a5358fecd8bde8eb29ab9d709e5f060f45330c5513a42489db1187dbf6ebe",
+      "source_html_sha256": "f9b6c634342e09e22192839db1727c845cf9c189a0a65c8cea802078c3a02755",
+      "markdown_sha256": "634ceea4413cb2bf08516d67c1f4d780f3187bf090e8aef5eabdd7bda59cd1fe"
+    },
+    {
+      "id": "18765503",
+      "title": "testBlog",
+      "original_url": "https://www.cnblogs.com/undefined/p/18765503",
+      "published": "2025-03-11 16:53",
+      "updated": "2025-04-08 17:41",
+      "source_kind": "post",
+      "file": "source/_posts/cnblogs-18765503.md",
+      "categories": [
+        "Notes"
+      ],
+      "tags": [
+        "博客"
+      ],
+      "taxonomy_source": "title and body: testBlog / test skin",
+      "code_blocks": 1,
+      "code_sha256": [
+        "8734182b1fb0cf0c2ab90087e763ce05bf37af3d97f0d9d940adad95cdf92278"
+      ],
+      "code_preservation_verified": true,
+      "image_references": 0,
+      "body_text_sha256": "ff4d1d47de6f6383a3b049f831b36f87bed9537eb07cf71f170df39160c492ed",
+      "source_html_sha256": "fe3fe08ae899e9ac6f31d0756d2e16ae150861207b994472041f940427c1e7e3",
+      "markdown_sha256": "9b52abcb01905e111ee7662edfd62395677ece3cc2ce087ce667f3f05d40db34"
+    }
+  ],
+  "code_blocks": 86,
+  "image_references": 28,
+  "images": [
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250408184523336-1154073063.png",
+      "posts": [
+        "18815248"
+      ],
+      "local_path": "source/images/posts/9a39c8a13b579231d67f.png",
+      "public_url": "/images/posts/9a39c8a13b579231d67f.png",
+      "status": "downloaded",
+      "bytes": 7698,
+      "sha256": "23794365c4eab5aefd4d7e54e307817b060e0da171903f1d2e0c7b2a0f2579ae"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250408184549603-85492107.png",
+      "posts": [
+        "18815248"
+      ],
+      "local_path": "source/images/posts/6b65672681311ac8457d.png",
+      "public_url": "/images/posts/6b65672681311ac8457d.png",
+      "status": "downloaded",
+      "bytes": 17610,
+      "sha256": "760502acd244a38aa55b7bdb8ee6a5ce08f59a51532a30eb3dc5d8051e0b33b2"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250408184556222-41234501.png",
+      "posts": [
+        "18815248"
+      ],
+      "local_path": "source/images/posts/07000e917f24cb140f72.png",
+      "public_url": "/images/posts/07000e917f24cb140f72.png",
+      "status": "downloaded",
+      "bytes": 3642,
+      "sha256": "0d190bc1556edeb01977d87668e0dce50207d85f3ac1b1005d4209c6b44cda7e"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250408184606106-1773775015.png",
+      "posts": [
+        "18815248"
+      ],
+      "local_path": "source/images/posts/e3834ce4ee69c9651e6b.png",
+      "public_url": "/images/posts/e3834ce4ee69c9651e6b.png",
+      "status": "downloaded",
+      "bytes": 1600,
+      "sha256": "bd6a1216322bc26418485aa0b5831f53ae82b011a2fd23e1d96d244fa70fdbe7"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250408184611419-1142812748.png",
+      "posts": [
+        "18815248"
+      ],
+      "local_path": "source/images/posts/77ab44dbad2e77cf7469.png",
+      "public_url": "/images/posts/77ab44dbad2e77cf7469.png",
+      "status": "downloaded",
+      "bytes": 2333,
+      "sha256": "1a9eef9c9e2be41dcda808d88684a056a98b24a21274db63983554550e9fe81f"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250408184616641-1091788262.png",
+      "posts": [
+        "18815248"
+      ],
+      "local_path": "source/images/posts/4bc18574d59a79cc59ad.png",
+      "public_url": "/images/posts/4bc18574d59a79cc59ad.png",
+      "status": "downloaded",
+      "bytes": 11469,
+      "sha256": "157f901d6ccd5eed2eb68f1777837cdfb0c0f563ae2d632c21e92f57478bbf35"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250408184625062-341940745.png",
+      "posts": [
+        "18815248"
+      ],
+      "local_path": "source/images/posts/9205de900252cbbe0320.png",
+      "public_url": "/images/posts/9205de900252cbbe0320.png",
+      "status": "downloaded",
+      "bytes": 12883,
+      "sha256": "fe44d15ead1591147e08af180cf6e2dccc2a74a11c2e065dc50ea7726c2a3d8d"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202504/3562901-20250415212323880-1800137364.png",
+      "posts": [
+        "18827559",
+        "18827574"
+      ],
+      "local_path": "source/images/posts/4d3ad2e975ab4213425b.png",
+      "public_url": "/images/posts/4d3ad2e975ab4213425b.png",
+      "status": "downloaded",
+      "bytes": 23659,
+      "sha256": "54f7e5c2eade7ea22a8e6117c8aaa18dee03fd7943c17087be5cc985067b7332"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161231120-1649496617.png",
+      "posts": [
+        "19044898"
+      ],
+      "local_path": "source/images/posts/6cd14d60bdccf68566ca.png",
+      "public_url": "/images/posts/6cd14d60bdccf68566ca.png",
+      "status": "downloaded",
+      "bytes": 61215,
+      "sha256": "0f8076713e8dd743fa58b5fd881b23355f393b8a1bb11040b0720e4115a73773"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161248629-176344069.png",
+      "posts": [
+        "19044898"
+      ],
+      "local_path": "source/images/posts/863731c21de7b80a611b.png",
+      "public_url": "/images/posts/863731c21de7b80a611b.png",
+      "status": "downloaded",
+      "bytes": 81274,
+      "sha256": "300a41ff7099db637dcf9a0d9bd63d30e176f098ed73f96893429bccd40e8a03"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161255192-968306285.png",
+      "posts": [
+        "19044898"
+      ],
+      "local_path": "source/images/posts/5b93fa9776cb6ab331c0.png",
+      "public_url": "/images/posts/5b93fa9776cb6ab331c0.png",
+      "status": "downloaded",
+      "bytes": 69290,
+      "sha256": "941c7581d84337e571f3419836830fad2f4aaf5b23b3f9a8e69dd5a38a907211"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161547977-1262169644.png",
+      "posts": [
+        "19044898"
+      ],
+      "local_path": "source/images/posts/00a437e0b7f429bfb3de.png",
+      "public_url": "/images/posts/00a437e0b7f429bfb3de.png",
+      "status": "downloaded",
+      "bytes": 52594,
+      "sha256": "1c103e42aa3df2111cb0685acad1a3536b86a53511e389be62a7385b8638071b"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161706509-1625146964.png",
+      "posts": [
+        "19044898"
+      ],
+      "local_path": "source/images/posts/122bbbaba2f570dabf47.png",
+      "public_url": "/images/posts/122bbbaba2f570dabf47.png",
+      "status": "downloaded",
+      "bytes": 40545,
+      "sha256": "a6018cb6d9fecd79f9882f0efc258302d2e2813ea4ed27acacdf37bd5a3aa0f0"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202508/3562901-20250818161722579-2048915724.png",
+      "posts": [
+        "19044898"
+      ],
+      "local_path": "source/images/posts/463ab779f27c6ff81f07.png",
+      "public_url": "/images/posts/463ab779f27c6ff81f07.png",
+      "status": "downloaded",
+      "bytes": 32350,
+      "sha256": "f5c4f1c02eb3e36bd796e953552c78c7f58ecfb6018d1b07f63866298ba8f5a0"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011210957036-1403209797.png",
+      "posts": [
+        "19135998"
+      ],
+      "local_path": "source/images/posts/842f79dd162b9077f41c.png",
+      "public_url": "/images/posts/842f79dd162b9077f41c.png",
+      "status": "downloaded",
+      "bytes": 266604,
+      "sha256": "e14b3be4443e13ff67dac041b97a52238406c2725f60bdf685502f07e1674595"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011211032003-2020548326.png",
+      "posts": [
+        "19135998"
+      ],
+      "local_path": "source/images/posts/915ba1004c71b46b4e7c.png",
+      "public_url": "/images/posts/915ba1004c71b46b4e7c.png",
+      "status": "downloaded",
+      "bytes": 82895,
+      "sha256": "3b3fecc270ac8df73da0e49974a8ff202ff9d461c0fade9131066cb169622aaf"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011211037028-1309164138.png",
+      "posts": [
+        "19135998"
+      ],
+      "local_path": "source/images/posts/61aad1966c0fb3bd805f.png",
+      "public_url": "/images/posts/61aad1966c0fb3bd805f.png",
+      "status": "downloaded",
+      "bytes": 35336,
+      "sha256": "a48e6f2b15d00c360b342a884210ee14f3cde6efe703b80f0e32b3ab7133ac5e"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011211051182-1384115691.png",
+      "posts": [
+        "19135998"
+      ],
+      "local_path": "source/images/posts/6ff66b433cf2947cee0d.png",
+      "public_url": "/images/posts/6ff66b433cf2947cee0d.png",
+      "status": "downloaded",
+      "bytes": 68043,
+      "sha256": "9922ff1fd669a2e500e3549357c4210c646e60f726d2c80ab0c26b1a70fab1f6"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202512/3562901-20251231195404718-395075691.png",
+      "posts": [
+        "19428317",
+        "19428486"
+      ],
+      "local_path": "source/images/posts/880b9d05c1d9e9788e4d.png",
+      "public_url": "/images/posts/880b9d05c1d9e9788e4d.png",
+      "status": "downloaded",
+      "bytes": 69057,
+      "sha256": "ac2ba4fe1ef11c9dca9fb3500af89434987b0df7f2618414fc6d1409515b4c5d"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202512/3562901-20251231195432624-1768594830.png",
+      "posts": [
+        "19428317",
+        "19428486"
+      ],
+      "local_path": "source/images/posts/bc4d3b873bed12ddd760.png",
+      "public_url": "/images/posts/bc4d3b873bed12ddd760.png",
+      "status": "downloaded",
+      "bytes": 177358,
+      "sha256": "0a03c81fb6e900a44235f6c820ca5baa88d31fc5ca201da24c8ca10ade398371"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202512/3562901-20251231195452430-421265723.png",
+      "posts": [
+        "19428317",
+        "19428486"
+      ],
+      "local_path": "source/images/posts/bf76c8a5611ea2713d8c.png",
+      "public_url": "/images/posts/bf76c8a5611ea2713d8c.png",
+      "status": "downloaded",
+      "bytes": 1063336,
+      "sha256": "52c059cfac2f86649b6b94a50017bfca0b523a0af2154d084e697cdbdea55be8"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202603/3562901-20260317140131974-1903353721.jpg",
+      "posts": [
+        "19729318"
+      ],
+      "local_path": "source/images/posts/e24eeaba796910581336.jpg",
+      "public_url": "/images/posts/e24eeaba796910581336.jpg",
+      "status": "downloaded",
+      "bytes": 695251,
+      "sha256": "59c887294c7e1245aeb6f58108f85df5ee0551762112f5d0ba4d407220020dfd"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202603/3562901-20260317140157776-2130657270.jpg",
+      "posts": [
+        "19729318"
+      ],
+      "local_path": "source/images/posts/c2a2ebbbab2d3a134f9f.jpg",
+      "public_url": "/images/posts/c2a2ebbbab2d3a134f9f.jpg",
+      "status": "downloaded",
+      "bytes": 214795,
+      "sha256": "6bdade5a323328ab9c192afc3f5f862cc1f7b367e5c77af264d0e9dc172c2fab"
+    },
+    {
+      "original_url": "https://img2024.cnblogs.com/blog/3562901/202603/3562901-20260317140211866-609388836.jpg",
+      "posts": [
+        "19729318"
+      ],
+      "local_path": "source/images/posts/ed6858bc721dffac6a2f.jpg",
+      "public_url": "/images/posts/ed6858bc721dffac6a2f.jpg",
+      "status": "downloaded",
+      "bytes": 95364,
+      "sha256": "a78e5bd8a81f03152638a77947890f04dc8fff0d0c9bdd669d6a4784ecf06043"
+    }
+  ],
+  "failures": [],
+  "duplicate_body_groups": [
+    [
+      "19428486",
+      "19428317"
+    ],
+    [
+      "18827574",
+      "18827559"
+    ]
+  ],
+  "source_cache": [
+    {
+      "url": "https://www.cnblogs.com/undefined/p/18765503",
+      "cache": "migration/cache/18765503.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/18815248",
+      "cache": "migration/cache/18815248.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/articles/18827559",
+      "cache": "migration/cache/18827559.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/18827574",
+      "cache": "migration/cache/18827574.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/18857873",
+      "cache": "migration/cache/18857873.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/18867406",
+      "cache": "migration/cache/18867406.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/18875060",
+      "cache": "migration/cache/18875060.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/19044898",
+      "cache": "migration/cache/19044898.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/19135998",
+      "cache": "migration/cache/19135998.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/19254887",
+      "cache": "migration/cache/19254887.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/19428317",
+      "cache": "migration/cache/19428317.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/19428486",
+      "cache": "migration/cache/19428486.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/19729318",
+      "cache": "migration/cache/19729318.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/19733408",
+      "cache": "migration/cache/19733408.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/archive/2025/03",
+      "cache": "migration/cache/archive-2025-03.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/archive/2025/04",
+      "cache": "migration/cache/archive-2025-04.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/archive/2025/05",
+      "cache": "migration/cache/archive-2025-05.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/archive/2025/08",
+      "cache": "migration/cache/archive-2025-08.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/archive/2025/10",
+      "cache": "migration/cache/archive-2025-10.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/archive/2025/11",
+      "cache": "migration/cache/archive-2025-11.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/archive/2025/12",
+      "cache": "migration/cache/archive-2025-12.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/p/archive/2026/03",
+      "cache": "migration/cache/archive-2026-03.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/rss",
+      "cache": "migration/cache/feed.xml"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined",
+      "cache": "migration/cache/index-1.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined?page=2",
+      "cache": "migration/cache/index-2.html"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=18765503",
+      "cache": "migration/cache/metadata-18765503.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=18815248",
+      "cache": "migration/cache/metadata-18815248.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=18827559",
+      "cache": "migration/cache/metadata-18827559.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=18827574",
+      "cache": "migration/cache/metadata-18827574.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=18857873",
+      "cache": "migration/cache/metadata-18857873.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=18867406",
+      "cache": "migration/cache/metadata-18867406.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=18875060",
+      "cache": "migration/cache/metadata-18875060.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=19044898",
+      "cache": "migration/cache/metadata-19044898.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=19135998",
+      "cache": "migration/cache/metadata-19135998.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=19254887",
+      "cache": "migration/cache/metadata-19254887.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=19428317",
+      "cache": "migration/cache/metadata-19428317.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=19428486",
+      "cache": "migration/cache/metadata-19428486.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=19729318",
+      "cache": "migration/cache/metadata-19729318.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/post-accessories?postId=19733408",
+      "cache": "migration/cache/metadata-19733408.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/sidebar-lists",
+      "cache": "migration/cache/sidebar-lists.json"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/sitemap.xml",
+      "cache": "migration/cache/sitemap.xml"
+    },
+    {
+      "url": "https://www.cnblogs.com/undefined/ajax/blog-stats",
+      "cache": "migration/cache/stats.html"
+    }
+  ],
+  "rendered_validation": {
+    "status": "passed",
+    "renderer": "installed marked package",
+    "articles": 14,
+    "checks": [
+      "body text excluding whitespace",
+      "all preformatted code",
+      "image counts and local paths"
+    ]
+  }
+}

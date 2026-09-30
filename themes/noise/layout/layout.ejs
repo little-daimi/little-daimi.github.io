@@ -1,0 +1,43 @@
+<% const documentTitle = page.title || (page.tag ? '标签：' + page.tag : page.category ? '分类：' + page.category : is_archive() ? (page.year ? page.year + (page.month ? '.' + String(page.month).padStart(2, '0') : '') + ' · ' : '') + '文章归档' : page.current > 1 ? '第 ' + page.current + ' 页' : ''); %>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fbfaf7">
+<script src="<%- url_for('/js/theme.js') %>"></script>
+<title><%= documentTitle ? documentTitle + ' — ' : '' %><%= config.title %> / <%= config.author %></title>
+<meta name="description" content="<%= page.description || (is_post() ? noise_summary(page, 160) : config.description) %>">
+<link rel="canonical" href="<%- full_url_for(page.path || '') %>">
+<meta property="og:type" content="<%= is_post() ? 'article' : 'website' %>">
+<meta property="og:title" content="<%= documentTitle || config.title %>">
+<meta property="og:description" content="<%= page.description || config.description %>">
+<meta property="og:url" content="<%- full_url_for(page.path || '') %>">
+<meta property="og:site_name" content="<%= config.title %>">
+<link rel="stylesheet" href="<%- url_for('/css/noise.css') %>">
+<link rel="stylesheet" href="<%- url_for('/css/fragments.css') %>">
+<link rel="stylesheet" href="<%- url_for('/css/appearance.css') %>">
+<link rel="alternate" type="application/atom+xml" title="undefined · RSS" href="<%- url_for('/atom.xml') %>">
+<link rel="icon" href="<%- url_for('/favicon.svg?v=circuit-1') %>" type="image/svg+xml">
+</head>
+<body class="<%= is_post() ? 'is-post' : is_home() ? 'is-home' : 'is-page' %>">
+<div class="print-surround" aria-hidden="true">
+  <div class="print-rail print-rail-left"><img src="<%- url_for('/images/edge-left.svg') %>" alt="" width="260" height="1100"><span class="rail-echo rail-echo-left">修復<br>記録<br>未定</span></div>
+  <div class="print-rail print-rail-right"><img src="<%- url_for('/images/edge-right.svg') %>" alt="" width="260" height="1100"><span class="rail-echo">観測<br>記録<br>修復</span><span class="rail-foot">FIG. 02 / SIGNAL &amp; NOISE<br>+ &nbsp; + &nbsp; + &nbsp; +</span></div>
+</div>
+<a class="skip-link" href="#main">跳到正文</a>
+<% if (is_post()) { %><div class="reading-progress" aria-hidden="true"></div><% } %>
+<div class="site-shell">
+<header class="site-header">
+<div class="utility-bar"><span><b>IMIAB’S JOURNAL</b> <span aria-hidden="true"> &nbsp; / &nbsp; EST. 2025</span></span><div class="header-actions"><label class="theme-control" hidden><span class="theme-symbol" aria-hidden="true"></span><span class="sr-only">外观主题</span><select id="theme-mode"><option value="system">跟随系统</option><option value="light">浅色模式</option><option value="dark">深色模式</option></select></label><button class="search-trigger" data-search-open aria-haspopup="dialog"><span class="search-icon" aria-hidden="true"></span>搜索文章 <kbd>⌘ / Ctrl K</kbd></button></div></div>
+<div class="masthead"><a class="wordmark" href="<%- url_for('/') %>" aria-label="undefined 首页">undef<span>i</span>ned<span class="wordmark-dot">.</span></a><div class="masthead-colophon"><span class="colophon-symbol" aria-hidden="true">※</span><span>CTF / PWN / REVERSE<br>技术、解题与未完的记录</span></div></div>
+<nav class="site-nav" aria-label="主导航">
+<div class="nav-links"><a class="<%= is_home() ? 'active' : '' %>" href="<%- url_for('/') %>" <%- is_home() ? 'aria-current="page"' : '' %>><span>01</span> 首页</a><a class="<%= is_archive() ? 'active' : '' %>" href="<%- url_for('/archives/') %>" <%- is_archive() ? 'aria-current="page"' : '' %>><span>02</span> 文章归档</a><a class="<%= is_tag() || page.type === 'tags' || page.type === 'categories' || is_category() ? 'active' : '' %>" href="<%- url_for('/tags/') %>"><span>03</span> 标签索引</a><a class="<%= page.path === 'about/index.html' ? 'active' : '' %>" href="<%- url_for('/about/') %>"><span>04</span> 关于我</a><a class="<%= page.type === 'friends' ? 'active' : '' %>" href="<%- url_for('/friends/') %>" <%- page.type === 'friends' ? 'aria-current="page"' : '' %>><span>05</span> 友链</a></div>
+<span class="nav-status" aria-hidden="true"><i></i> <%= String(site.posts.length).padStart(2, '0') %> RECORDS</span>
+</nav>
+</header>
+<main id="main"><%- body %></main>
+<footer class="site-footer"><div class="footer-top"><a href="<%- url_for('/') %>" class="footer-signature" aria-label="undefined 首页">u / n<span>_</span></a><span class="footer-note" aria-hidden="true">u n d _ f i / n e d<br>〃　∷　0 / 0　—　/</span><a class="back-top" href="#" aria-label="回到顶部">↑</a></div><div class="footer-bottom"><span>© <%= new Date().getFullYear() %> <%= config.author %> · undefined</span><span class="footer-links"><a href="https://github.com/little-daimi" target="_blank" rel="noopener noreferrer">GITHUB ↗</a><a href="https://www.cnblogs.com/undefined" target="_blank" rel="noopener noreferrer">博客园 ↗</a><a href="<%- url_for('/atom.xml') %>">RSS ↗</a></span><span>BUILT WITH HEXO / THE NOISE THEME</span></div></footer>
+</div>
+<dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title"><div class="search-heading"><div><span class="eyebrow">SEARCH / 00</span><h2 id="search-title">搜索文章</h2></div><button class="dialog-close" data-search-close aria-label="关闭搜索">×</button></div><label class="sr-only" for="search-input">搜索文章标题、标签和正文</label><div class="search-field"><span class="search-icon" aria-hidden="true"></span><input id="search-input" type="search" placeholder="文章标题、标签或正文关键词…" autocomplete="off"></div><p class="search-status" id="search-status" role="status" aria-live="polite">输入关键词，搜索全部文章。</p><ul class="search-results" id="search-results"></ul><div class="search-hint"><span>标题 / 标签 / 全文</span><span><kbd>ESC</kbd> 关闭</span></div></dialog>
+<script src="<%- url_for('/js/noise.js') %>" defer data-search="<%- url_for('/search.json') %>"></script>
+</body></html>

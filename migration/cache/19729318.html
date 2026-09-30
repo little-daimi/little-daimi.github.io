@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />            
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <title>[pwn] protobuf学习与逆向 - imiab - 博客园</title>
+    
+    <meta name="description" content="介绍 一个轻量的跨平台数据结构协议。 说人话就是json-pro，或者说zip-pro。zip不也是不论在手机、电脑、macos都能解压吗，， 当然运转起来和zip不同，毕竟这个是为了程序间收发信息而发明的，而zip只是为了打包数据，只是一个不太恰当的类比。 快速安装 sudo apt instal" />    
+    <meta property="og:description" content="介绍 一个轻量的跨平台数据结构协议。 说人话就是json-pro，或者说zip-pro。zip不也是不论在手机、电脑、macos都能解压吗，， 当然运转起来和zip不同，毕竟这个是为了程序间收发信息而发明的，而zip只是为了打包数据，只是一个不太恰当的类比。 快速安装 sudo apt instal" />
+    <meta property="og:image" content="https://img2024.cnblogs.com/blog/3562901/202603/3562901-20260317140131974-1903353721.jpg" />
+    <meta property="bytedance:published_time" content="2026-03-17T14:03:00+08:00" />
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=6O_Ku8w_jYd3yw2BX9ElmxGv25AYbAQ-F6ZeOeZfxYc" />
+    
+    <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="/css/hljs/cnblogs.css?v=5J1NDtbnnIr2Rc2SdhEMlMxD4l9Eydj88B31E7_NhS4" />
+    <link type="text/css" rel="stylesheet" href="https://www.cnblogs.com/undefined/custom.css?v=M8To7qEiClk5j8&#x2B;gr6sf&#x2B;xNi&#x2B;ok=" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/css/mobile-common.min.css?v=a5tjm35tHR3Bq88JZf8V-jiXDhgs5wg823qWgRI6uRY" />
+    
+    <link id="favicon" rel="icon" type="image/x-icon" sizes="32x32" href="https://assets.cnblogs.com/favicon_v3_3.ico" />
+    <link id="favicon_svg" rel="icon" type="image/svg+xml" href="https://assets.cnblogs.com/favicon_v3_3.svg" />
+    <link rel="apple-touch-icon" href="https://assets.cnblogs.com/apple-touch-icon.png?v=2" />
+    <link rel="canonical" href="https://www.cnblogs.com/undefined/p/19729318" />
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/undefined/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/undefined/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/undefined/wlwmanifest.xml" />
+    
+    <script type="application/ld&#x2B;json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "@id": "https://www.cnblogs.com/undefined/p/19729318",
+      "headline": "[pwn] protobuf学习与逆向",
+      "description": "介绍 一个轻量的跨平台数据结构协议。 说人话就是json-pro，或者说zip-pro。zip不也是不论在手机、电脑、macos都能解压吗，， 当然运转起来和zip不同，毕竟这个是为了程序间收发信息而发明的，而zip只是为了打包数据，只是一个不太恰当的类比。 快速安装 sudo apt instal",
+      "image": [
+        
+      ],
+      "author": {
+        "@type": "Person",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "imiab",
+        "url": "https://www.cnblogs.com/undefined/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://www.cnblogs.com/",
+        "name": "博客园",
+        "url": "https://www.cnblogs.com/"
+      },
+      "datePublished": "2026-03-17T14:03:00.0000000&#x2B;08:00",
+      "dateModified": "2026-03-17T14:26:00.0000000&#x2B;08:00",
+      "wordCount": "14929",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://www.cnblogs.com/undefined/",
+        "name": "undefined",
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://www.cnblogs.com/",
+          "name": "博客园"
+        }
+      }
+    }
+    </script>
+
+    <script>
+        var currentBlogId = 841504;
+        var currentBlogApp = 'undefined';
+        var isLogined = false;
+        var isBlogOwner = false;
+        window.isCorp = false;
+        window.skinName = 'Custom';
+        var visitorUserId = '';
+        window.hasCustomScript = true;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;        
+    </script>
+        <script>
+            window.currentPostId = 19729318;
+            window.currentPostDateAdded = '2026-03-17 14:03';
+        </script>
+    <script src="https://assets.cnblogs.com/scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn-www.cnblogs.com/js/blog-common.min.js?v=q6A5rdB3tiIeY5Vi562gBAr3OVg5t0HcQVXePY_F0qU"></script>
+        <script>updateCustomBlogReferrer();</script>
+    
+</head>
+<body class="skin-custom has-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="//assets.cnblogs.com/logo.svg" alt="博客园logo" />
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-q')">博问</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="countClicks('nav', 'skin-navbar-ing')">闪存</a></li>                
+                <li><a href="https://www.cnblogs.com/cmt/p/19316348">赞助商</a></li>
+                <li><a href="https://chat2db-ai.com/" target="_blank">Chat2DB</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off" />
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                            <img class="hidden focus-visible" src="//assets.cnblogs.com/icons/enter.svg" alt="搜索" />
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById('zzk_search_input').value)">
+                                <div class="keyword-wrapper">
+                                    <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, 'undefined', document.getElementById('zzk_search_input').value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="//assets.cnblogs.com/icons/search.svg" alt="搜索" />
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔">
+                        <img id="new_post_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/newpost.svg" alt="写随笔" />
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://www.cnblogs.com/my" alt="我的博客" title="我的博客">
+                        <img id="myblog_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/myblog.svg" alt="我的博客" />
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息">
+                        <img id="msg_icon" class="navbar-icon" src="//assets.cnblogs.com/icons/message.svg" alt="短消息" />
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="//assets.cnblogs.com/icons/lite-mode-on.svg" alt="简洁模式" />
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="//assets.cnblogs.com/icons/avatar-default.svg" alt="用户头像" />
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://www.cnblogs.com/my">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="https://vip.cnblogs.com/my">会员中心</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <div id="loading"><div class="loader-inner"></div></div>
+    </div>
+
+    <div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/undefined/"><img id="blogLogo" src="/skins/custom/images/logo.gif" alt="返回主页" /></a>		
+		
+
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/undefined">undefined</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div>
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/undefined/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/imiab">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/undefined/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<div id="blog_stats_place_holder"><script>loadBlogStats();</script></div>
+		</div>
+	</div>
+</div>
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    
+    <div id="topics">
+        <div class="post">
+            <h1 class = "postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/undefined/p/19729318" title="发布于 2026-03-17 14:03">
+    
+
+    <span role="heading" aria-level="2">[pwn] protobuf学习与逆向</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="介绍">介绍</h1>
+<p>一个轻量的跨平台数据结构协议。</p>
+<p>说人话就是json-pro，或者说zip-pro。zip不也是不论在手机、电脑、macos都能解压吗，，</p>
+<p>当然运转起来和zip不同，毕竟这个是为了程序间收发信息而发明的，而zip只是为了打包数据，只是一个不太恰当的类比。</p>
+<h1 id="快速安装">快速安装</h1>
+<pre><code class="language-bash">sudo apt install protobuf-compiler libprotobuf-dev
+</code></pre>
+<p>protobuf支持c++、java、python、go等多种语言，但是不支持c语言。</p>
+<p><a href="https://github.com/protobuf-c/protobuf-c" target="_blank" rel="noopener nofollow">https://github.com/protobuf-c/protobuf-c</a></p>
+<p>不过这里有一个社区成员自发维护的proto-c实现，要支持c语言额外安装这个即可</p>
+<p>（注意make之前先checkout到最新的release tag）。</p>
+<h1 id="基本语法">基本语法</h1>
+<h2 id="定义消息类型">定义消息类型</h2>
+<pre><code class="language-c">syntax = "proto2";
+
+message SearchRequest {
+  optional string query = 1;
+  optional int32 page_number = 2;
+  optional int32 results_per_page = 3;
+}
+</code></pre>
+<ul>
+<li>
+<p>文件的第一行指定您正在使用 protobuf 语言规范的 2023 版。</p>
+<ul>
+<li><code>edition</code>（或 proto2/proto3 的&nbsp;<code>syntax</code>）必须是文件的第一个非空、非注释行。</li>
+<li>如果未指定&nbsp;<code>edition</code>&nbsp;或&nbsp;<code>syntax</code>，协议缓冲区编译器将假定您正在使用&nbsp;<a href="https://protobuf.com.cn/programming-guides/proto2" target="_blank" rel="noopener nofollow">proto2</a>。</li>
+</ul>
+</li>
+<li>
+<p><code>SearchRequest</code>&nbsp;消息定义指定了三个字段（名称/值对），每种你想包含在此类消息中的数据都对应一个字段。每个字段都有一个名称和一个类型。</p>
+</li>
+</ul>
+<h2 id="定义字段">定义字段</h2>
+<h3 id="定义字段类型">定义字段类型</h3>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202603/3562901-20260317140131974-1903353721.jpg" alt="e7fa3d288c2ad8c00cb4004f60bdcec0_MD5" loading="lazy"></p>
+<p>这里有一些类型，总之就是整数，浮点数，布尔和字符串。<br>
+除了前面那个例子里定义的标量类型，也可以是枚举或者复合类型。<br>
+在proto3里面这个有些许扩展，具体可以上官网查看。</p>
+<h3 id="分配字段编号">分配字段编号</h3>
+<pre><code class="language-c">syntax = "proto2";
+
+message SearchRequest {
+  optional string query = 1;
+  optional int32 page_number = 2;
+  optional int32 results_per_page = 3;
+}
+</code></pre>
+<p>依然是这个例子，其中的<code>=1</code>和<code>=2</code>就是字段编号。每个字段编号必须唯一，范围是从0到2^29</p>
+<h2 id="指定字段基数">指定字段基数</h2>
+<p>翻译成基数很奇怪，感觉应该类似字段属性的意思。</p>
+<ul>
+<li>单一 (Singular):
+<ul>
+<li>
+<p><code>optional</code>：（推荐）<code>optional</code> 字段处于两种可能状态之一</p>
+</li>
+<li>
+<p>你可以用接口查询发送方有没有显式设置值，比如说接收到了默认值，但你不清楚发送方是没设置，还是设置了，刚好就是这个值。</p>
+</li>
+<li>
+<p>建议使用 <code>optional</code> 而不是隐式字段，以实现与 <code>protobuf</code> 版本和 <code>proto2</code> 的最大兼容性。</p>
+</li>
+<li>
+<p>隐式：（不推荐）隐式字段没有明确的基数标签，其行为如下</p>
+</li>
+<li>
+<p>如果字段是消息类型，则其行为与 <code>optional</code> 字段完全相同。</p>
+</li>
+<li>
+<p>如果字段不是消息，它有两种状态</p>
+</li>
+<li>
+<p>字段设置为非默认（非零）值，该值已显式设置或从数据线解析。它将被序列化到数据线。字段设置为默认（零）值。它不会被序列化到数据线。事实上，您无法确定默认（零）值是已设置还是从数据线解析，还是未提供。有关此主题的更多信息，请参阅字段存在。</p>
+</li>
+<li>
+<p>（翻译够怪的，总之参考上面<code>option</code>的意思，这里和<code>option</code>相反）</p>
+</li>
+</ul>
+</li>
+<li><code>repeated</code>：此字段类型在一个格式良好的消息中可以重复零次或多次。重复值的顺序将被保留。</li>
+<li><code>map</code>：这是一个键值对字段类型。有关此字段类型的更多信息，请参阅映射。</li>
+</ul>
+<p>其实就是普通的<code>optional</code>，数组<code>repeated</code>，哈希表<code>map</code><br>
+还有一个<code>require</code>被废弃了，官网上写不建议使用</p>
+<h3 id="字段默认值">字段默认值</h3>
+<ul>
+<li>对于字符串，默认值是空字符串。</li>
+<li>对于字节，默认值是空字节。</li>
+<li>对于布尔值，默认值是 false。</li>
+<li>对于数值类型，默认值是零。</li>
+<li>对于消息字段，该字段未设置。其确切值取决于语言。</li>
+<li>对于枚举，默认值是第一个定义的枚举值，该值必须为 0。</li>
+</ul>
+<p>当然你可以自己指定默认值。</p>
+<pre><code class="language-c">syntax = "proto2";
+
+message SearchRequest {
+  optional string query = 1;
+  optional int32 page_number = 2 [default = 10];
+  optional int32 results_per_page = 3;
+}
+</code></pre>
+<p>如果发送方未指定&nbsp;<code>result_per_page</code>，接收方将观察到以下状态</p>
+<ul>
+<li><code>result_per_page</code>&nbsp;字段不存在。也就是说，<code>has_result_per_page()</code>（存在器方法）方法将返回&nbsp;<code>false</code>。</li>
+<li><code>result_per_page</code>&nbsp;的值（从“getter”返回）为&nbsp;<code>10</code>。</li>
+</ul>
+<p>这里有点特别，虽然有值，但是查询这个值存不存在返回<code>false</code>，直接获取值又能获取到，感觉容易出小错误。</p>
+<h3 id="枚举类型">枚举类型</h3>
+<pre><code class="language-c">enum Corpus {
+  CORPUS_UNSPECIFIED = 0;
+  CORPUS_UNIVERSAL = 1;
+  CORPUS_WEB = 2;
+  CORPUS_IMAGES = 3;
+  CORPUS_LOCAL = 4;
+  CORPUS_NEWS = 5;
+  CORPUS_PRODUCTS = 6;
+  CORPUS_VIDEO = 7;
+}
+
+message SearchRequest {
+  string query = 1;
+  int32 page_number = 2;
+  int32 results_per_page = 3;
+  Corpus corpus = 4;
+}
+</code></pre>
+<p>文档建议枚举类型的第一个值必须为0且不包含任何语义，因为兼容性问题。</p>
+<p>像 <code>SearchRequest.corpus</code> 这样的枚举字段的默认值可以像这样显式覆盖</p>
+<pre><code>Corpus corpus = 4 [default = CORPUS_UNIVERSAL];
+</code></pre>
+<p>枚举也可以有别名，就是一个值有两个名字，像下面这样</p>
+<pre><code class="language-c">enum EnumAllowingAlias {
+  option allow_alias = true;
+  EAA_UNSPECIFIED = 0;
+  EAA_STARTED = 1;
+  EAA_RUNNING = 1;
+  EAA_FINISHED = 2;
+}
+
+enum EnumNotAllowingAlias {
+  ENAA_UNSPECIFIED = 0;
+  ENAA_STARTED = 1;
+  ENAA_RUNNING = 1;  // Uncommenting this line will cause a warning message.
+  ENAA_FINISHED = 2;
+}
+</code></pre>
+<p>不过如果这么用的话，protocol buffer 编译器会生成一条警告消息（可设置<code>allow_alias</code> 为 <code>true</code>来关闭）。以及虽然所有别名值在序列化时都有效，但在反序列化时只使用第一个值。</p>
+<h3 id="删除枚举条目">删除枚举条目</h3>
+<pre><code class="language-c">enum Foo {
+  reserved 2, 15, 9 to 11, 40 to max;
+  reserved FOO, BAR;
+}
+</code></pre>
+<p>要用reserved。<br>
+比如说某项目里，字段3是AAA，一次更新以后字段3被删掉，但是没有reversed。过了一段时间另一个人要添加一个新字段，发现3空着的，就把3用给BBB。但是有其他模块没有及时更新到这个信息，结果就是本来接收BBB的接口会收到AAA，造成严重的问题。</p>
+<p>用reversed把被删除的flag标记，这样如果后来的维护者重用了字段，编译就会报错。</p>
+<h2 id="proto序列化的不规范性">proto序列化的不规范性</h2>
+<p>意思是对于同样的数据，proto不能保证其被序列化为相同的结果。</p>
+<p>比如说哈希密钥验证等流程，不应该直接使用proto序列化出来的数据，因为它们可能随着版本更新发生变化。正确的姿势是反序列化提取其中的信息，然后再拿去用。</p>
+<h1 id="使用教程">使用教程</h1>
+<p>参考了下这个<br>
+<a href="https://github.com/protobuf-c/protobuf-c/wiki/Examples" target="_blank" rel="noopener nofollow">https://github.com/protobuf-c/protobuf-c/wiki/Examples</a></p>
+<p>这里是c的使用教材，如果需要python或者C++可以区看官方文档</p>
+<pre><code class="language-c">syntax = "proto2";
+
+message msg {
+    optional uint32 id = 1;
+    optional string name = 2;
+    optional bytes key = 3;
+}
+</code></pre>
+<p>写一个这个，然后输入<code>protoc-c --c_out=. amessage.proto</code></p>
+<p>接下来在自己的代码中引用生成的文件</p>
+<pre><code class="language-c">#include "message.pb-c.h"
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    Msg msg = MSG__INIT;
+    msg.has_id = 1;
+    msg.id = 12345;
+    msg.name = "Hello, Protobuf-C!";
+    msg.has_key = 1;
+    uint8_t key_data[] = {0xDE, 0xAD, 0xBE, 0xEF};
+    msg.key.data = key_data;
+    msg.key.len = sizeof(key_data);
+
+    // Serialize the message
+    size_t packed_size = msg__get_packed_size(&amp;msg);
+    uint8_t *buffer = malloc(packed_size);
+    if (!buffer) {
+        fprintf(stderr, "Failed to allocate memory for buffer\n");
+        return EXIT_FAILURE;
+    }
+    msg__pack(&amp;msg, buffer);
+
+    // Print the serialized data
+    printf("Serialized Msg (hex): ");
+    for (size_t i = 0; i &lt; packed_size; i++) {
+        printf("%02X ", buffer[i]);
+    }
+    printf("\n");
+
+    // Unpack the message
+    Msg *unpacked_msg = msg__unpack(NULL, packed_size, buffer);
+    if (!unpacked_msg) {
+        fprintf(stderr, "Failed to unpack message\n");
+        free(buffer);
+        return EXIT_FAILURE;
+    }
+
+    // Print the unpacked message
+    printf("Unpacked Msg:\n");
+    printf("  ID: %u\n", unpacked_msg-&gt;id);
+    printf("  Name: %s\n", unpacked_msg-&gt;name);
+    printf("  Key (hex): ");
+    for (size_t i = 0; i &lt; unpacked_msg-&gt;key.len; i++) {
+        printf("%02X ", unpacked_msg-&gt;key.data[i]);
+    }
+    printf("\n");
+
+    msg__free_unpacked(unpacked_msg, NULL); 
+    
+    free(buffer);
+    return EXIT_SUCCESS;
+}
+</code></pre>
+<p>pack和unpack，然后unpack可以传allocator，可以传自定义堆管理器，传null就是用malloc。</p>
+<p>编译指令</p>
+<pre><code class="language-sh">gcc ./main.c ./message.pb-c.c -o ./main -lprotobuf-c
+</code></pre>
+<p>如果你用<code>syntax = "proto3"</code>会发现生成不了，因为神秘的“咕勾”在3.12版本把<code>optional</code>扬了，引发了设区的强烈反对，后来又加了回来。</p>
+<p>而<code>proto-c</code>是社区人员维护的，最新的<code>release</code>版本还没对齐这个需求。</p>
+<p>我们可以看看生成的文件里面有什么，其实也很简单。</p>
+<pre><code class="language-c">/* Generated by the protocol buffer compiler.  DO NOT EDIT! */
+/* Generated from: message.proto */
+
+/* Do not generate deprecated warnings for self */
+#ifndef PROTOBUF_C__NO_DEPRECATED
+#define PROTOBUF_C__NO_DEPRECATED
+#endif
+
+#include "message.pb-c.h"
+void   msg__init
+                     (Msg         *message)
+{
+  static const Msg init_value = MSG__INIT;
+  *message = init_value;
+}
+size_t msg__get_packed_size
+                     (const Msg *message)
+{
+  assert(message-&gt;base.descriptor == &amp;msg__descriptor);
+  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+}
+size_t msg__pack
+                     (const Msg *message,
+                      uint8_t       *out)
+{
+  assert(message-&gt;base.descriptor == &amp;msg__descriptor);
+  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+}
+size_t msg__pack_to_buffer
+                     (const Msg *message,
+                      ProtobufCBuffer *buffer)
+{
+  assert(message-&gt;base.descriptor == &amp;msg__descriptor);
+  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+}
+Msg *
+       msg__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data)
+{
+  return (Msg *)
+     protobuf_c_message_unpack (&amp;msg__descriptor,
+                                allocator, len, data);
+}
+void   msg__free_unpacked
+                     (Msg *message,
+                      ProtobufCAllocator *allocator)
+{
+  if(!message)
+    return;
+  assert(message-&gt;base.descriptor == &amp;msg__descriptor);
+  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+}
+static const ProtobufCFieldDescriptor msg__field_descriptors[3] =
+{
+  {
+    "id",
+    1,
+    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_TYPE_UINT32,
+    offsetof(Msg, has_id),
+    offsetof(Msg, id),
+    NULL,
+    NULL,
+    0,             /* flags */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "name",
+    2,
+    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_TYPE_STRING,
+    0,   /* quantifier_offset */
+    offsetof(Msg, name),
+    NULL,
+    NULL,
+    0,             /* flags */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+  {
+    "key",
+    3,
+    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_TYPE_BYTES,
+    offsetof(Msg, has_key),
+    offsetof(Msg, key),
+    NULL,
+    NULL,
+    0,             /* flags */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
+};
+static const unsigned msg__field_indices_by_name[] = {
+  0,   /* field[0] = id */
+  2,   /* field[2] = key */
+  1,   /* field[1] = name */
+};
+static const ProtobufCIntRange msg__number_ranges[1 + 1] =
+{
+  { 1, 0 },
+  { 0, 3 }
+};
+const ProtobufCMessageDescriptor msg__descriptor =
+{
+  PROTOBUF_C__MESSAGE_DESCRIPTOR_MAGIC,
+  "msg",
+  "Msg",
+  "Msg",
+  "",
+  sizeof(Msg),
+  3,
+  msg__field_descriptors,
+  msg__field_indices_by_name,
+  1,  msg__number_ranges,
+  (ProtobufCMessageInit) msg__init,
+  NULL,NULL,NULL    /* reserved[123] */
+};
+
+</code></pre>
+<p>程序输出结果：</p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202603/3562901-20260317140211866-609388836.jpg" alt="98e8de5de4b86f3d0078042f42968d4f_MD5" loading="lazy"></p>
+<h3 id="rpc协议支持">rpc协议支持</h3>
+<pre><code class="language-c">service SearchService {
+  rpc Search(SearchRequest) returns (SearchResponse);
+}
+</code></pre>
+<p>rpc（Remote Produce Call）是一种通信协议，让你可以调用远程服务器上的函数，就如同调用本地的函数一样。protobuf支持这个，但是你需要自己提供rpc框架。</p>
+<p>后面可以跟gRPC结合，详细放到新的文档写吧。</p>
+<h1 id="逆向">逆向</h1>
+<p>定位结构体，逆向通信协议，然后根据结构体把<code>.proto</code>文件重新写出来，然后用proto生成.py接口就行了。</p>
+<p>这里有魔数可以定位。</p>
+<p><img src="https://img2024.cnblogs.com/blog/3562901/202603/3562901-20260317140157776-2130657270.jpg" alt="1aa7578a02f006650c2fb20506019b5b_MD5" loading="lazy"></p>
+<p>然后就是把类型一个一个套上去，根据宏的名字把<code>.proto</code>反推就行了ovo</p>
+<h1 id="叽里咕噜说什么呢跟我结构体板子说去吧">叽里咕噜说什么呢跟我结构体板子说去吧</h1>
+<p>右键<code>parse statements</code>全部导入，然后想要恢复哪个结构体自己填</p>
+<pre><code class="language-c">typedef enum {
+ PROTOBUF_C_FIELD_FLAG_PACKED = (1 &lt;&lt; 0),
+ PROTOBUF_C_FIELD_FLAG_DEPRECATED = (1 &lt;&lt; 1),
+ PROTOBUF_C_FIELD_FLAG_ONEOF = (1 &lt;&lt; 2),
+} ProtobufCFieldFlag;
+typedef enum {
+ PROTOBUF_C_LABEL_REQUIRED,
+ PROTOBUF_C_LABEL_OPTIONAL,
+ PROTOBUF_C_LABEL_REPEATED,
+ PROTOBUF_C_LABEL_NONE,
+} ProtobufCLabel;
+typedef enum {
+ PROTOBUF_C_TYPE_INT32,
+ PROTOBUF_C_TYPE_SINT32,
+ PROTOBUF_C_TYPE_SFIXED32,
+ PROTOBUF_C_TYPE_INT64,
+ PROTOBUF_C_TYPE_SINT64,
+ PROTOBUF_C_TYPE_SFIXED64,
+ PROTOBUF_C_TYPE_UINT32,
+ PROTOBUF_C_TYPE_FIXED32,
+ PROTOBUF_C_TYPE_UINT64,
+ PROTOBUF_C_TYPE_FIXED64,
+ PROTOBUF_C_TYPE_FLOAT,
+ PROTOBUF_C_TYPE_DOUBLE,
+ PROTOBUF_C_TYPE_BOOL,
+ PROTOBUF_C_TYPE_ENUM,
+ PROTOBUF_C_TYPE_STRING,
+ PROTOBUF_C_TYPE_BYTES,
+ PROTOBUF_C_TYPE_MESSAGE,
+} ProtobufCType;
+typedef enum {
+ PROTOBUF_C_WIRE_TYPE_VARINT = 0,
+ PROTOBUF_C_WIRE_TYPE_64BIT = 1,
+ PROTOBUF_C_WIRE_TYPE_LENGTH_PREFIXED = 2,
+ PROTOBUF_C_WIRE_TYPE_32BIT = 5,
+} ProtobufCWireType;
+struct ProtobufCAllocator;
+struct ProtobufCBinaryData;
+struct ProtobufCBuffer;
+struct ProtobufCBufferSimple;
+struct ProtobufCEnumDescriptor;
+struct ProtobufCEnumValue;
+struct ProtobufCEnumValueIndex;
+struct ProtobufCFieldDescriptor;
+struct ProtobufCIntRange;
+struct ProtobufCMessage;
+struct ProtobufCMessageDescriptor;
+struct ProtobufCMessageUnknownField;
+struct ProtobufCMethodDescriptor;
+struct ProtobufCService;
+struct ProtobufCServiceDescriptor;
+typedef struct ProtobufCAllocator ProtobufCAllocator;
+typedef struct ProtobufCBinaryData ProtobufCBinaryData;
+typedef struct ProtobufCBuffer ProtobufCBuffer;
+typedef struct ProtobufCBufferSimple ProtobufCBufferSimple;
+typedef struct ProtobufCEnumDescriptor ProtobufCEnumDescriptor;
+typedef struct ProtobufCEnumValue ProtobufCEnumValue;
+typedef struct ProtobufCEnumValueIndex ProtobufCEnumValueIndex;
+typedef struct ProtobufCFieldDescriptor ProtobufCFieldDescriptor;
+typedef struct ProtobufCIntRange ProtobufCIntRange;
+typedef struct ProtobufCMessage ProtobufCMessage;
+typedef struct ProtobufCMessageDescriptor ProtobufCMessageDescriptor;
+typedef struct ProtobufCMessageUnknownField ProtobufCMessageUnknownField;
+typedef struct ProtobufCMethodDescriptor ProtobufCMethodDescriptor;
+typedef struct ProtobufCService ProtobufCService;
+typedef struct ProtobufCServiceDescriptor ProtobufCServiceDescriptor;
+typedef int protobuf_c_boolean;
+typedef void (*ProtobufCClosure)(const ProtobufCMessage *, void *closure_data);
+typedef void (*ProtobufCMessageInit)(ProtobufCMessage *);
+typedef void (*ProtobufCServiceDestroy)(ProtobufCService *);
+struct ProtobufCAllocator {
+ void *(*alloc)(void *allocator_data, size_t size);
+ void (*free)(void *allocator_data, void *pointer);
+ void *allocator_data;
+};
+struct ProtobufCBinaryData {
+ size_t len;
+ uint8_t *data;
+};
+struct ProtobufCBuffer {
+ void (*append)(ProtobufCBuffer *buffer,
+      size_t len,
+      const uint8_t *data);
+};
+struct ProtobufCBufferSimple {
+ ProtobufCBuffer base;
+ size_t alloced;
+ size_t len;
+ uint8_t *data;
+ protobuf_c_boolean must_free_data;
+ ProtobufCAllocator *allocator;
+};
+struct ProtobufCEnumDescriptor {
+ uint32_t magic;
+ const char *name;
+ const char *short_name;
+ const char *c_name;
+ const char *package_name;
+ unsigned n_values;
+ const ProtobufCEnumValue *values;
+ unsigned n_value_names;
+ const ProtobufCEnumValueIndex *values_by_name;
+ unsigned n_value_ranges;
+ const ProtobufCIntRange *value_ranges;
+ void *reserved1;
+ void *reserved2;
+ void *reserved3;
+ void *reserved4;
+};
+struct ProtobufCEnumValue {
+ const char *name;
+ const char *c_name;
+ int value;
+};
+struct ProtobufCEnumValueIndex {
+ const char *name;
+ unsigned index;
+};
+struct ProtobufCFieldDescriptor {
+ const char *name;
+ uint32_t id;
+ ProtobufCLabel label;
+ ProtobufCType type;
+ unsigned quantifier_offset;
+ unsigned offset;
+ const void *descriptor;
+ const void *default_value;
+ uint32_t flags;
+ unsigned reserved_flags;
+ void *reserved2;
+ void *reserved3;
+};
+struct ProtobufCIntRange {
+ int start_value;
+ unsigned orig_index;
+};
+struct ProtobufCMessage {
+ const ProtobufCMessageDescriptor *descriptor;
+ unsigned n_unknown_fields;
+ ProtobufCMessageUnknownField *unknown_fields;
+};
+struct ProtobufCMessageDescriptor {
+ uint32_t magic;
+ const char *name;
+ const char *short_name;
+ const char *c_name;
+ const char *package_name;
+ size_t sizeof_message;
+ unsigned n_fields;
+ const ProtobufCFieldDescriptor *fields;
+ const unsigned *fields_sorted_by_name;
+ unsigned n_field_ranges;
+ const ProtobufCIntRange *field_ranges;
+ ProtobufCMessageInit message_init;
+ void *reserved1;
+ void *reserved2;
+ void *reserved3;
+};
+struct ProtobufCMessageUnknownField {
+ uint32_t tag;
+ ProtobufCWireType wire_type;
+ size_t len;
+ uint8_t *data;
+};
+struct ProtobufCMethodDescriptor {
+ const char *name;
+ const ProtobufCMessageDescriptor *input;
+ const ProtobufCMessageDescriptor *output;
+};
+struct ProtobufCService {
+ const ProtobufCServiceDescriptor *descriptor;
+ void (*invoke)(ProtobufCService *service,
+         unsigned method_index,
+         const ProtobufCMessage *input,
+         ProtobufCClosure closure,
+         void *closure_data);
+ void (*destroy)(ProtobufCService *service);
+};
+struct ProtobufCServiceDescriptor {
+ uint32_t magic;
+ const char *name;
+ const char *short_name;
+ const char *c_name;
+ const char *package;
+ unsigned n_methods;
+ const ProtobufCMethodDescriptor *methods;
+ const unsigned *method_indices_by_name;
+};
+</code></pre>
+<h1 id="叽里咕噜说什么呢跟我自动化脚本说去吧">叽里咕噜说什么呢跟我自动化脚本说去吧</h1>
+<p>有pbtk，实测识别不太出来</p>
+<p>也有auto-re，实测太久没人维护（6years ago）</p>
+<p>// todo</p>
+
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo" class="post-meta-container">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="0.01597222222222222" data-date-updated="2026-03-17 14:26">2026-03-17 14:03</span>&nbsp;
+<a href="https://www.cnblogs.com/undefined">imiab</a>&nbsp;
+阅读(<span id="post_view_count">138</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(19729318);return false;">收藏</a>&nbsp;
+<a href="https://report.cnblogs.com?targetLink=https%3A%2F%2Fwww.cnblogs.com%2Fundefined%2Fp%2F19729318&targetId=19729318&targetType=0" target="_blank">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 19729318, cb_entryCreatedDate = '2026-03-17 14:03', cb_postType = 1, cb_postTitle = '[pwn] protobuf学习与逆向';
+    var allowComments = true, cb_blogId = 841504, cb_blogApp = 'undefined', cb_blogUserGuid = '8a0895b2-d2a5-4d98-c91d-08dd08913576';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav">
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"></div>
+    <div id="opt_under_post"></div>
+        <div id="blog_c1" class="under-post-card below-post-card">
+            <a href="https://www.doubao.com/download/desktop?ug_apk_token=FxCjd" rel="nofollow" target="_blank" onclick="countCreativeClicks('C1-字节-豆包')">
+                <img src="https://img2024.cnblogs.com/blog/35695/202609/35695-20260905201441417-1701437871.webp" onload="countCreativeImpressions('C1-字节-豆包')" alt="" style="width:300px!important;height:250px!important;min-width:300px!important;max-width:300px!important;" />
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"></div>
+    <div id="related_posts_card"></div>
+    <div id="under_post_card2"></div>
+    <div id="HistoryToday" class="under-post-card below-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+            setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+            LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div>
+	</div>
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div>
+					<script>loadBlogSideColumn()</script>
+			</div>			
+		</div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div id="footer">
+		<a href="https://www.cnblogs.com/" id="footer_site_link" class="footer-brand">博客园</a>
+<span class="footer-copyright"> &nbsp;&copy;&nbsp; 2004-2026</span>
+<br /><span class="footer-icp">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602011771"><img src="//assets.cnblogs.com/images/ghs.png" />浙公网安备 33010602011771号</a>
+    <a href="https://beian.miit.gov.cn" target="_blank">浙ICP备2021040463号-3</a>
+</span>
+
+
+
+	</div>
+</div>
+
+
+
+    <div id="page_end_html">
+        <script src="https://cdn.cnblogs.com/awescnb/index.js"></script>
+<script>
+  const opts = {
+    bodyBackground: {
+        enable: true,
+        value:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312133253_meiying.jpg',
+        opacity: 0.85,
+        repeat: true,
+    },
+    theme: {
+      name: 'geek',
+      avatar:'https://images.cnblogs.com/cnblogs_com/blogs/841504/galleries/2448994/o_250312125116_QQ%E5%9B%BE%E7%89%8720240807015716.jpg',
+    },
+    darkMode: {
+        enable: true,
+        darkDefault: false,
+    },
+  signature: {
+      enable: false,
+      contents: [
+      "",
+      ],
+    },
+  }
+  $.awesCnb(opts)
+</script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8Ow5-In01nBEvFwaadRGjqERotCnV4xvusgqriD3XbaK9x6iaUU8lKtZRGtvFdCfdl7G17zZZtayiBQLzjfhoUILTNASTh--XCKT7ieiD_F7pK4nYTqyU89vrJVBQbwak_fPFPRM0F3-CfHcuOW6MRc" />
+    <script defer src="https://hm.baidu.com/hm.js?866c9be12d4a814454792b1fd0fed295"></script>
+<script defer src="https://lf1-cdn-tos.bytegoofy.com/goofy/ttzz/push.js?32d945448dd797af605da9156763de3dc11c9886368d0f917d6388e4fcf5542030632485602430134f60bc55ca391050b680e2741bf7233a8f1da9902314a3fa" id="ttzz"></script>
+</body>
+</html>

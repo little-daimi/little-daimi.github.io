@@ -1,4 +1,4 @@
-name: Deploy Hexo to GitHub Pages
+name: Build and publish blog
 on:
   push:
     branches: [main]
@@ -6,23 +6,91 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: pages
+  group: blog-publication
   cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: npm
       - run: npm ci
       - run: npm run build
+      - run: npm run check
+      - name: Mark the validated build
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          Path('public/.build-info.json').write_text(json.dumps({
+              'schema': 1,
+              'status': 'passed',
+              'source_commit': os.environ['GITHUB_SHA'],
+              'repository': os.environ['GITHUB_REPOSITORY'],
+              'run_id': os.environ['GITHUB_RUN_ID']
+          }) + '\n')
+          Path('public/.nojekyll').touch()
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: static-site
+          path: public
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
-  deploy:
+  publish:
+    name: Publish static files for the server
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: publisher
+      - uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: site
+      - name: Update the publish branch
+        working-directory: publisher
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          info = json.loads(Path('../site/.build-info.json').read_text())
+          assert info['schema'] == 1 and info['status'] == 'passed'
+          assert info['source_commit'] == os.environ['GITHUB_SHA']
+          assert Path('../site/index.html').stat().st_size > 0
+          assert not any(p.is_symlink() for p in Path('../site').rglob('*'))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git ls-remote --exit-code origin refs/heads/publish >/dev/null 2>&1; then
+            git fetch --no-tags --depth=1 origin publish
+            git checkout -B publish FETCH_HEAD
+          else
+            git checkout --orphan publish
+          fi
+          git rm -r --ignore-unmatch -- .
+          cp -a ../site/. .
+          git add --all
+          if git diff --cached --quiet; then
+            echo 'The published files are unchanged.'
+          else
+            git commit -m "Publish ${GITHUB_SHA}"
+            git push origin HEAD:publish
+          fi
+  deploy-pages:
     needs: build
     runs-on: ubuntu-latest
     permissions:

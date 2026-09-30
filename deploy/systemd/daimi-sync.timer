@@ -1,0 +1,11 @@
+[Unit]
+Description=Check for imi-imiab.com updates every minute
+
+[Timer]
+OnCalendar=*-*-* *:*:00
+Persistent=true
+AccuracySec=1s
+Unit=daimi-sync.service
+
+[Install]
+WantedBy=timers.target

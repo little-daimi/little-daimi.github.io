@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">博客园 - imiab</title>
+  <id>uuid:9b5e00a2-9305-46aa-b780-771276a27a17;id=2743076</id>
+  <updated>2026-03-18T04:16:31Z</updated>
+  <author>
+    <name>imiab</name>
+    <uri>https://www.cnblogs.com/undefined/</uri>
+  </author>
+  <generator>feed.cnblogs.com</generator>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/19733408</id>
+    <title type="text">protobuf-c 自动逆向脚本开发小记... - imiab</title>
+    <summary type="text">Loader 编写脚本的时候发现ida根本没有热重载脚本的功能，每次修改完脚本想看看效果，都要把ida大退然后重启 于是自己写了一个方便的loader，按下Ctrl+Shift+H就可以请求一个路径，按下Ctrl+H快速热重载脚本。 import ida_idaapi import ida_kern</summary>
+    <published>2026-03-18T04:17:00Z</published>
+    <updated>2026-03-18T04:17:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/19733408" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/19733408" />
+    <content type="html">【摘要】Loader 编写脚本的时候发现ida根本没有热重载脚本的功能，每次修改完脚本想看看效果，都要把ida大退然后重启 于是自己写了一个方便的loader，按下Ctrl+Shift+H就可以请求一个路径，按下Ctrl+H快速热重载脚本。 import ida_idaapi import ida_kern &lt;a href="https://www.cnblogs.com/undefined/p/19733408" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/19729318</id>
+    <title type="text">[pwn] protobuf学习与逆向 - imiab</title>
+    <summary type="text">介绍 一个轻量的跨平台数据结构协议。 说人话就是json-pro，或者说zip-pro。zip不也是不论在手机、电脑、macos都能解压吗，， 当然运转起来和zip不同，毕竟这个是为了程序间收发信息而发明的，而zip只是为了打包数据，只是一个不太恰当的类比。 快速安装 sudo apt instal</summary>
+    <published>2026-03-17T06:03:00Z</published>
+    <updated>2026-03-17T06:03:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/19729318" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/19729318" />
+    <content type="html">【摘要】介绍 一个轻量的跨平台数据结构协议。 说人话就是json-pro，或者说zip-pro。zip不也是不论在手机、电脑、macos都能解压吗，， 当然运转起来和zip不同，毕竟这个是为了程序间收发信息而发明的，而zip只是为了打包数据，只是一个不太恰当的类比。 快速安装 sudo apt instal &lt;a href="https://www.cnblogs.com/undefined/p/19729318" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/19428486</id>
+    <title type="text">二0二午 - imiab</title>
+    <summary type="text">2025 又是一事无成的一年... 一月。。。？？？ 我全忘了，一月我做了什么。大概是在为期末周焦头烂额。 开学的时候还天天看高数想卷绩点，最后考完居然是倒数吗，哈哈...（被9.5学分英语肘飞了） 现在回想起来这个时候的我应该还只是一个小菜鸡，一直说要学house of cat、高版本堆之类的，但</summary>
+    <published>2025-12-31T13:44:00Z</published>
+    <updated>2025-12-31T13:44:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/19428486" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/19428486" />
+    <content type="html">【摘要】2025 又是一事无成的一年... 一月。。。？？？ 我全忘了，一月我做了什么。大概是在为期末周焦头烂额。 开学的时候还天天看高数想卷绩点，最后考完居然是倒数吗，哈哈...（被9.5学分英语肘飞了） 现在回想起来这个时候的我应该还只是一个小菜鸡，一直说要学house of cat、高版本堆之类的，但 &lt;a href="https://www.cnblogs.com/undefined/p/19428486" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/19428317</id>
+    <title type="text">2025年终总结 - imiab</title>
+    <summary type="text">2025 又是一事无成的一年... 一月。。。？？？ 我全忘了，一月我做了什么。大概是在为期末周焦头烂额。 开学的时候还天天看高数想卷绩点，最后考完居然是倒数吗，哈哈...（被9.5学分英语肘飞了） 现在回想起来这个时候的我应该还只是一个小菜鸡，一直说要学house of cat、高版本堆之类的，但</summary>
+    <published>2025-12-31T11:55:00Z</published>
+    <updated>2025-12-31T11:55:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/19428317" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/19428317" />
+    <content type="html">【摘要】2025 又是一事无成的一年... 一月。。。？？？ 我全忘了，一月我做了什么。大概是在为期末周焦头烂额。 开学的时候还天天看高数想卷绩点，最后考完居然是倒数吗，哈哈...（被9.5学分英语肘飞了） 现在回想起来这个时候的我应该还只是一个小菜鸡，一直说要学house of cat、高版本堆之类的，但 &lt;a href="https://www.cnblogs.com/undefined/p/19428317" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/19254887</id>
+    <title type="text">RCTF pwn方向题解（缺bbox） - imiab</title>
+    <summary type="text">mstr python pwn 漏洞和python内部的机制有关系，python对象并不直接存储对象，而是存储对象的引用。而mutableString类的data是string，max_size_str也是string。这就会导致data和max_size_str指向同一个字符对象。 至此还不会产生</summary>
+    <published>2025-11-21T16:22:00Z</published>
+    <updated>2025-11-21T16:22:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/19254887" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/19254887" />
+    <content type="html">【摘要】mstr python pwn 漏洞和python内部的机制有关系，python对象并不直接存储对象，而是存储对象的引用。而mutableString类的data是string，max_size_str也是string。这就会导致data和max_size_str指向同一个字符对象。 至此还不会产生 &lt;a href="https://www.cnblogs.com/undefined/p/19254887" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/19135998</id>
+    <title type="text">securityCTF 2025 pwn方向题解 - imiab</title>
+    <summary type="text">V-table 手挖io链子 正常的链子 exit_handler() -&amp;gt; io_flush_all() -&amp;gt; io_overflow() -&amp;gt; io_do_write() 我们修改vtable，使得调用overflow变成调用file_finish，正常的finish链子 exit_handle</summary>
+    <published>2025-10-11T13:17:00Z</published>
+    <updated>2025-10-11T13:17:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/19135998" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/19135998" />
+    <content type="html">【摘要】V-table 手挖io链子 正常的链子 exit_handler() -&amp;gt; io_flush_all() -&amp;gt; io_overflow() -&amp;gt; io_do_write() 我们修改vtable，使得调用overflow变成调用file_finish，正常的finish链子 exit_handle &lt;a href="https://www.cnblogs.com/undefined/p/19135998" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/19044898</id>
+    <title type="text">Lilctf PWN方向全全全全题解！ - imiab</title>
+    <summary type="text">I like C++ 114514后门选项，里面会设置一个函数指针，其中偏移3的地方为后门函数 里面有一个scanf(&amp;quot;%s&amp;quot;)，裸的栈溢出，还有格式化字符串 条件是拿到堆地址，只要我们输入的地址和它的堆地址一样就能触发 exchange里有个浅拷贝，会free对象并导致leak 最终exp fro</summary>
+    <published>2025-08-18T08:19:00Z</published>
+    <updated>2025-08-18T08:19:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/19044898" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/19044898" />
+    <content type="html">【摘要】I like C++ 114514后门选项，里面会设置一个函数指针，其中偏移3的地方为后门函数 里面有一个scanf(&amp;quot;%s&amp;quot;)，裸的栈溢出，还有格式化字符串 条件是拿到堆地址，只要我们输入的地址和它的堆地址一样就能触发 exchange里有个浅拷贝，会free对象并导致leak 最终exp fro &lt;a href="https://www.cnblogs.com/undefined/p/19044898" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/18875060</id>
+    <title type="text">BUUCTF WEB入门题小记 - imiab</title>
+    <summary type="text">[极客大挑战 2019]EasySQL 使用 1&amp;#39; or &amp;#39;1&amp;#39; = &amp;#39;1&amp;#39; #绕过sql 注意sql中的等于是=，不等于是&amp;lt;&amp;gt;或!= [极客大挑战 2019]Havefun 在源代码中的注释中找到提示 用$cat=dog获得flag [HCTF 2018]WarmUp 在源代码中的注释找到提示 进</summary>
+    <published>2025-05-13T15:06:00Z</published>
+    <updated>2025-05-13T15:06:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/18875060" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/18875060" />
+    <content type="html">【摘要】[极客大挑战 2019]EasySQL 使用 1&amp;#39; or &amp;#39;1&amp;#39; = &amp;#39;1&amp;#39; #绕过sql 注意sql中的等于是=，不等于是&amp;lt;&amp;gt;或!= [极客大挑战 2019]Havefun 在源代码中的注释中找到提示 用$cat=dog获得flag [HCTF 2018]WarmUp 在源代码中的注释找到提示 进 &lt;a href="https://www.cnblogs.com/undefined/p/18875060" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/18867406</id>
+    <title type="text">mini-L2025 PWN方向全题解 - imiab</title>
+    <summary type="text">POSTBOX PostScript下存在格式化字符串漏洞，具体分析如下 //unsigned __int64 __fastcall PostScript(_DWORD *a1, int *len) while ( *a1 ) //注意到这里解了个指针 //一般变量都是直接存储值，这个不一样也相当于</summary>
+    <published>2025-05-08T17:11:00Z</published>
+    <updated>2025-05-08T17:11:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/18867406" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/18867406" />
+    <content type="html">【摘要】POSTBOX PostScript下存在格式化字符串漏洞，具体分析如下 //unsigned __int64 __fastcall PostScript(_DWORD *a1, int *len) while ( *a1 ) //注意到这里解了个指针 //一般变量都是直接存储值，这个不一样也相当于 &lt;a href="https://www.cnblogs.com/undefined/p/18867406" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/18857873</id>
+    <title type="text">ACTF 部分题的非预期解法（全都是非预期） - imiab</title>
+    <summary type="text">afl-sandbox 不知道预期解是什么，但是侧信道了 程序执行我们的shellcode，如果崩溃会根据不同的signal把信息告诉给我们 （复盘的时候想起来，如果exit不同的值是不是也会告诉我们？ （但是这么搞这题就没什么意思了，要是沙箱才有意思呢 用ud2、段错误和正常退出构造出三种不同的状</summary>
+    <published>2025-05-02T14:36:00Z</published>
+    <updated>2025-05-02T14:36:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/18857873" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/18857873" />
+    <content type="html">【摘要】afl-sandbox 不知道预期解是什么，但是侧信道了 程序执行我们的shellcode，如果崩溃会根据不同的signal把信息告诉给我们 （复盘的时候想起来，如果exit不同的值是不是也会告诉我们？ （但是这么搞这题就没什么意思了，要是沙箱才有意思呢 用ud2、段错误和正常退出构造出三种不同的状 &lt;a href="https://www.cnblogs.com/undefined/p/18857873" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/18827574</id>
+    <title type="text">SQCTF pwn方向部分wp - imiab</title>
+    <summary type="text">你好哇，除了一个混杂了misc的pwn没写，其他的思路和writeup都写在这里了 题目总体还是偏基础的，如果不懂可以exp+gdb调调看。 浅红欺醉粉，肯信有江梅 天哪好花哨的名字 输入nc balabala就有shell啦，然后愉快地ls cat flag便可 cat 主函数里有一个危险的get</summary>
+    <published>2025-04-15T13:30:00Z</published>
+    <updated>2025-04-15T13:30:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/18827574" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/18827574" />
+    <content type="html">【摘要】你好哇，除了一个混杂了misc的pwn没写，其他的思路和writeup都写在这里了 题目总体还是偏基础的，如果不懂可以exp+gdb调调看。 浅红欺醉粉，肯信有江梅 天哪好花哨的名字 输入nc balabala就有shell啦，然后愉快地ls cat flag便可 cat 主函数里有一个危险的get &lt;a href="https://www.cnblogs.com/undefined/p/18827574" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/18815248</id>
+    <title type="text">XYCTF 2025 pwn方向部分题解 - imiab</title>
+    <summary type="text">nailong int -&amp;gt; uint 如果输入负数就可以绕过“太高了” 接下来0是读，1是写，程序开头给了栈地址 虽然用time0加随机数了，但是只要我们本地也同样跑个time0就可以生成一样的随机数 分别把几个变量写掉后弄出任意读写原语后写orw即可 exp: from pwn import *</summary>
+    <published>2025-04-08T11:43:00Z</published>
+    <updated>2025-04-08T11:43:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/18815248" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/18815248" />
+    <content type="html">【摘要】nailong int -&amp;gt; uint 如果输入负数就可以绕过“太高了” 接下来0是读，1是写，程序开头给了栈地址 虽然用time0加随机数了，但是只要我们本地也同样跑个time0就可以生成一样的随机数 分别把几个变量写掉后弄出任意读写原语后写orw即可 exp: from pwn import * &lt;a href="https://www.cnblogs.com/undefined/p/18815248" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+  <entry>
+    <id>https://www.cnblogs.com/undefined/p/18765503</id>
+    <title type="text">testBlog - imiab</title>
+    <summary type="text">test my skin!!! test skin!!! test skin!!! test skin!!! test skin!!! test skin!!! oh skin!!!</summary>
+    <published>2025-03-11T08:53:00Z</published>
+    <updated>2025-03-11T08:53:00Z</updated>
+    <author>
+      <name>imiab</name>
+      <uri>https://www.cnblogs.com/undefined/</uri>
+    </author>
+    <link rel="alternate" href="https://www.cnblogs.com/undefined/p/18765503" />
+    <link rel="alternate" type="text/html" href="https://www.cnblogs.com/undefined/p/18765503" />
+    <content type="html">【摘要】test my skin!!! test skin!!! test skin!!! test skin!!! test skin!!! test skin!!! oh skin!!! &lt;a href="https://www.cnblogs.com/undefined/p/18765503" target="_blank"&gt;阅读全文&lt;/a&gt;</content>
+  </entry>
+</feed>
